@@ -24,8 +24,12 @@
 // For more information, please refer to <http://unlicense.org/>
 
 #include <iostream>
+#include <octra/cxx/dynarray.hpp>
 
 int main() {
-  std::cout << "Hello world!" << std::endl;
+  std::cout << "Hello world" << std::endl;
+  // size_t n = 100;
+  // auto x = octra::DynArray<double>(n);
+  // // std::cout << x << std::endl;
   return 0;
 }

@@ -23,9 +23,17 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
-#include <stdio.h>
+// #include <stdio.h>
+
+#include <memory.h>
+#include <octra/c/dynarray.h>
 
 int main() {
-  printf("Hello, World!\n");
+  octra_dynarray *x = octra_dynarray_alloc(100, sizeof(double));
+  for (double i = 0; i < 100; i++) {
+    octra_dynarray_push(x, &i);
+  }
+  octra_dynarray_print(x, print_double);
+  octra_dynarray_free(x);
   return 0;
 }

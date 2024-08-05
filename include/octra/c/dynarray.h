@@ -26,9 +26,37 @@
 #include <stdlib.h>
 
 typedef struct {
-  double *data;
+  void *data;
   size_t size;
   size_t capacity;
+  size_t elementSize;
 } octra_dynarray;
 
-octra_dynarray *octra_dynarray_alloc(size_t size);
+octra_dynarray *octra_dynarray_alloc(size_t initial_capacity,
+                                     size_t element_size);
+
+void octra_dynarray_reserve(octra_dynarray *arr, size_t newCapacity);
+
+void octra_dynarray_push(octra_dynarray *arr, void *element);
+
+void octra_dynarray_insert(octra_dynarray *self, size_t index, void *element);
+
+void octra_dynarray_remove(octra_dynarray *self, size_t index);
+
+void *octra_dynarray_get(octra_dynarray *arr, size_t index);
+
+void octra_dynarray_set(octra_dynarray *self, size_t index, void *element);
+
+void octra_dynarray_free(octra_dynarray *arr);
+
+void octra_dynarray_print(octra_dynarray *arr, void (*printFunc)(void *));
+
+const size_t octra_dynarray_size(octra_dynarray *self);
+
+void print_int(void *data);
+void print_double(void *data);
+
+void octra_dynarray_clear(octra_dynarray *self);
+
+void octra_dynarray_sort(octra_dynarray *self,
+                         int (*compareFunc)(const void *, const void *));

@@ -12,8 +12,14 @@ file(GLOB_RECURSE c_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/sourc
 file(GLOB_RECURSE cxx_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
 file(GLOB_RECURSE cxx_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cxx")
 
+
+message(STATUS "c_headers: ${c_headers}")
+message(STATUS "c_sources: ${c_sources}")
+message(STATUS "cxx_headers: ${cxx_headers}")
+message(STATUS "cxx_sources: ${cxx_sources}")
+
 # Both built into single library for now...
-add_library(${PROJECT_NAME} STATIC
+add_library(${PROJECT_NAME} SHARED
   ${c_headers}
   ${c_sources}
   ${cxx_headers}
