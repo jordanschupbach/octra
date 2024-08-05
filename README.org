@@ -1,10 +1,10 @@
 !!!!! WARNING - This repo is under development !!!!!
 
-# octra
+* octra
 
 One C to rule them all... and in the darkness bind them.
 
-## Description
+** Description
 
 C is the lingua franca of programming languages. It is the language that
 provides the most control over the hardware and the most flexibility in
@@ -25,19 +25,20 @@ The purpose of Octra is to provide the build system as a template to bind your
 C code to as many other languages as possible. It is meant to teach. It is
 midly opionated, yet strives to be unopionated. If you want to propose your
 opinions, please do so by opening an issue and/or sending a pull request.
-Contributions are welcome. Octra is licensed under the Unlicense license. You
-are free to use and modify it as you see fit.
+Contributions are welcome. Octra is licensed under the
+[https://unlicense.org](Unlicense) license. You are free to use and modify it
+as you see fit.
 
-## Features of Octra
+* Features of Octra
 TODO
 
-## Goals of Octra
+** Goals of Octra
 Octra, as a build system, has the following unachieved goals:
  - Provide a simple, easy-to-use build system for C code to be wrapped in as
  many languages as possible.
  - Provide this in a cross-platform independent way.
 
-## Installation
+** Installation
 
 If you want to use install octra, you can run one of the following commands:
 
@@ -53,7 +54,7 @@ If you want to use install octra, you can run one of the following commands:
 ./install.sh
 ```
 
-## CLI
+** CLI
 Octra is meant to be installed as a command line tool. The following commands
 may be of use to you.
 
@@ -67,12 +68,12 @@ octra --help
 octra new <template-name> <project-name>
 ```
 
-## Development
+** Development
 
 After either running octra-cli or cloning the repository, you can run the
 following commands to get started developing:
 
-### Linux/OSX
+*** Linux/OSX
 ```bash
 # TODO
 make dev

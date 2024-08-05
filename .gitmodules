@@ -1,0 +1,6 @@
+[submodule "cmake/PackageProject.cmake"]
+	path = cmake/PackageProject.cmake
+	url = https://github.com/TheLartians/PackageProject.cmake.git
+[submodule "cmake/CPM.cmake"]
+	path = cmake/CPM.cmake
+	url = https://github.com/cpm-cmake/CPM.cmake.git
