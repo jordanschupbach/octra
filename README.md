@@ -1,23 +1,25 @@
-- [octra](#org40dc1e3)
-  - [Description](#orgae7fe11)
-- [Features of Octra](#org93d738d)
-  - [Goals of Octra](#org4b385c2)
-  - [Installation](#org84d2fcc)
-  - [CLI](#org26ac115)
-  - [Development](#orgd66312f)
-    - [Linux/OSX](#org8b5973f)
+- [octra](#orgb9a906c)
+  - [Description](#org3980fe2)
+- [Features of Octra](#orgdb43257)
+  - [Goals of Octra](#orgb7a2cfe)
+  - [Installation](#orgf6dcff5)
+  - [CLI](#org7445a04)
+  - [Development](#orge5caba5)
+    - [Linux/OSX](#org83ce9bd)
+    - [Windows](#org4f71429)
+  - [Contributions](#org3c576d6)
 
 !!!!! WARNING - This repo is under development !!!!!
 
 
-<a id="org40dc1e3"></a>
+<a id="orgb9a906c"></a>
 
 # octra
 
 One C to rule them all&#x2026; and in the darkness bind them.
 
 
-<a id="orgae7fe11"></a>
+<a id="org3980fe2"></a>
 
 ## Description
 
@@ -28,14 +30,14 @@ Nonetheless, C is the language that most other languages are built on. For that 
 The purpose of Octra is to provide the build system as a template to bind your C code to as many other languages as possible. It is meant to teach. It is midly opionated, yet strives to be unopionated. If you want to propose your opinions, please do so by opening an issue and/or sending a pull request. Contributions are welcome. Octra is licensed under the [Unlicense](https://unlicense.org) license. You are free to use and modify it as you see fit.
 
 
-<a id="org93d738d"></a>
+<a id="orgdb43257"></a>
 
 # Features of Octra
 
 TODO
 
 
-<a id="org4b385c2"></a>
+<a id="orgb7a2cfe"></a>
 
 ## Goals of Octra
 
@@ -48,53 +50,80 @@ many languages as possible.
 -   Provide this in a cross-platform independent way.
 
 
-<a id="org84d2fcc"></a>
+<a id="orgf6dcff5"></a>
 
 ## Installation
 
 If you want to install octra, you can run one of the following commands:
 
-\`\`\`bash
+```bash
+# TODO
+# Linux/OSX
+./install.sh
+```
 
-./install.sh \`\`\`
+```sh
+# TODO
+# Windows powershell
+./install.sh
+```
 
 \`\`\`shell
 
 ./install.sh \`\`\`
 
 
-<a id="org26ac115"></a>
+<a id="org7445a04"></a>
 
 ## CLI
 
 Octra is meant to be installed as a command line tool. The following commands may be of use to you.
 
-\`\`\`shell
+```bash
+# Get help
+# TODO
+octra --help
 
-octra &#x2013;help
+# Create a new project
+# TODO
+octra new <template-name> <project-name>
+```
 
-octra new <template-name> <project-name> \`\`\`
 
-
-<a id="orgd66312f"></a>
+<a id="orge5caba5"></a>
 
 ## Development
 
 After either running octra-cli or cloning the repository, you can run the following commands to get started developing:
 
 
-<a id="org8b5973f"></a>
+<a id="org83ce9bd"></a>
 
 ### Linux/OSX
 
-\`\`\`bash
+```bash
+# TODO
+make dev
+make dev-install
 
-make dev make dev-install
+# or the traditional
+# TODO
+# cmake -B build -DCMAKE_BUILD_TYPE=Debug
+# # cmake --install
+```
 
-\`\`\`
 
-\### Windows \`\`\`bash
+<a id="org4f71429"></a>
 
-\`\`\`
+### Windows
 
-\## Contributions Contributions are welcome. Please see the [CONTRIBUTING.org](CONTRIBUTING.org) file.
+```sh
+# TODO
+```
+
+
+<a id="org3c576d6"></a>
+
+## Contributions
+
+Contributions are welcome. Please see the [CONTRIBUTING.org](CONTRIBUTING.org) file.

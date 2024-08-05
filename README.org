@@ -42,11 +42,18 @@ Octra, as a build system, has the following unachieved goals:
 
 If you want to install octra, you can run one of the following commands:
 
-```bash
+#+begin_src bash
 # TODO
 # Linux/OSX
 ./install.sh
-```
+#+end_src
+
+#+begin_src sh
+# TODO
+# Windows powershell
+./install.sh
+#+end_src
+
 
 ```shell
 # TODO
@@ -58,7 +65,8 @@ If you want to install octra, you can run one of the following commands:
 Octra is meant to be installed as a command line tool. The following commands
 may be of use to you.
 
-```shell
+
+#+BEGIN_SRC bash
 # Get help
 # TODO
 octra --help
@@ -66,7 +74,7 @@ octra --help
 # Create a new project
 # TODO
 octra new <template-name> <project-name>
-```
+#+END_SRC
 
 ** Development
 
@@ -74,7 +82,8 @@ After either running octra-cli or cloning the repository, you can run the
 following commands to get started developing:
 
 *** Linux/OSX
-```bash
+
+#+BEGIN_SRC bash
 # TODO
 make dev
 make dev-install
@@ -83,14 +92,16 @@ make dev-install
 # TODO
 # cmake -B build -DCMAKE_BUILD_TYPE=Debug
 # # cmake --install
-```
+#+END_SRC
 
-### Windows
-```bash
+
+*** Windows
+#+BEGIN_SRC sh
 # TODO
-```
+#+END_SRC
 
-## Contributions
+
+** Contributions
 Contributions are welcome. Please see the
 [CONTRIBUTING.org](CONTRIBUTING.org) file.
 
