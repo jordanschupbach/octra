@@ -26,7 +26,7 @@ C code to as many other languages as possible. It is meant to teach. It is
 midly opionated, yet strives to be unopionated. If you want to propose your
 opinions, please do so by opening an issue and/or sending a pull request.
 Contributions are welcome. Octra is licensed under the
-[https://unlicense.org](Unlicense) license. You are free to use and modify it
+[[https://unlicense.org][Unlicense]] license. You are free to use and modify it
 as you see fit.
 
 * Features of Octra
@@ -40,7 +40,7 @@ Octra, as a build system, has the following unachieved goals:
 
 ** Installation
 
-If you want to use install octra, you can run one of the following commands:
+If you want to install octra, you can run one of the following commands:
 
 ```bash
 # TODO
@@ -91,4 +91,6 @@ make dev-install
 ```
 
 ## Contributions
-Contributions are welcome. Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+Contributions are welcome. Please see the
+[CONTRIBUTING.org](CONTRIBUTING.org) file.
+

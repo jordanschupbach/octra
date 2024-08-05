@@ -4,3 +4,6 @@
 [submodule "cmake/CPM.cmake"]
 	path = cmake/CPM.cmake
 	url = https://github.com/cpm-cmake/CPM.cmake.git
+[submodule "cmake/ModernCppStarter"]
+	path = cmake/ModernCppStarter
+	url = https://github.com/TheLartians/ModernCppStarter.git
