@@ -28,8 +28,14 @@
 
 int main() {
   std::cout << "Hello world" << std::endl;
-  // size_t n = 100;
-  // auto x = octra::DynArray<double>(n);
-  // // std::cout << x << std::endl;
+  size_t n = 100;
+  auto x = octra::DynArray<double>(n);
+  x.push_back(1.0);
+  x.push_back(2.0);
+  x.push_back(3.0);
+  std::cout << x[0] << std::endl;
+  std::cout << x[1] << std::endl;
+  std::cout << x[2] << std::endl;
+  std::cout << x.size() << std::endl;
   return 0;
 }

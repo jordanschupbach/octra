@@ -25,7 +25,9 @@
 
 #pragma once
 
+extern "C" {
 #include <octra/c/dynarray.h>
+}
 
 #include <iostream>
 #include <utility>
