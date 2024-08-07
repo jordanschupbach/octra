@@ -26,93 +26,113 @@
 #pragma once
 
 extern "C" {
-#include <octra/c/dynarray.h>
+#include "../c/dynarray.h"
 }
 
 #include <iostream>
 #include <utility>
 
 namespace octra {
-template <typename T> class DynArray {
-public: // NOLINT
+template<typename T>
+class DynArray {
+ public:
   explicit DynArray(size_t n);
   virtual ~DynArray();
-  void push_back(const T &elmt);
-  void push_back(T &&elmt);
-  void clear();
+  void   push_back(const T& elmt);
+  void   push_back(T&& elmt);
+  void   clear();
   size_t size() const;
-  T &operator[](size_t index);
+  T&     operator[](size_t index);
+  T      operator[](size_t index) const;
 
-  DynArray(const DynArray<T> &other);
-  DynArray(DynArray<T> &&other);
+  DynArray(const DynArray<T>& other);
+  DynArray(DynArray<T>&& other);
 
   // Copy assignment operator
-  DynArray<T> &operator=(DynArray<T> other) {
+  DynArray<T>& operator=(DynArray<T> other) {
     std::swap(*this, other);
     return *this;
   }
 
   // Move assignment operator
-  DynArray<T> &operator=(DynArray<T> &&other) noexcept {
+  DynArray<T>& operator=(DynArray<T>&& other) noexcept {
     std::swap(_data, other._data);
     return *this;
   }
 
-  friend std::ostream &operator<<(std::ostream &os, const DynArray<T> &obj) {
+  friend std::ostream& operator<<(std::ostream& os, const DynArray<T>& obj) {
     for (size_t i = 0; i < obj.size(); i++) {
-      os << obj.get(i) << " ";
+      os << obj[i] << " ";
     }
     os << std::endl;
     return os;
   }
 
-private: // NOLINT
-  octra_dynarray *_data;
+ private:
+  octra_dynarray* _data;
 };
 
-template <typename T>
-DynArray<T>::DynArray(const DynArray<T> &other)
+template<typename T>
+DynArray<T>::DynArray(const DynArray<T>& other)
     : _data(octra_dynarray_alloc(other.size(), sizeof(T))) {
   for (size_t i = 0; i < other.size(); ++i) {
-    T *element = static_cast<T *>(octra_dynarray_get(other._data, i));
+    T* element = static_cast<T*>(octra_dynarray_get(other._data, i));
     push_back(*element);
   }
 }
 
-// Move constructor
-template <typename T>
-DynArray<T>::DynArray(DynArray<T> &&other) : _data(other._data) {
+template<typename T>
+DynArray<T>::DynArray(DynArray<T>&& other) : _data(other._data) {
   other._data = nullptr;
 }
 
-template <typename T> DynArray<T>::DynArray(size_t n) {
+template<typename T>
+DynArray<T>::DynArray(size_t n) {
   _data = octra_dynarray_alloc(n, sizeof(T));
 }
 
-template <typename T> DynArray<T>::~DynArray() { octra_dynarray_free(_data); }
+template<typename T>
+DynArray<T>::~DynArray() {
+  octra_dynarray_free(_data);
+}
 
-template <typename T> T &DynArray<T>::operator[](size_t index) {
+template<typename T>
+T& DynArray<T>::operator[](size_t index) {
   if (index < size()) {
     auto elmt = octra_dynarray_get(_data, index);
-    return *((T *)elmt); // NOLINT
+    return *((T*)elmt); // NOLINT
   }
-  // Handle index out of range as needed
   throw std::out_of_range("Index out of range");
 }
 
-template <typename T> size_t DynArray<T>::size() const {
+template<typename T>
+T DynArray<T>::operator[](size_t index) const {
+  if (index < size()) {
+    auto elmt = octra_dynarray_get(_data, index);
+    return *((T*)(elmt));
+  }
+  throw std::out_of_range("Index out of range");
+}
+
+template<typename T>
+size_t DynArray<T>::size() const {
   return octra_dynarray_size(_data);
 }
 
-template <typename T> void DynArray<T>::push_back(const T &elmt) {
-  octra_dynarray_push(_data, reinterpret_cast<void *>(&elmt));
+template<typename T>
+void DynArray<T>::push_back(const T& elmt) {
+  octra_dynarray_push(_data, (void*)(&elmt));
 }
 
-template <typename T> void DynArray<T>::clear() { octra_dynarray_clear(_data); }
+template<typename T>
+void DynArray<T>::push_back(T&& elmt) {
+  // TODO: need to invalidate pointer...?
+  octra_dynarray_push(_data, (void*)(&elmt));
+}
 
-template <typename T> void DynArray<T>::push_back(T &&elmt) {
-  // void* ptr = reinterpret_cast<void*>(&elmt);
-  octra_dynarray_push(_data, reinterpret_cast<void *>(&elmt));
+template<typename T>
+void DynArray<T>::clear() {
+  octra_dynarray_clear(_data);
 }
 
 } // namespace octra

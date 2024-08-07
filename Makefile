@@ -12,3 +12,6 @@ run:
 install:
 	sudo make cmake -C build install
 
+python:
+	make -C ./bindings/pyoctra
+	pip install ./bindings/pyoctra/

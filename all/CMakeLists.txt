@@ -9,3 +9,6 @@ include(../cmake/ModernCppStarter/cmake/tools.cmake)
 
 option(BUILD_EXAMPLES "Build examples" ON)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../examples ${CMAKE_BINARY_DIR}/examples)
+
+option(BUILD_PYTHON "Build python" ON)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../prebindings/pyoctra ${CMAKE_CURRENT_LIST_DIR}/../build/pyoctra )

@@ -7,3 +7,6 @@
 [submodule "cmake/ModernCppStarter"]
 	path = cmake/ModernCppStarter
 	url = https://github.com/TheLartians/ModernCppStarter.git
+[submodule "bindings/pyoctra"]
+	path = bindings/pyoctra
+	url = git@github.com:jordanschupbach/pyoctra.git
