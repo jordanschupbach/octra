@@ -11,15 +11,35 @@ endif()
 
 project(pyoctra VERSION 0.1)
 
-file(GLOB_RECURSE CPP_SOURCES "${PROJECT_SOURCE_DIR}/../../include/octra/*.hpp")
-file(GLOB_RECURSE C_SOURCES "${PROJECT_SOURCE_DIR}/../../include/octra/*.h")
-
-set(QUOTED_CPP_SOURCES "")
-foreach(filepath ${CPP_SOURCES})
-    string(REPLACE "${PROJECT_SOURCE_DIR}/../include/octra/" "octra/" relative_filepath ${filepath})
-    set(QUOTED_CPP_SOURCES "${QUOTED_CPP_SOURCES}'${relative_filepath}', ")
+file(GLOB_RECURSE CPP_HEADERS "${PROJECT_SOURCE_DIR}/../../include/octra/*.hpp")
+set(QUOTED_CPP_HEADERS "")
+foreach(filepath ${CPP_HEADERS})
+message("${filepath}")
+    string(REPLACE "${PROJECT_SOURCE_DIR}/../../include/octra/" "pyoctra/octra/" relative_filepath ${filepath})
+  set(QUOTED_CPP_HEADERS "${QUOTED_CPP_HEADERS}\"${relative_filepath}\", ")
 endforeach()
-message("CPP_SOURCES: ${QUOTED_CPP_SOURCES}")
+message("CPP_HEADERS: ${QUOTED_CPP_HEADERS}")
+
+
+
+file(GLOB_RECURSE C_HEADERS "${PROJECT_SOURCE_DIR}/../../include/octra/*.h")
+set(QUOTED_C_HEADERS "")
+foreach(filepath ${C_SOURCES})
+message("${filepath}")
+    string(REPLACE "${PROJECT_SOURCE_DIR}/../../include/octra/" "octra/" relative_filepath ${filepath})
+  set(QUOTED_C_HEADERS "${QUOTED_CPP_HEADERS}'${relative_filepath}', ")
+endforeach()
+message("C_HEADERS: ${QUOTED_C_HEADERS}")
+
+
+# file(GLOB_RECURSE CPP_SOURCES "${PROJECT_SOURCE_DIR}/../../include/octra/*.cpp")
+# set(QUOTED_C_HEADERS "")
+# foreach(filepath ${C_SOURCES})
+# message("${filepath}")
+#     string(REPLACE "${PROJECT_SOURCE_DIR}/../../include/octra/" "octra/" relative_filepath ${filepath})
+#   set(QUOTED_C_HEADERS "${QUOTED_CPP_HEADERS}'${relative_filepath}', ")
+# endforeach()
+# message("C_HEADERS: ${QUOTED_C_HEADERS}")
 
 configure_file(${PROJECT_SOURCE_DIR}/setup.py.in
                ${PROJECT_BINARY_DIR}/setup.py.in @ONLY)

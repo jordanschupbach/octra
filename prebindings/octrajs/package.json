@@ -1,0 +1,12 @@
+{
+  "name": "octrajs",
+  "version": "1.0.0",
+  "description": "JS bindings for octra",
+  "author": "Jordan Schupbach",
+  "license": "MIT",
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "type": "module",
+  "exports": "./lib/index.js"
+}
