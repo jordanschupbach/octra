@@ -10,3 +10,6 @@
 [submodule "bindings/pyoctra"]
 	path = bindings/pyoctra
 	url = git@github.com:jordanschupbach/pyoctra.git
+[submodule "bindings/octrajs"]
+	path = bindings/octrajs
+	url = git@github.com:jordanschupbach/octrajs.git
