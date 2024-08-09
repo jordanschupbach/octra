@@ -42,7 +42,7 @@ add_custom_command(
 )
 
 file(COPY ${PROJECT_SOURCE_DIR}/package.json
-     DESTINATION ${PROJECT_BINARY_DIR}/octrajs/package.json)
+     DESTINATION ${PROJECT_BINARY_DIR}/octrajs/)
 
 
 file(COPY ${PROJECT_SOURCE_DIR}/lib
