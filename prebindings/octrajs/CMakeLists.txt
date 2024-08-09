@@ -29,10 +29,10 @@ file(
   OUTPUT ${PROJECT_BINARY_DIR}/octrajs/binding.gyp
   INPUT ${PROJECT_BINARY_DIR}/binding.gyp.in)
 
-file(COPY ${PROJECT_SOURCE_DIR}/../javascript/src
+file(COPY ${PROJECT_SOURCE_DIR}/src
      DESTINATION ${PROJECT_BINARY_DIR}/swig_src)
 
-file(COPY ${PROJECT_SOURCE_DIR}/../include/octra
+file(COPY ${PROJECT_SOURCE_DIR}/../../include/octra
      DESTINATION ${PROJECT_BINARY_DIR}/octrajs)
 
 add_custom_command(
@@ -41,26 +41,26 @@ add_custom_command(
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/octrajs/octra
 )
 
-file(COPY ${PROJECT_SOURCE_DIR}/../javascript/package.json
+file(COPY ${PROJECT_SOURCE_DIR}/package.json
      DESTINATION ${PROJECT_BINARY_DIR}/octrajs/package.json)
 
 
-file(COPY ${PROJECT_SOURCE_DIR}/../javascript/lib
+file(COPY ${PROJECT_SOURCE_DIR}/lib
      DESTINATION ${PROJECT_BINARY_DIR}/octrajs)
 
 # file(COPY ${PROJECT_SOURCE_DIR}/../javascript/tsconfig.json
 #      DESTINATION ${PROJECT_BINARY_DIR}/examplejs/tsconfig.json)
 
 add_custom_command(
-    OUTPUT ${PROJECT_BINARY_DIR}/examplejs/build/Release/example.node
+    OUTPUT ${PROJECT_BINARY_DIR}/octrajs/build/Release/octra.node
     COMMAND node-gyp configure build
     DEPENDS ${PROJECT_BINARY_DIR}/octrajs/octra/octra_wrap.cxx
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/octrajs
 )
 
 add_custom_target(
-    RunCustomCommand ALL
-    DEPENDS ${PROJECT_BINARY_DIR}/octrajs/build/Release/example.node
+    PrintHello ALL
+    DEPENDS ${PROJECT_BINARY_DIR}/octrajs/build/Release/octra.node
     COMMAND echo "Hello, World!"
     COMMENT "Running custom command"
     VERBATIM

@@ -12,3 +12,6 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../examples ${CMAKE_BINARY_DIR}/examp
 
 option(BUILD_PYTHON "Build python" ON)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../prebindings/pyoctra ${CMAKE_CURRENT_LIST_DIR}/../build/pyoctra )
+
+option(BUILD_JAVASCRIPT "Build Javascript" ON)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../prebindings/octrajs ${CMAKE_CURRENT_LIST_DIR}/../build/octrajs )
