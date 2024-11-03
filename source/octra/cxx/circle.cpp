@@ -25,7 +25,7 @@
 
 /* File : example.c */
 
-#include "circle.hpp" // NOLINT
+#include <octra/cxx/circle.hpp>
 /* A global variable */
 double Foo = 3.0;
 
