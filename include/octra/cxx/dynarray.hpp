@@ -25,114 +25,206 @@
 
 #pragma once
 
+#pragma once
+
+// #include <bits/types/struct_FILE.h>
+// #include <cstddef>
+#include <vector>
+
 extern "C" {
-#include "../c/dynarray.h"
+#include <octra/c/dynarray.h>
 }
 
 #include <iostream>
-#include <utility>
+#include <string>
 
 namespace octra {
-template<typename T>
-class DynArray {
- public:
+
+template <typename T> class DynArray {
+public:
+  DynArray();
   explicit DynArray(size_t n);
   virtual ~DynArray();
-  void   push_back(const T& elmt);
-  void   push_back(T&& elmt);
-  void   clear();
+  void reserve(size_t capacity);
+  void push_back(const T &elmt);
+  void push_back(T &&elmt);
+  // dm_dynarray_t *data() const;
+  void clear();
+  size_t capacity() const;
   size_t size() const;
-  T&     operator[](size_t index);
-  T      operator[](size_t index) const;
+  T &operator[](size_t index);
+  T operator[](size_t index) const;
+  std::string to_string() const;
+  void print();
+  // DynArray(const DynArray<T> &other);
+  // DynArray(DynArray<T> &&other);
+  std::vector<T> to_vec() const;
 
-  DynArray(const DynArray<T>& other);
-  DynArray(DynArray<T>&& other);
+  // // Copy assignment operator (was commented out)
+  // DynArray<T> &operator=(const DynArray<T> other) {
+  //   std::swap(*this, other);
+  //   return *this;
+  // }
 
-  // Copy assignment operator
-  DynArray<T>& operator=(DynArray<T> other) {
-    std::swap(*this, other);
-    return *this;
-  }
+  // // Move assignment operator
+  // DynArray<T> &operator=(DynArray<T> &&other) noexcept {
+  //   std::swap(_data, other._data);
+  //   return *this;
+  // }
 
-  // Move assignment operator
-  DynArray<T>& operator=(DynArray<T>&& other) noexcept {
-    std::swap(_data, other._data);
-    return *this;
-  }
+  // explicit DynArray(dm_dynarray *data) : _data(data) {}
 
-  friend std::ostream& operator<<(std::ostream& os, const DynArray<T>& obj) {
-    for (size_t i = 0; i < obj.size(); i++) {
-      os << obj[i] << " ";
-    }
-    os << std::endl;
-    return os;
-  }
+  // friend std::ostream &operator<<(std::ostream &os, const DynArray<T> &obj) {
+  //   os << obj.to_string();
+  //   return os;
+  // }
 
- private:
-  octra_dynarray* _data;
+private:
+  octra_dynarray_t *_data;
 };
 
-template<typename T>
-DynArray<T>::DynArray(const DynArray<T>& other)
-    : _data(octra_dynarray_alloc(other.size(), sizeof(T))) {
-  for (size_t i = 0; i < other.size(); ++i) {
-    T* element = static_cast<T*>(octra_dynarray_get(other._data, i));
-    push_back(*element);
+
+
+// template <typename T> dm_dynarray *DynArray<T>::data() const { return _data; }
+
+template <typename T> std::vector<T> DynArray<T>::to_vec() const {
+  std::vector<T> ret;
+  for (size_t i = 0; i < size(); i++) {
+    ret.push_back((*this)[i]);
+  }
+  return ret;
+}
+
+/**
+ * @brief Get capacity of the dynarray.
+ *
+ * @return capacity of the dynarray (size_t)
+ */
+template <typename T> size_t DynArray<T>::capacity() const {
+  return this->_data->capacity;
+}
+
+
+/**
+ * @brief Default constructor
+ *
+ * This function allocates a dynamic array with a size of 1.
+ *
+ * @return An instantiated dynarray of the given type.
+ */
+template <typename T> DynArray<T>::DynArray() {
+  T defaultval = T();
+  _data = octra_dynarray_alloc(0, 1, sizeof(T), (void*) &defaultval);
+}
+
+/**
+ * @brief Reserves (reallocs) memory for the dynamic array
+ *
+ * This function allocates the dynamic array with the given capacity.
+ */
+template <typename T> void DynArray<T>::reserve(size_t capacity) {
+  octra_dynarray_reserve(_data, capacity);
+}
+
+/**
+ * @brief Print out the dynamic array to the console.
+ *
+ * This function prints the dynamic array to console (stdout).
+ */
+template <typename T> void DynArray<T>::print() {
+  for (size_t i = 0; i < size(); i++) {
+    std::cout << (*this)[i] << " ";
   }
 }
 
-template<typename T>
-DynArray<T>::DynArray(DynArray<T>&& other) : _data(other._data) {
-  other._data = nullptr;
+// /**
+//  * @brief Copy constructor
+//  *
+//  * Deep copies dynarray (rhs) into a new dynarray (lhs).
+//  */
+// template <typename T>
+// DynArray<T>::DynArray(const DynArray<T> &other) {
+//   auto default_val = T();
+//   _data = octra_dynarray_alloc(other.size(), other.capacity(), sizeof(T), &default_val);
+//   for (size_t i = 0; i < other.size(); ++i) {
+//     T *element = static_cast<T *>(octra_dynarray_get(other._data, i));
+//     push_back(*element);
+//   }
+// }
+
+// /**
+//  * @brief Move constructor
+//  *
+//  * Moves dynarray (rhs) into a new dynarray (lhs), invalidating the old.
+//  */
+// template <typename T>
+// DynArray<T>::DynArray(DynArray<T> &&other) : _data(other._data) {
+//   other._data = nullptr;
+// }
+
+/**
+ * @brief Size constructor
+ *
+ * Constructs dynarray with a given capacity.
+ */
+template <typename T> DynArray<T>::DynArray(size_t n) {
+  auto defaultval = T();
+  _data = octra_dynarray_alloc(n, n, sizeof(T), (void*) &defaultval);
+  for (size_t i = 0; i < n; i++) {
+    octra_dynarray_set(this->_data, i, (void*) (T*) &defaultval);
+  }
 }
 
-template<typename T>
-DynArray<T>::DynArray(size_t n) {
-  _data = octra_dynarray_alloc(n, sizeof(T));
-}
+template <typename T> DynArray<T>::~DynArray() { octra_dynarray_free(_data); }
 
-template<typename T>
-DynArray<T>::~DynArray() {
-  octra_dynarray_free(_data);
-}
-
-template<typename T>
-T& DynArray<T>::operator[](size_t index) {
+template <typename T> T DynArray<T>::operator[](size_t index) const {
   if (index < size()) {
     auto elmt = octra_dynarray_get(_data, index);
-    return *((T*)elmt); // NOLINT
+    return *(reinterpret_cast<T *>(elmt));
   }
   throw std::out_of_range("Index out of range");
 }
 
-template<typename T>
-T DynArray<T>::operator[](size_t index) const {
+template <typename T> T &DynArray<T>::operator[](size_t index) {
   if (index < size()) {
     auto elmt = octra_dynarray_get(_data, index);
-    return *((T*)(elmt));
+    return *(reinterpret_cast<T *>(elmt));
   }
   throw std::out_of_range("Index out of range");
 }
 
-template<typename T>
-size_t DynArray<T>::size() const {
+template <typename T> size_t DynArray<T>::size() const {
   return octra_dynarray_size(_data);
 }
 
-template<typename T>
-void DynArray<T>::push_back(const T& elmt) {
-  octra_dynarray_push(_data, (void*)(&elmt));
+template <typename T> void DynArray<T>::push_back(const T &elmt) {
+  octra_dynarray_push(_data, const_cast<void *>(static_cast<const void *>(&elmt)));
 }
 
-template<typename T>
-void DynArray<T>::push_back(T&& elmt) {
-  // TODO: need to invalidate pointer...?
-  octra_dynarray_push(_data, (void*)(&elmt));
+template <typename T> void DynArray<T>::clear() { octra_dynarray_clear(_data); }
+
+template <typename T> void DynArray<T>::push_back(T &&elmt) {
+  octra_dynarray_push(_data, reinterpret_cast<void *>(&elmt));
 }
 
-template<typename T>
-void DynArray<T>::clear() {
-  octra_dynarray_clear(_data);
+template <typename T> std::string DynArray<T>::to_string() const {
+  std::string ret = "[ ";
+  for (size_t i = 0; i < size() - 1; i++) {
+    ret += std::to_string((*this)[i]) + ", ";
+  }
+  ret += std::to_string((*this)[size() - 1]) + " ";
+  ret += "]";
+  return ret;
 }
+
+
+
+
+
+
+
+
+
+
 
 } // namespace octra

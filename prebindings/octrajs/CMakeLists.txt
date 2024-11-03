@@ -32,7 +32,7 @@ file(
 file(COPY ${PROJECT_SOURCE_DIR}/src
      DESTINATION ${PROJECT_BINARY_DIR}/swig_src)
 
-file(COPY ${PROJECT_SOURCE_DIR}/../../include/octra
+file(COPY ${PROJECT_SOURCE_DIR}/../../src/octra
      DESTINATION ${PROJECT_BINARY_DIR}/octrajs)
 
 add_custom_command(

@@ -23,38 +23,30 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
+#pragma once
+
 #include <stdlib.h>
 
-typedef struct {
-  void*  data;
-  size_t size;
-  size_t capacity;
-  size_t elementSize;
-} octra_dynarray;
+struct octra_sl_node {
+  void*                 data;
+  size_t                data_size;
+  struct octra_sl_node* next;
+};
 
-octra_dynarray* octra_dynarray_alloc(size_t initial_capacity, size_t element_size);
+typedef struct octra_sl_node octra_sl_node_t;
 
-void octra_dynarray_reserve(octra_dynarray* arr, size_t newCapacity);
+octra_sl_node_t* octra_sl_node_create(void* data, size_t data_size);
 
-void octra_dynarray_push(octra_dynarray* arr, void* element);
+void octra_sl_node_destroy(octra_sl_node_t* node);
 
-void octra_dynarray_insert(octra_dynarray* self, size_t index, void* element);
+void octra_sl_node_set_next(octra_sl_node_t* node, octra_sl_node_t* next);
 
-void octra_dynarray_remove(octra_dynarray* self, size_t index);
+octra_sl_node_t* octra_sl_node_get_next(octra_sl_node_t* node);
 
-void* octra_dynarray_get(octra_dynarray* arr, size_t index);
+void octra_sl_node_set_data(octra_sl_node_t* node, void* data, size_t data_size);
 
-void octra_dynarray_set(octra_dynarray* self, size_t index, void* element);
+void* octra_sl_node_get_data(octra_sl_node_t* node);
 
-void octra_dynarray_free(octra_dynarray* arr);
+size_t octra_sl_node_get_data_size(octra_sl_node_t* node);
 
-void octra_dynarray_print(octra_dynarray* arr, void (*printFunc)(void*));
-
-const size_t octra_dynarray_size(octra_dynarray* self);
-
-void print_int(void* data);
-void print_double(void* data);
-
-void octra_dynarray_clear(octra_dynarray* self);
-
-void octra_dynarray_sort(octra_dynarray* self, int (*compareFunc)(const void*, const void*));
+void octra_sl_node_set_data_size(octra_sl_node_t* node, size_t data_size);

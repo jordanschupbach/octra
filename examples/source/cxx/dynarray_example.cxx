@@ -24,14 +24,17 @@
 // For more information, please refer to <http://unlicense.org/>
 
 #include <iostream>
-#include <octra/cxx/dynarray.hpp>
+#include <vector>
+// #include <octra/cxx/dynarray.hpp>
 
 int main() {
-  size_t n = 100;
-  auto   x = octra::DynArray<double>(n);
-  for (size_t i = 0; i < n; i++) {
-    x.push_back(static_cast<double>(i));
-  }
-  std::cout << x << std::endl;
+  size_t              n = 100;
+  std::vector<double> x(n);
+  std::cout << "TODO:" << std::endl;
+  // auto   x = octra::DynArray<double>(n);
+  // for (size_t i = 0; i < n; i++) {
+  //   x.push_back(static_cast<double>(i));
+  // }
+  // std::cout << x << std::endl;
   return 0;
 }

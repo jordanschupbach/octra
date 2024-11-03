@@ -11,110 +11,60 @@ endif()
 
 project(pyoctra VERSION 0.1)
 
-file(GLOB_RECURSE CPP_HEADERS "${PROJECT_SOURCE_DIR}/../../include/octra/*.hpp")
-set(QUOTED_CPP_HEADERS "")
-foreach(filepath ${CPP_HEADERS})
-message("${filepath}")
-    string(REPLACE "${PROJECT_SOURCE_DIR}/../../include/octra/" "pyoctra/octra/" relative_filepath ${filepath})
-  set(QUOTED_CPP_HEADERS "${QUOTED_CPP_HEADERS}\"${relative_filepath}\", ")
+# Copy source files into working directory
+file(COPY ${PROJECT_SOURCE_DIR}/../../include/octra DESTINATION ${PROJECT_BINARY_DIR}/)
+file(COPY ${PROJECT_SOURCE_DIR}/../../source/octra DESTINATION ${PROJECT_BINARY_DIR}/)
+
+# Gather source files
+file(GLOB_RECURSE C_HEADERS "${PROJECT_BINARY_DIR}/*.h")
+file(GLOB_RECURSE CXX_HEADERS "${PROJECT_BINARY_DIR}/*.hpp")
+file(GLOB_RECURSE C_SOURCES "${PROJECT_BINARY_DIR}/*.c")
+file(GLOB_RECURSE CXX_SOURCES "${PROJECT_BINARY_DIR}/*.cpp")
+set(OCTRA_SOURCES ${C_HEADERS} ${CXX_HEADERS} ${C_SOURCES} ${CXX_SOURCES})
+
+# Copy source files into working directory and transform includes from system to local
+foreach(filepath ${OCTRA_SOURCES})
+  file(READ ${filepath} input_content)
+  string(REGEX REPLACE "#include<octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
+  string(REGEX REPLACE "#include <octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
+  file(WRITE ${filepath} "${output_content}")
 endforeach()
-message("CPP_HEADERS: ${QUOTED_CPP_HEADERS}")
 
+# Copy SWIG interface file into working directory
+file(COPY ${PROJECT_SOURCE_DIR}/swig_src DESTINATION ${PROJECT_BINARY_DIR}/)
 
+# Build SWIG interface
+message("Building SWIG interface...")
+execute_process(COMMAND swig -c++ -python -o ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp ${PROJECT_BINARY_DIR}/swig_src/pyoctra.i 
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
+message("Done building SWIG interface...")
 
-file(GLOB_RECURSE C_HEADERS "${PROJECT_SOURCE_DIR}/../../include/octra/*.h")
-set(QUOTED_C_HEADERS "")
+file(GLOB_RECURSE C_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.c")
+set(QUOTED_C_SOURCES "")
 foreach(filepath ${C_SOURCES})
-message("${filepath}")
-    string(REPLACE "${PROJECT_SOURCE_DIR}/../../include/octra/" "octra/" relative_filepath ${filepath})
-  set(QUOTED_C_HEADERS "${QUOTED_CPP_HEADERS}'${relative_filepath}', ")
+string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "pyoctra/octra/" relative_filepath ${filepath})
+    set(QUOTED_C_SOURCES "${QUOTED_C_SOURCES}'${relative_filepath}', ")
 endforeach()
-message("C_HEADERS: ${QUOTED_C_HEADERS}")
+
+file(GLOB_RECURSE CXX_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.cpp")
+set(QUOTED_CXX_SOURCES "")
+foreach(filepath ${CXX_SOURCES})
+message("${filepath}")
+    string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "pyoctra/octra/" relative_filepath ${filepath})
+    set(QUOTED_CXX_SOURCES "${QUOTED_CXX_SOURCES}'${relative_filepath}', ")
+endforeach()
 
 
-# file(GLOB_RECURSE CPP_SOURCES "${PROJECT_SOURCE_DIR}/../../include/octra/*.cpp")
-# set(QUOTED_C_HEADERS "")
-# foreach(filepath ${C_SOURCES})
-# message("${filepath}")
-#     string(REPLACE "${PROJECT_SOURCE_DIR}/../../include/octra/" "octra/" relative_filepath ${filepath})
-#   set(QUOTED_C_HEADERS "${QUOTED_CPP_HEADERS}'${relative_filepath}', ")
-# endforeach()
-# message("C_HEADERS: ${QUOTED_C_HEADERS}")
+configure_file(${PROJECT_SOURCE_DIR}/pyproject.toml.in
+               ${PROJECT_BINARY_DIR}/pyproject.toml.in @ONLY)
 
-configure_file(${PROJECT_SOURCE_DIR}/setup.py.in
-               ${PROJECT_BINARY_DIR}/setup.py.in @ONLY)
-
+# Now copy into the Python package
 file(
   GENERATE
-  OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/setup.py
-  INPUT ${PROJECT_BINARY_DIR}/setup.py.in)
+  OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/pyproject.toml
+  INPUT ${PROJECT_BINARY_DIR}/pyproject.toml.in)
 
-file(COPY ${PROJECT_SOURCE_DIR}/swig_src
-     DESTINATION ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/pyoctra)
+file(COPY ${PROJECT_BINARY_DIR}/octra/ DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/pyoctra/pyoctra/octra)
 
-file(COPY ${PROJECT_SOURCE_DIR}/../../include/octra
-     DESTINATION ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/pyoctra)
-
-file(COPY ${PROJECT_SOURCE_DIR}/../../source/octra
-     DESTINATION ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/pyoctra)
-
-# file(COPY ${PROJECT_SOURCE_DIR}/../include/example
-#      DESTINATION ${PROJECT_BINARY_DIR}/examplejs)
-
-# add_custom_command(
-#     OUTPUT ${PROJECT_BINARY_DIR}/examplejs/example/example_wrap.cxx
-#     COMMAND swig -javascript -node -c++ -o ${PROJECT_BINARY_DIR}/examplejs/example/example_wrap.cxx ../../swig_src/src/example.i
-#     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/examplejs/example
-# )
-#
-# file(COPY ${PROJECT_SOURCE_DIR}/../javascript/package.json
-#      DESTINATION ${PROJECT_BINARY_DIR}/examplejs/package.json)
-#
-#
-# file(COPY ${PROJECT_SOURCE_DIR}/../javascript/lib
-#      DESTINATION ${PROJECT_BINARY_DIR}/examplejs)
-#
-# # file(COPY ${PROJECT_SOURCE_DIR}/../javascript/tsconfig.json
-# #      DESTINATION ${PROJECT_BINARY_DIR}/examplejs/tsconfig.json)
-#
-# add_custom_command(
-#     OUTPUT ${PROJECT_BINARY_DIR}/examplejs/build/Release/example.node
-#     COMMAND node-gyp configure build
-#     DEPENDS ${PROJECT_BINARY_DIR}/examplejs/example/example_wrap.cxx
-#     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/examplejs
-# )
-
-add_custom_target(
-    RunCustomCommand ALL
-    # DEPENDS ${PROJECT_BINARY_DIR}/examplejs/build/Release/example.node
-    DEPENDS ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/setup.py
-    # DEPENDS ${PROJECT_BINARY_DIR}/examplejs/build/Release/example.node
-    COMMAND echo "Hello, World!"
-    COMMENT "Running custom command"
-    VERBATIM
-)
-
-
-# # Set the input header and source file paths
-# set(HEADER_FILE input.h)
-# set(SOURCE_FILE input.c)
-#
-# # Set the output combined source file
-# set(OUTPUT_FILE combined_source.c)
-#
-# # Create a custom command to combine header and source file
-# add_custom_command(
-#     OUTPUT ${OUTPUT_FILE}
-#     COMMAND ${CMAKE_COMMAND} -E copy ${HEADER_FILE} ${OUTPUT_FILE}
-#     COMMAND ${CMAKE_COMMAND} -E append ${OUTPUT_FILE} ${SOURCE_FILE}
-#     DEPENDS ${HEADER_FILE} ${SOURCE_FILE}
-# )
-#
-# # Add a custom target to build the output file
-# add_custom_target(combined_source DEPENDS ${OUTPUT_FILE})
-#
-# # Add your executable target using the combined source file
-# add_executable(MyApp ${OUTPUT_FILE})
-#
-# # Add a dependency to ensure the combined_source target is built first
-# add_dependencies(MyApp combined_source)
+file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/pyoctra/pyoctra/octra)
+file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra.py DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/pyoctra/pyoctra)

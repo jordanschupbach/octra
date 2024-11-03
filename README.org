@@ -2,7 +2,7 @@
 
 * octra
 
-One C to rule them all... and in the darkness bind them.
+One C To Rule them All... and in the darkness...
 
 ** Description
 
@@ -35,7 +35,7 @@ TODO
 ** Goals of Octra
 Octra, as a build system, has the following unachieved goals:
  - Provide a simple, easy-to-use build system for C code to be wrapped in as
- many languages as possible.
+     many languages as possible.
  - Provide this in a cross-platform independent way.
 
 ** Installation
@@ -54,7 +54,6 @@ If you want to install octra, you can run one of the following commands:
 ./install.sh
 #+end_src
 
-
 ```shell
 # TODO
 # Windows powershell
@@ -64,7 +63,6 @@ If you want to install octra, you can run one of the following commands:
 ** CLI
 Octra is meant to be installed as a command line tool. The following commands
 may be of use to you.
-
 
 #+BEGIN_SRC bash
 # Get help
@@ -94,7 +92,6 @@ make dev-install
 # # cmake --install
 #+END_SRC
 
-
 *** Windows
 #+BEGIN_SRC sh
 # TODO
@@ -104,4 +101,3 @@ make dev-install
 ** Contributions
 Contributions are welcome. Please see the
 [CONTRIBUTING.org](CONTRIBUTING.org) file.
-

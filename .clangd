@@ -1,6 +1,6 @@
 CompileFlags:
   Add:
-    - "-std=c++20"
+    # - "-std=c++20"
     - "-I/home/jordan/dev/data_munge/extern/gismo-dist/include/gismo/"
     - "-I/home/jordan/dev/datamunge/build/_deps/doctest-src/"
     - "-I/home/jordan/dev/datamunge-3.0/build/_deps/ensmallen-src/"

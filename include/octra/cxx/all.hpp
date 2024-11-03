@@ -23,7 +23,6 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
-#include <octra/cxx/dynarray.hpp>
-#include <stdexcept>
+#pragma once
 
-namespace octra {} // namespace octra
+#include "dynarray.hpp"

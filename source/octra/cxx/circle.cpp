@@ -23,17 +23,30 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
-// #include <stdio.h>
+/* File : example.c */
 
-#include <memory.h>
-#include <octra/c/dynarray.h>
+#include "circle.hpp" // NOLINT
+/* A global variable */
+double Foo = 3.0;
 
-int main() {
-  octra_dynarray *x = octra_dynarray_alloc(100, sizeof(double));
-  for (double i = 0; i < 100; i++) {
-    octra_dynarray_push(x, &i);
+/* Compute the greatest common divisor of positive integers */
+int gcd(int x, int y) {
+  int g;
+  g = y;
+  while (x > 0) {
+    g = x;
+    x = y % x;
+    y = g;
   }
-  octra_dynarray_print(x, print_double);
-  octra_dynarray_free(x);
-  return 0;
+  return g;
+}
+
+Circle::Circle(double radius) : m_radius(radius) {}
+
+double Circle::area() {
+  return 3.14159 * m_radius * m_radius;
+}
+
+double Circle::perimeter() {
+  return 2 * 3.14159 * m_radius;
 }
