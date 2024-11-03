@@ -8,6 +8,8 @@ build:
 	cmake -S all -B build -DCMAKE_INSTALL_PREFIX=/usr/
 	make -C build -j10
 
+test:
+	./build/tests/run_tests
 clean:
 	rm -rf build
 

@@ -6,9 +6,16 @@ project(buildAll LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(../cmake/ModernCppStarter/cmake/tools.cmake)
+include(../cmake/CPM.cmake/cmake/CPM.cmake)
+
+CPMAddPackage(NAME octra SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
+
+option(BUILD_TESTS "Build tests" ON)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../tests ${CMAKE_BINARY_DIR}/tests)
 
 option(BUILD_EXAMPLES "Build examples" ON)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../examples ${CMAKE_BINARY_DIR}/examples)
+
 
 option(BUILD_PYTHON "Build python" ON)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../prebindings/pyoctra ${CMAKE_CURRENT_LIST_DIR}/../build/pyoctra )

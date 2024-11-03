@@ -25,8 +25,6 @@
 
 #pragma once
 
-#pragma once
-
 // #include <bits/types/struct_FILE.h>
 // #include <cstddef>
 #include <vector>
@@ -82,7 +80,6 @@ public:
 private:
   octra_dynarray_t *_data;
 };
-
 
 
 // template <typename T> dm_dynarray *DynArray<T>::data() const { return _data; }
@@ -216,15 +213,6 @@ template <typename T> std::string DynArray<T>::to_string() const {
   ret += "]";
   return ret;
 }
-
-
-
-
-
-
-
-
-
 
 
 } // namespace octra

@@ -11,10 +11,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -g")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g ")
 
-include(../cmake/ModernCppStarter/cmake/tools.cmake)
-include(../cmake/CPM.cmake/cmake/CPM.cmake)
-CPMAddPackage(NAME octra SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
-
 file(GLOB_RECURSE EXAMPLES "./source/*.c")
 foreach(EXAMPLE IN LISTS EXAMPLES)
   get_filename_component(EXAMPLE_NAME ${EXAMPLE} NAME_WE)
