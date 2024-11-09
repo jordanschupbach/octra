@@ -1,8 +1,5 @@
-export const helloWorld = function () {
-  console.log("Hello, world!");
-};
+// console.log("Importing octrajs addon");
+exports.octrajs = require('../build/Release/octrajs');
 
-var example = import("./build/Release/octrajs");
-x = new example.DynArray(10);
-x.set(0, 1.1);
-console.log(x.get(0));
+// var c = new exports.octrajs.Circle(100)
+// console.log(c.area())

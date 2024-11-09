@@ -1,7 +1,12 @@
 %module octrajs
 
 %{
-#include "../../octrajs/octra/cxx/dynarray.hpp"
+#include "../../octrajs/src/octra/cxx/dynarray.hpp"
 %}
-%include "../../octrajs/octra/cxx/dynarray.hpp"
+%include "../../octrajs/src/octra/cxx/dynarray.hpp"
+
+%{
+#include "../../octrajs/src/octra/cxx/circle.hpp"
+%}
+%include "../../octrajs/src/octra/cxx/circle.hpp"
 

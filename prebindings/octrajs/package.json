@@ -1,12 +1,17 @@
 {
   "name": "octrajs",
   "version": "1.0.0",
+  "main" : "index.js",
   "description": "JS bindings for octra",
   "author": "Jordan Schupbach",
   "license": "MIT",
-  "exports": {
-    ".": "./lib/index.js"
+  "dependencies": {
+    "node-addon-api": "^8.0.0"
   },
-  "type": "module",
-  "exports": "./lib/index.js"
+  "devDependencies": {
+    "node-gyp": "^10.0.1"
+  },
+  "scripts": {
+    "build": "node-gyp configure build"
+  }
 }

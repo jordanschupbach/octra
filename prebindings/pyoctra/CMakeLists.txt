@@ -42,7 +42,7 @@ message("Done building SWIG interface...")
 file(GLOB_RECURSE C_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.c")
 set(QUOTED_C_SOURCES "")
 foreach(filepath ${C_SOURCES})
-string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "pyoctra/octra/" relative_filepath ${filepath})
+string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "octrajs/octra/" relative_filepath ${filepath})
     set(QUOTED_C_SOURCES "${QUOTED_C_SOURCES}'${relative_filepath}', ")
 endforeach()
 
@@ -50,9 +50,12 @@ file(GLOB_RECURSE CXX_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.cpp")
 set(QUOTED_CXX_SOURCES "")
 foreach(filepath ${CXX_SOURCES})
 message("${filepath}")
-    string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "pyoctra/octra/" relative_filepath ${filepath})
+    string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "octrajs/octra/" relative_filepath ${filepath})
     set(QUOTED_CXX_SOURCES "${QUOTED_CXX_SOURCES}'${relative_filepath}', ")
 endforeach()
+
+message("QUOTED_C_SOURCES: ${QUOTED_C_SOURCES}")
+message("QUOTED_CXX_SOURCES: ${QUOTED_CXX_SOURCES}")
 
 
 configure_file(${PROJECT_SOURCE_DIR}/pyproject.toml.in
