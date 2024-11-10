@@ -1,7 +1,9 @@
-all: $(SHLIB)
-
-PKG_CPPFLAGS = -I./
+SOURCES = $(wildcard *.cpp) $(wildcard octra/cxx/*.cpp)
+OBJECTS = $(SOURCES:%.cpp=%.o)
 
 $(SHLIB):
-	R CMD SHLIB  ./octra_wrap.cpp @QUOTED_C_SOURCES@ @QUOTED_CXX_SOURCES@
-	R CMD SHLIB -o octrar.so octra_wrap.o @QUOTED_C_OBJECTS@ @QUOTED_CXX_OBJECTS@
+	R CMD SHLIB $(SOURCES)
+	R CMD SHLIB -o octrar.so $(OBJECTS)
+
+PKG_CPPFLAGS +=  -I$(CURDIR)/
+PKG_CFLAGS +=  -I$(CURDIR)/

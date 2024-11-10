@@ -36,7 +36,6 @@ foreach(filepath ${OCTRA_SOURCES})
   file(WRITE ${filepath} "${output_content}")
 endforeach()
 
-
 message("Building SWIG interface..")
 execute_process(COMMAND swig -c++ -r -o ${PROJECT_BINARY_DIR}/src/octra_wrap.cpp ${PROJECT_BINARY_DIR}/src/octrar.i 
   WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
@@ -77,37 +76,11 @@ message("QUOTED_CXX_OBJECTS: ${QUOTED_CXX_OBJECTS}")
 configure_file(${PROJECT_SOURCE_DIR}/Makevars.in
   ${PROJECT_BINARY_DIR}/src/Makevars @ONLY)
 
-# Now copy into the Python package
+# Now copy into the R package
 file(
   GENERATE
   OUTPUT ${PROJECT_BINARY_DIR}/src/Makevars
   INPUT ${PROJECT_SOURCE_DIR}/Makevars.in)
-
-
-configure_file(${PROJECT_SOURCE_DIR}/Makevars.in
-  ${PROJECT_BINARY_DIR}/Makevars.in @ONLY)
-
-# Now copy into the Python package
-file(
-  GENERATE
-  OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/Makevars
-  INPUT ${PROJECT_BINARY_DIR}/Makevars.in)
-
-
-
-# add_custom_command(
-#     OUTPUT ${PROJECT_BINARY_DIR}/src/octrar_wrap.cpp
-#     COMMAND swig -r -c++ -o ${PROJECT_BINARY_DIR}/src/octrar_wrap.cpp ${PROJECT_BINARY_DIR}/src/octrar.i
-#     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-# )
-# add_custom_target(
-#   BuildSwig ALL
-#   DEPENDS ${PROJECT_BINARY_DIR}/src/octrar_wrap.cpp
-#   COMMAND echo "Building OctraR swig bindings.."
-#   COMMENT "Building OctraR swig bindings.."
-#   VERBATIM
-# )
-
 
 # Copy over octra
 file(COPY ${PROJECT_BINARY_DIR}/src/octra DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/octraR/src/)
@@ -117,115 +90,4 @@ file(COPY ${PROJECT_BINARY_DIR}/src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_
 
 # Copy over R bindings
 file(COPY ${PROJECT_BINARY_DIR}/src/octrar.R DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/octraR/R/)
-
-
-
-
-
-
-
-
-
-
-# add_custom_command(
-#     OUTPUT ${PROJECT_BINARY_DIR}/src/octrar.so
-#     COMMAND swig -r -c++ -o ${PROJECT_BINARY_DIR}/src/octrar_wrap.cxx ${PROJECT_SOURCE_DIR}/swig/octrar.i
-#     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-# )
-
-# 	R CMD SHLIB ./src/templater3_wrap.cpp ./src/circle.cpp
-# 	R CMD SHLIB -o ./src/templater3.so ./src/templater3_wrap.cpp ./src/circle.cpp
-# 	R CMD build .
-
-# add_custom_command(
-#     OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/octrar_wrap.cpp
-#     COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/src/octrar_wrap.cpp ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/
-#     DEPENDS ${PROJECT_BINARY_DIR}/src/octrar_wrap.cpp
-# )
-# 
-# 
-# add_custom_command(
-#     OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/octrar.R
-#     COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/src/octrar.R ${PROJECT_SOURCE_DIR}/../../bindings/octraR/R/
-#     DEPENDS ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/octrar_wrap.cpp
-# )
-# 
-# add_custom_target(copy_octraR_files
-#     DEPENDS ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/octrar_wrap.cpp ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/octrar.R
-# )
-# 
-# add_custom_target(
-#     CopyWrap ALL
-#     DEPENDS ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/octrar.R
-#     COMMAND echo "Building OctraR finished!"
-#     COMMENT "Running custom command"
-#     VERBATIM
-# )
-
-
-
-
-# file(COPY ${PROJECT_SOURCE_DIR}/swig
-#      DESTINATION ${PROJECT_BINARY_DIR}/octraR/swig)
-
-# copy over octrar_wrap.cxx
-# copy over octrar.r
-
-# SAVE: just to inject into R build system at somepoint?
-
-# file(GLOB_RECURSE CPP_HEADERS "${PROJECT_SOURCE_DIR}/../../include/octra/*.hpp")
-# set(QUOTED_CPP_HEADERS "")
-# foreach(filepath ${CPP_HEADERS})
-# message("${filepath}")
-#     string(REPLACE "${PROJECT_SOURCE_DIR}/../../include/octra/" "pyoctra/octra/" relative_filepath ${filepath})
-#   set(QUOTED_CPP_HEADERS "${QUOTED_CPP_HEADERS}\"${relative_filepath}\", ")
-# endforeach()
-# message("CPP_HEADERS: ${QUOTED_CPP_HEADERS}")
-#
-# file(GLOB_RECURSE C_HEADERS "${PROJECT_SOURCE_DIR}/../../include/octra/*.h")
-# set(QUOTED_C_HEADERS "")
-# foreach(filepath ${C_SOURCES})
-# message("${filepath}")
-#     string(REPLACE "${PROJECT_SOURCE_DIR}/../../include/octra/" "octra/" relative_filepath ${filepath})
-#   set(QUOTED_C_HEADERS "${QUOTED_CPP_HEADERS}'${relative_filepath}', ")
-# endforeach()
-# message("C_HEADERS: ${QUOTED_C_HEADERS}")
-
-
-# file(
-#   GENERATE
-#   OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/setup.py
-#   INPUT ${PROJECT_BINARY_DIR}/setup.py.in)
-
-# file(COPY ${PROJECT_SOURCE_DIR}/swig_src
-#      DESTINATION ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/pyoctra)
-
-
-# add_custom_target(
-#     RunCustomCommand ALL
-#     DEPENDS ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/setup.py
-#     COMMAND echo "Hello, World!"
-#     COMMENT "Running custom command"
-#     VERBATIM
-# )
-#
-
-
-
-# add_custom_target(
-#     FinishOctraR ALL
-#     DEPENDS ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/octrar_wrap.cpp
-#     COMMAND echo "Building OctraR finished!"
-#     COMMENT "Running custom command"
-#     VERBATIM
-# )
-
-
-
-
-
-
-# message("Copying swig src")
-# file(COPY ${PROJECT_BINARY_DIR}/src/octrar_wrap.cpp
-#      DESTINATION ${PROJECT_SOURCE_DIR}/../../bindings/octraR/src/)
 

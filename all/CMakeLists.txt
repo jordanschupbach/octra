@@ -6,7 +6,7 @@ option(BUILD_TESTS "Build tests" ON)
 option(BUILD_EXAMPLES "Build examples" ON)
 option(BUILD_PYTHON "Build python" ON)
 option(BUILD_JAVASCRIPT "Build Javascript" ON)
-option(BUILD_R "Build R" OFF)
+option(BUILD_R "Build R" ON)
 option(BUILD_RUST "Build Rust" OFF)
 
 # TODO: make this only be done for dev builds
