@@ -13,3 +13,6 @@
 [submodule "bindings/octrajs"]
 	path = bindings/octrajs
 	url = git@github.com:jordanschupbach/octrajs.git
+[submodule "bindings/octrar"]
+	path = bindings/octrar
+	url = git@github.com:jordanschupbach/octrar.git
