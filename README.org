@@ -5,7 +5,7 @@
 One C To Rule them All... and in the darkness...
 
 #+BEGIN_HTML
-<img src="https://github.com/jordanschupbach/datamunge/blob/main/assets/octra.png" alt="drawing" width="400">
+<img src="https://github.com/jordanschupbach/octra/blob/main/assets/octra.png" alt="drawing" width="400">
 #+END_HTML
 
 
