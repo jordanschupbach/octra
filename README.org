@@ -2,6 +2,8 @@
 
 * octra
 
+![Alt text](assets/octra.png)
+
 One C To Rule them All... and in the darkness...
 
 ** Description
