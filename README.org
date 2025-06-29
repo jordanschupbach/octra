@@ -2,9 +2,13 @@
 
 * octra
 
-![Alt text](assets/octra.png)
-
 One C To Rule them All... and in the darkness...
+
+#+BEGIN_HTML
+<img src="https://github.com/jordanschupbach/datamunge/blob/main/assets/octra.png" alt="drawing" width="400">
+#+END_HTML
+
+
 
 ** Description
 
