@@ -1,4 +1,4 @@
-%module(docstring="These are the python bindings to the octra library") octra
+%module octra
 
 %include "std_shared_ptr.i"
 %include "stdint.i"

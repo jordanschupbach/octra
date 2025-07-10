@@ -25,6 +25,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdlib.h>
 
 struct octra_sl_node {
@@ -50,3 +54,8 @@ void* octra_sl_node_get_data(octra_sl_node_t* node);
 size_t octra_sl_node_get_data_size(octra_sl_node_t* node);
 
 void octra_sl_node_set_data_size(octra_sl_node_t* node, size_t data_size);
+
+
+#ifdef __cplusplus
+};
+#endif

@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyoctra"
-version = "0.0.1" # TODO: get from cmake
+version = "0.0.1"
 
 [options]
 package_dir = "pyoctra/octra"

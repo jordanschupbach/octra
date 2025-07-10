@@ -20,7 +20,7 @@ octra_flat_hmap_t *octra_flat_hmap_alloc(void (*print_function)(void *),
                                          unsigned int (*hash_function)(void *),
                                          int (*comparison_function)(void *, void *),
                                          size_t initial_capacity) {
-    octra_flat_hmap_t *hmap = malloc(sizeof(octra_flat_hmap_t));
+    octra_flat_hmap_t *hmap = (octra_flat_hmap_t*) malloc(sizeof(octra_flat_hmap_t));
     hmap->entry_pairs = octra_dynarray_alloc(0, initial_capacity, sizeof(octra_hmap_entry), NULL);
     hmap->print_function = print_function;
     hmap->hash_function = hash_function;
@@ -37,7 +37,7 @@ octra_flat_hmap_t *octra_flat_hmap_alloc(void (*print_function)(void *),
 
 void *octra_flat_hmap_find(octra_flat_hmap_t *self, void *key) {
     for (size_t i = 0; i < octra_dynarray_size(self->entry_pairs); i++) {
-        octra_hmap_entry *entry = octra_dynarray_get(self->entry_pairs, i);
+        octra_hmap_entry *entry = (octra_hmap_entry*) octra_dynarray_get(self->entry_pairs, i);
         if (entry->key && self->comparison_function(entry->key, key) == 0) {
             return entry->value;
         }
@@ -47,7 +47,7 @@ void *octra_flat_hmap_find(octra_flat_hmap_t *self, void *key) {
 
 void *octra_flat_hmap_insert(octra_flat_hmap_t *self, void *key, void *value) {
     for (size_t i = 0; i < octra_dynarray_size(self->entry_pairs); i++) {
-        octra_hmap_entry *entry = octra_dynarray_get(self->entry_pairs, i);
+        octra_hmap_entry *entry = (octra_hmap_entry*) octra_dynarray_get(self->entry_pairs, i);
         if (entry->key == NULL || (self->comparison_function(entry->key, key) == 0)) {
             entry->key = key;
             entry->value = value;
@@ -62,7 +62,7 @@ void *octra_flat_hmap_insert(octra_flat_hmap_t *self, void *key, void *value) {
 
 void *octra_flat_hmap_remove(octra_flat_hmap_t *self, void *key){
     for (size_t i = 0; i < octra_dynarray_size(self->entry_pairs); i++) {
-        octra_hmap_entry *entry = octra_dynarray_get(self->entry_pairs, i);
+        octra_hmap_entry *entry = (octra_hmap_entry*) octra_dynarray_get(self->entry_pairs, i);
         if (self->comparison_function(entry->key, key) == 0) {
             octra_dynarray_remove(self->entry_pairs, i);
             self->size = self->size + 1;

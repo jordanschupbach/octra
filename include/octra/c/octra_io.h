@@ -25,6 +25,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdlib.h>
 
 void octra_print_int(void* val);
@@ -34,3 +38,7 @@ void octra_print_double(void* val);
 void octra_print_string(void* val, size_t size);
 
 // void octra_print_string(char* val);
+
+#ifdef __cplusplus
+};
+#endif

@@ -14,13 +14,21 @@ endif()
 
 
 include(cmake/CPM.cmake/cmake/CPM.cmake)
+
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
-# CPMAddPackage("gh:msgpack/msgpack-c#cpp-7.0.0")
 
 
-# https://github.com/msgpack/msgpack-c.git
+# TODO: find somewhere proper for these two lines
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
-# Add any remaining dependencies here
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+  set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES
+      ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+endif()
+
 
 
 # Gather source files
@@ -28,20 +36,16 @@ file(GLOB_RECURSE c_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/inclu
 file(GLOB_RECURSE c_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.c")
 file(GLOB_RECURSE cxx_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
 file(GLOB_RECURSE cxx_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cxx")
-# TODO: adjust makefile to allow for printing debug messages
-message(DEBUG "c_headers: ${c_headers}")
-message(DEBUG "c_sources: ${c_sources}")
-message(DEBUG "cxx_headers: ${cxx_headers}")
-message(DEBUG "cxx_sources: ${cxx_sources}")
 
+# message(DEBUG "c_headers: ${c_headers}")
+# message(DEBUG "c_sources: ${c_sources}")
+# message(DEBUG "cxx_headers: ${cxx_headers}")
+# message(DEBUG "cxx_sources: ${cxx_sources}")
 
-# TODO: find somewhere proper for these two lines
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 # Add C shared library (TODO: add static library)
 add_library(${PROJECT_NAME} SHARED ${c_headers} ${c_sources} ${cxx_headers} ${cxx_sources})
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 23)
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

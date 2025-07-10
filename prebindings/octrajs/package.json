@@ -12,6 +12,9 @@
     "node-gyp": "^10.0.1"
   },
   "scripts": {
-    "build": "node-gyp configure build"
+    "generate": "node setup.js",
+    "build": "npm run generate && node-gyp configure build",
+    "test": "jest",
+    "start": "node src/index"
   }
 }

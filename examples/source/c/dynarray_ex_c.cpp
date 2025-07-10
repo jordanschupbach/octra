@@ -29,7 +29,9 @@
 #include <octra/c/dynarray.h>
 
 int main() {
-  octra_dynarray_t* x = octra_dynarray_alloc(0, 100, sizeof(double), &(double){0.0});
+
+  double default_value = 0.0;
+  octra_dynarray_t* x = octra_dynarray_alloc(0, 100, sizeof(double), &default_value);
 
   for (double i = 0; i < 100; i++) {
     octra_dynarray_push(x, &i);
