@@ -73,6 +73,14 @@ javascript:
   # nix develop ./bindings/octrajs/ --command bash -c "node"
 
 
+build-r: examples
+  nix develop . --command bash -c "cmake -S prebindings/octrar -B build/octrar"
+  nix develop . --command bash -c "cmake --build build/octrar"
+
+r: build-r
+	just -f ./bindings/octrar/justfile install
+
+
 
 
 

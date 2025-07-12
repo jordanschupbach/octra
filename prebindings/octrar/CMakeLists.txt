@@ -1,7 +1,3 @@
-if(NOT BUILD_R)
-  return()
-endif()
-
 message("Building R library...")
 
 cmake_minimum_required(VERSION 3.18)
@@ -9,7 +5,7 @@ if(POLICY CMP0122)
   cmake_policy(SET CMP0122 NEW)
 endif()
 
-project(octrar VERSION 0.1)
+project(rglandmaker VERSION 0.1)
 
 message("Copy over source files")
 file(COPY ${PROJECT_SOURCE_DIR}/../../source/octra
@@ -26,10 +22,10 @@ file(GLOB_RECURSE C_HEADERS "${PROJECT_BINARY_DIR}/*.h")
 file(GLOB_RECURSE CXX_HEADERS "${PROJECT_BINARY_DIR}/*.hpp")
 file(GLOB_RECURSE C_SOURCES "${PROJECT_BINARY_DIR}/*.c")
 file(GLOB_RECURSE CXX_SOURCES "${PROJECT_BINARY_DIR}/*.cpp")
-set(OCTRA_SOURCES ${C_HEADERS} ${CXX_HEADERS} ${C_SOURCES} ${CXX_SOURCES})
+set(GLANDMAKER_SOURCES ${C_HEADERS} ${CXX_HEADERS} ${C_SOURCES} ${CXX_SOURCES})
 
 # Copy source files into working directory and transform includes from system to local includes
-foreach(filepath ${OCTRA_SOURCES})
+foreach(filepath ${GLANDMAKER_SOURCES})
   file(READ ${filepath} input_content)
   string(REGEX REPLACE "#include<octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
   string(REGEX REPLACE "#include <octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
@@ -82,12 +78,12 @@ file(
   OUTPUT ${PROJECT_BINARY_DIR}/src/Makevars
   INPUT ${PROJECT_SOURCE_DIR}/Makevars.in)
 
-# Copy over octra
-file(COPY ${PROJECT_BINARY_DIR}/src/octra DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/octraR/src/)
+# Copy over glandmaker
+file(COPY ${PROJECT_BINARY_DIR}/src/octra DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/octrar/src/)
 
-# Copy over octra wrappers
-file(COPY ${PROJECT_BINARY_DIR}/src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/octraR/src/)
+# Copy over glandmaker wrappers
+file(COPY ${PROJECT_BINARY_DIR}/src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/octrar/src/)
 
 # Copy over R bindings
-file(COPY ${PROJECT_BINARY_DIR}/src/octrar.R DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/octraR/R/)
+file(COPY ${PROJECT_BINARY_DIR}/src/octrar.R DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/octrar/R/)
 
