@@ -8,20 +8,25 @@ all: build
 
 build:
   @echo "Building examples..."
-  @cmake -S examples -B build/debug/examples
-  @cmake --build build/debug/examples -j$(jobs) --verbose
+  @nix develop . --command bash -c "cmake -S examples -B build/debug/examples"
+  @nix develop . --command bash -c "cmake --build build/debug/examples -j{{jobs}} --verbose"
 
 examples:
   @echo "Building examples..."
-  @cmake -S examples -B build/debug/examples
-  @cmake --build build/debug/examples -j$(jobs) --verbose
+  @nix develop . --command bash -c "cmake -S examples -B build/debug/examples"
+  @nix develop . --command bash -c "cmake --build build/debug/examples -j{{jobs}} --verbose"
 
-run:
+run: examples
   @echo "Running example..."
   @./build/debug/examples/dynarray_example_cpp
 
-test:
-	./build/tests/run_tests
+
+build-test:
+  @nix develop . --command bash -c "cmake -S tests -B build/debug/tests"
+  @nix develop . --command bash -c "cmake --build build/debug/tests -j{{jobs}} --verbose"
+
+test: build-test
+	@./build/debug/tests/run_tests
 
 clean:
 	rm -rf build
@@ -51,26 +56,15 @@ repl:
 	cling ${CLING_INCLUDE_FLAGS} ${CLING_COMPILE_FLAGS} ${CLING_LINK_FLAGS}
 
 
-# python:
-#   nix develop . --command bash -c "cmake -S prebindings/octrapy -B build/octrapy"
-#   nix develop ./bindings/octrapy/ --command bash -c "sudo pip install --user ./bindings/octrapy/"
-#   nix develop ./bindings/octrapy/ --command bash -c "python ./bindings/octrapy/examples/hello_world_ex.py"
-# 
-# python-example:
-#   python ./bindings/octrapy/examples/hello_world_ex.py
-
-# jsdev:
-#   nix develop . --command bash -c "cmake -S prebindings/octrajs -B build/octrajs"
-#   nix develop ./bindings/octrajs/ --command bash -c "npm --prefix ./bindings/octrajs/ install"
-#   nix develop ./bindings/octrajs/ --command bash -c "npm --prefix ./bindings/octrajs/ run build"
-#   nix develop ./bindings/octrajs/
-
-javascript:
+js:
   nix develop . --command bash -c "cmake -S prebindings/octrajs -B build/octrajs"
   nix develop . --command bash -c "cmake --build build/octrajs"
   nix develop ./bindings/octrajs/ --command bash -c "npm --prefix ./bindings/octrajs/ install"
   nix develop ./bindings/octrajs/ --command bash -c "npm --prefix ./bindings/octrajs/ run build"
   # nix develop ./bindings/octrajs/ --command bash -c "node"
+
+js-repl:
+  nix develop ./bindings/octrajs/ --command bash -c "node"
 
 
 build-r: examples

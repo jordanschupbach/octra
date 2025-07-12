@@ -1,7 +1,3 @@
-if(NOT BUILD_TESTS)
-  return()
-endif()
-
 cmake_minimum_required(VERSION 3.14...3.22)
 
 project(OctraTests LANGUAGES C CXX)
@@ -22,6 +18,8 @@ include(../cmake/CPM.cmake/cmake/CPM.cmake)
 # CPMAddPackage("gh:doctest/doctest@2.4.9")
 CPMAddPackage("gh:TheLartians/Format.cmake@1.7.3")
 
+
+CPMAddPackage(NAME octra SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
 include(FetchContent)
 FetchContent_Declare(

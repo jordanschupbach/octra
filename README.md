@@ -8,10 +8,10 @@ One C to rule them all, one C to find them, one C to bring them all and in the d
 
 ## :bluecar: Test drive (nixos)
 
-To activate the environment
+To build the project
 
 ```bash
-nix develop
+just build
 ```
 
 to run tests:
@@ -20,10 +20,42 @@ to run tests:
 just test
 ```
 
+to build examples:
 
+```bash
+just examples
+```
 
+to run TARGET example:
+
+```bash
+just run TARGET=example_name
+```
 
 ## Bindings
 
+
 ### Test Drive
+
+
+#### Python
+
+```bash
+just py
+just py-repl
+```
+
+#### R
+
+```bash
+just r
+just r-repl
+```
+
+#### Javascript
+
+```bash
+just js
+just js-repl
+```
 
