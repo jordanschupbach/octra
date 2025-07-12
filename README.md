@@ -1,4 +1,6 @@
-<h1 style="text-align: center;">Octra</h1>
+<p align="center">
+    <h1>Octra</h1>
+</p>
 
 <p align="center">
   <img src="./assets/octra.png" alt="Logo" style="width: 30%;">
