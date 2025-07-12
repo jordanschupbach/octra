@@ -3,7 +3,7 @@
 
 One C to rule them all, one C to find them, one C to bring them all and in the darkness...
 
-(!./assets/octra.png)[assets/octra.png]
+(!https://github.com/jordanschupbach/octra/blob/main/assets/octra.png)[assets/octra.png]
 
 
 ## :bluecar: Test drive (nixos)
