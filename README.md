@@ -90,20 +90,22 @@ just js-repl
 Binding support is provided for the following languages. The checkboxes
 indicate whether the binding is implemented or not.
 
-| Implemented | Languages    |
-|-------------|--------------|
-| ✖           | C#           |
-| ✖           |  D           |
-| ✖           |  Go          |
-| ✖           |  Guile       |
-| ✖           |  Java        |
-| ✅          |  Javascript  |
-| ✖           |  Lua         |
-| ✖           |  OCaml       |
-| ✖           |  Octave      |
-| ✖           |  PHP         |
-| ✖           |  Perl        |
-| ✅          |  Python      |
-| ✅          |  R           |
-| ✖           |  Ruby        |
-| ✖           |  Tcl/TK      |
+| Language     | Implemented |
+|--------------|-------------|
+| C#           | ✖           |
+|  D           | ✖           |
+|  Go          | ✖           |
+|  Guile       | ✖           |
+|  Java        | ✖           |
+|  Javascript  | ✅          |
+|  Lua         | ✖           |
+|  OCaml       | ✖           |
+|  Octave      | ✖           |
+|  PHP         | ✖           |
+|  Perl        | ✖           |
+|  Python      | ✅          |
+|  R           | ✅          |
+|  Ruby        | ✖           |
+|  Tcl/TK      | ✖           |
+
+
