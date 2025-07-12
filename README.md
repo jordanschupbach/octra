@@ -1,4 +1,4 @@
-# Octra
+<h1 style="text-align: center;">Octra</h1>
 
 <p align="center">
   <img src="./assets/octra.png" alt="Logo" style="width: 30%;">
@@ -20,7 +20,14 @@ It uses CMake as the build system, and Just as a task runner. The project
 maintains a nix flake for easy development and testing.
 
 
-##  Test drive 🚗 (nixos)
+## 🚗 Test drive (nixos)
+
+The easiest way to test drive the project is to use the provided Nix flake. You can
+use the following command to enter a development shell with all dependencies:
+
+```bash
+nix develop
+```
 
 To build the project
 
