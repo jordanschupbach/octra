@@ -1,8 +1,8 @@
 # Octra
 
-<div style="text-align: center;">
+<p align="center">
   <img src="./assets/octra.png" alt="Logo" style="width: 30%;">
-</div>
+</p>
 
 <blockquote style="text-align: center;">
   One C to rule them all, one C to find them, one C to bring them all and in the darkness...
@@ -11,15 +11,16 @@
 ---
 
 
-Octra is a C library that is bound variety of languages, including Python, R,
-and JavaScript. It is meant to be used as a template for similar projects that
-need to provide bindings to multiple languages. As such, it is permissively
-licensed under the Unlicense.
+Octra is a C project that has bindings for a variety of languages, including
+Python, R, and JavaScript. It is merely meant to be used as a kickstart
+template for similar projects that need to provide bindings to multiple
+languages. As such, it is permissively licensed under the Unlicense.
+
+It uses CMake as the build system, and Just as a task runner. The project
+maintains a nix flake for easy development and testing.
 
 
-
-
-## :bluecar: Test drive (nixos)
+##  Test drive 🚗 (nixos)
 
 To build the project
 
