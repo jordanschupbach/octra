@@ -89,21 +89,21 @@ just js-repl
 
 Binding support is (to be) provided for the following languages:
 
-| Language     |  Name       |Implemented |
-|--------------|-------------|------------|
-| C#           | OctraDotNet |✖           |
-|  D           | DOctra      |✖           |
-|  Go          | Gooctra     |✖           |
-|  Guile       | Goctra      |✖           |
-|  Java        | Joctra      |✖           |
-|  Javascript  | OctraJS     |✅          |
-|  Lua         | Loctra      |✖           |
-|  OCaml       | OctraML     |✖           |
-|  Octave      | MOctra      |✖           |
-|  PHP         | OctraPHP    |✖           |
-|  Perl        | Poctra      |✖           |
-|  Python      | PyOctra     |✅          |
-|  R           | OctraR      |✅          |
-|  Ruby        | RbOctra     |✖           |
-|  Tcl/TK      | OctraTK     |✖           |
+| Language     |  Name                                                     |Implemented |
+|--------------|-----------------------------------------------------------|------------|
+| C#           | OctraDotNet                                               |   ✖        |
+|  D           | DOctra                                                    |   ✖        |
+|  Go          | Gooctra                                                   |   ✖        |
+|  Guile       | Goctra                                                    |   ✖        |
+|  Java        | Joctra                                                    |   ✖        |
+|  Javascript  | [OctraJS](https://www.github.com/jordanschupbach/octrajs) |   ✅       |
+|  Lua         | Loctra                                                    |   ✖        |
+|  OCaml       | OctraML                                                   |   ✖        |
+|  Octave      | MOctra                                                    |   ✖        |
+|  PHP         | OctraPHP                                                  |   ✖        |
+|  Perl        | Poctra                                                    |   ✖        |
+|  Python      | [PyOctra](https://www.github.com/jordanschupbach/pyoctra) |   ✅       |
+|  R           | [OctraR](https://www.github.com/jordanschupbach/octrar) |   ✅       |
+|  Ruby        | RbOctra                                                   |   ✖        |
+|  Tcl/TK      | OctraTK                                                   |   ✖        |
 
