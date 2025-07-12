@@ -87,25 +87,23 @@ just js-repl
 
 ## Bindings
 
-Binding support is provided for the following languages. The checkboxes
-indicate whether the binding is implemented or not.
+Binding support is (to be) provided for the following languages:
 
-| Language     | Implemented |
-|--------------|-------------|
-| C#           | ✖           |
-|  D           | ✖           |
-|  Go          | ✖           |
-|  Guile       | ✖           |
-|  Java        | ✖           |
-|  Javascript  | ✅          |
-|  Lua         | ✖           |
-|  OCaml       | ✖           |
-|  Octave      | ✖           |
-|  PHP         | ✖           |
-|  Perl        | ✖           |
-|  Python      | ✅          |
-|  R           | ✅          |
-|  Ruby        | ✖           |
-|  Tcl/TK      | ✖           |
-
+| Language     |  Name       |Implemented |
+|--------------|-------------|------------|
+| C#           | OctraDotNet |✖           |
+|  D           | DOctra      |✖           |
+|  Go          | Gooctra     |✖           |
+|  Guile       | Goctra      |✖           |
+|  Java        | Joctra      |✖           |
+|  Javascript  | OctraJS     |✅          |
+|  Lua         | Loctra      |✖           |
+|  OCaml       | OctraML     |✖           |
+|  Octave      | MOctra      |✖           |
+|  PHP         | OctraPHP    |✖           |
+|  Perl        | Poctra      |✖           |
+|  Python      | PyOctra     |✅          |
+|  R           | OctraR      |✅          |
+|  Ruby        | RbOctra     |✖           |
+|  Tcl/TK      | OctraTK     |✖           |
 
