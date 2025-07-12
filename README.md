@@ -24,7 +24,9 @@ It uses CMake as the build system, and Just as a task runner. The project
 maintains a nix flake for easy development and testing.
 
 
-## 🚗 Test drive (nixos)
+## 🚗 Test drive 
+
+### ❄️ nixos
 
 The easiest way to test drive the project is to use the provided Nix flake. You can
 use the following command to enter a development shell with all dependencies:
@@ -106,4 +108,8 @@ Binding support is (to be) provided for the following languages:
 |  R           | [OctraR](https://www.github.com/jordanschupbach/octrar) |   ✅       |
 |  Ruby        | RbOctra                                                   |   ✖        |
 |  Tcl/TK      | OctraTK                                                   |   ✖        |
+
+
+They are linked to this repo through git submodules, so you can update source
+code to submodules by running build for the respective language.
 
