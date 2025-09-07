@@ -46,7 +46,7 @@ message("Done building SWIG interface...")
 file(GLOB_RECURSE C_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.c")
 set(QUOTED_C_SOURCES "")
 foreach(filepath ${C_SOURCES})
-string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "pyoctra/octra/" relative_filepath ${filepath})
+string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "src/pyoctra/octra/" relative_filepath ${filepath})
     set(QUOTED_C_SOURCES "${QUOTED_C_SOURCES}'${relative_filepath}', ")
 endforeach()
 
@@ -54,7 +54,7 @@ file(GLOB_RECURSE CXX_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.cpp")
 set(QUOTED_CXX_SOURCES "")
 foreach(filepath ${CXX_SOURCES})
 message("${filepath}")
-    string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "pyoctra/octra/" relative_filepath ${filepath})
+    string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "src/pyoctra/octra/" relative_filepath ${filepath})
     set(QUOTED_CXX_SOURCES "${QUOTED_CXX_SOURCES}'${relative_filepath}', ")
 endforeach()
 
@@ -73,8 +73,8 @@ file(
   OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/pyproject.toml
   INPUT ${PROJECT_BINARY_DIR}/pyproject.toml.in)
 
-file(COPY ${PROJECT_BINARY_DIR}/octra/ DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/pyoctra/pyoctra/octra)
-file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/pyoctra/pyoctra/octra)
-file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra.py DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/pyoctra/pyoctra)
+file(COPY ${PROJECT_BINARY_DIR}/octra/ DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/pyoctra/src/pyoctra/octra)
+file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/pyoctra/src/pyoctra/octra)
+file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra.py DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/pyoctra/src/pyoctra)
 
 

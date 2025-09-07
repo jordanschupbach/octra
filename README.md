@@ -14,7 +14,6 @@
 
 ---
 
-
 Octra is a C project that has bindings for a variety of languages, including
 Python, R, and JavaScript. It is merely meant to be used as a kickstart
 template for similar projects that need to provide bindings to multiple
@@ -23,10 +22,13 @@ languages. As such, it is permissively licensed under the Unlicense.
 It uses CMake as the build system, and Just as a task runner. The project
 maintains a nix flake for easy development and testing.
 
+To demonstrate nontrivial examples, it provides simple implementations of
+common datastructures (e.g. dynamic array) written in C and bound to all
+targeted binding languages.
 
-## 🚗 Test drive 
+## 🚗 Test drive
 
-### ❄️ nixos
+### ❄️ NixOS
 
 The easiest way to test drive the project is to use the provided Nix flake. You can
 use the following command to enter a development shell with all dependencies:
@@ -61,22 +63,20 @@ just run TARGET=example_name
 
 ## Bindings
 
-
 ### Test Drive
-
 
 #### Python
 
 ```bash
-just py
-just py-repl
+just python
 ```
 
 #### R
 
 ```bash
+just build-r
+just install-r
 just r
-just r-repl
 ```
 
 #### Javascript
@@ -86,30 +86,27 @@ just js
 just js-repl
 ```
 
-
 ## Bindings
 
 Binding support is (to be) provided for the following languages:
 
-| Language     |  Name                                                     |Implemented |
-|--------------|-----------------------------------------------------------|------------|
-| C#           | OctraDotNet                                               |   ✖        |
-|  D           | DOctra                                                    |   ✖        |
-|  Go          | Gooctra                                                   |   ✖        |
-|  Guile       | Goctra                                                    |   ✖        |
-|  Java        | Joctra                                                    |   ✖        |
-|  Javascript  | [OctraJS](https://www.github.com/jordanschupbach/octrajs) |   ✅       |
-|  Lua         | Loctra                                                    |   ✖        |
-|  OCaml       | OctraML                                                   |   ✖        |
-|  Octave      | MOctra                                                    |   ✖        |
-|  PHP         | OctraPHP                                                  |   ✖        |
-|  Perl        | Poctra                                                    |   ✖        |
-|  Python      | [PyOctra](https://www.github.com/jordanschupbach/pyoctra) |   ✅       |
-|  R           | [OctraR](https://www.github.com/jordanschupbach/octrar) |   ✅       |
-|  Ruby        | RbOctra                                                   |   ✖        |
-|  Tcl/TK      | OctraTK                                                   |   ✖        |
-
+| Language   | Name                                                      | Implemented |
+| ---------- | --------------------------------------------------------- | ----------- |
+| C#         | OctraDotNet                                               | ✖          |
+| D          | DOctra                                                    | ✖          |
+| Go         | Gooctra                                                   | ✖          |
+| Guile      | Goctra                                                    | ✖          |
+| Java       | Joctra                                                    | ✖          |
+| Javascript | [OctraJS](https://www.github.com/jordanschupbach/octrajs) | ✅          |
+| Lua        | Loctra                                                    | ✖          |
+| OCaml      | OctraML                                                   | ✖          |
+| Octave     | MOctra                                                    | ✖          |
+| PHP        | OctraPHP                                                  | ✖          |
+| Perl       | Poctra                                                    | ✖          |
+| Python     | [PyOctra](https://www.github.com/jordanschupbach/pyoctra) | ✅          |
+| R          | [OctraR](https://www.github.com/jordanschupbach/octrar)   | ✅          |
+| Ruby       | RbOctra                                                   | ✖          |
+| Tcl/TK     | OctraTK                                                   | ✖          |
 
 They are linked to this repo through git submodules, so you can update source
 code to submodules by running build for the respective language.
-

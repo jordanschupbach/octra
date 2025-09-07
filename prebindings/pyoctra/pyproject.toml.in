@@ -13,6 +13,6 @@ package_dir = "pyoctra/octra"
 
 [tool.setuptools]
 ext-modules = [
-  {name = "pyoctra._octra", sources = [ @QUOTED_C_SOURCES@ @QUOTED_CXX_SOURCES@ "pyoctra/octra/octra_wrap.cpp"], include-dirs = ["pyoctra/"]},
+  {name = "pyoctra._octra", sources = [ @QUOTED_C_SOURCES@ @QUOTED_CXX_SOURCES@ "src/pyoctra/octra/octra_wrap.cpp"], include-dirs = ["src/pyoctra/"]},
 ]
 
