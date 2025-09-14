@@ -1,4 +1,4 @@
-#include <octra/c/single_link_node.h>
+#include <octra/c/single_link_node.hpp>
 
 octra_sl_node_t* octra_sl_node_create(void* data, size_t data_size) {
   octra_sl_node_t* node = (octra_sl_node_t*)malloc(sizeof(octra_sl_node_t));

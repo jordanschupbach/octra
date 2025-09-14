@@ -25,6 +25,10 @@
 
 #pragma once
 
+// double Foo = 3.0;
+
+int gcd(int x, int y);
+
 class Circle {
  public:
   double m_radius;

@@ -23,7 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
-#include <octra/c/octra_io.h>
+#include <octra/c/octra_io.hpp>
 
 #include <stdio.h>
 

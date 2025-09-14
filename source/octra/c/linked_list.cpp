@@ -1,4 +1,4 @@
-#include <octra/c/linked_list.h>
+#include <octra/c/linked_list.hpp>
 
 #include <stdio.h>
 #include <stdlib.h>

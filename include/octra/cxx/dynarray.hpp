@@ -30,7 +30,7 @@
 #include <vector>
 
 extern "C" {
-#include <octra/c/dynarray.h>
+#include <octra/c/dynarray.hpp>
 }
 
 #include <iostream>
@@ -54,6 +54,8 @@ public:
   T operator[](size_t index) const;
   std::string to_string() const;
   void print();
+  T get(size_t index) const;
+  void set(size_t index, T val);
   // DynArray(const DynArray<T> &other);
   // DynArray(DynArray<T> &&other);
   std::vector<T> to_vec() const;
@@ -173,6 +175,25 @@ template <typename T> DynArray<T>::DynArray(size_t n) {
 }
 
 template <typename T> DynArray<T>::~DynArray() { octra_dynarray_free(_data); }
+
+
+template <typename T> T DynArray<T>::get(size_t index) const {
+  if (index < size()) {
+    auto elmt = octra_dynarray_get(_data, index);
+    return *(reinterpret_cast<T *>(elmt));
+  }
+  throw std::out_of_range("Index out of range");
+}
+
+
+template <typename T> void DynArray<T>::set(size_t index, T val) {
+  if (index < size()) {
+    octra_dynarray_set(_data, index, static_cast<void*>(&val));
+  } else {
+    throw std::out_of_range("Index out of range");
+  }
+}
+
 
 template <typename T> T DynArray<T>::operator[](size_t index) const {
   if (index < size()) {

@@ -16,3 +16,6 @@
 [submodule "bindings/octrar"]
 	path = bindings/octrar
 	url = git@github.com:jordanschupbach/octrar.git
+[submodule "bindings/loctra"]
+	path = bindings/loctra
+	url = git@github.com:jordanschupbach/loctra.git

@@ -71,3 +71,12 @@ build-r: examples
 r-repl: build-r
     nix develop ./bindings/octrar/ --command bash -c "R"
     # just -f ./bindings/octrar/justfile install
+
+build-lua:
+  nix develop . --command bash -c "cmake -S prebindings/loctra -B build/loctra"
+  nix develop . --command bash -c "cmake --build build/loctra"
+  
+
+lua-repl: build-lua
+  nix develop ./bindings/loctra/ --command bash -c "pushd ./bindings/loctra && just && lua && popd"
+

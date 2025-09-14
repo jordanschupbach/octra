@@ -27,7 +27,7 @@
 
 #include <octra/cxx/circle.hpp>
 /* A global variable */
-double Foo = 3.0;
+double Foo = 3.0; // NOTE: globals don't work in R?
 
 /* Compute the greatest common divisor of positive integers */
 int gcd(int x, int y) {
