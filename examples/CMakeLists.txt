@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14...3.22)
 
-project(octraExamples LANGUAGES C CXX)
+project(octraExamples LANGUAGES CXX)
 
 # --- Import tools ----
 
@@ -33,11 +33,11 @@ foreach(EXAMPLE IN LISTS CPP_EXAMPLES)
   target_link_libraries(${EXAMPLE_NAME}_cpp octra::octra) #  blas lapack cblas lapacke
 endforeach()
 
-file(GLOB_RECURSE C_EXAMPLES CONFIGURE_DEPENDS "./source/*.c")
-foreach(EXAMPLE IN LISTS C_EXAMPLES)
-  get_filename_component(EXAMPLE_NAME ${EXAMPLE} NAME_WE)
-  add_executable(${EXAMPLE_NAME}_c ${EXAMPLE})
-  set_property(TARGET ${EXAMPLE_NAME}_c PROPERTY C_STANDARD 11)
-  set_property(TARGET ${EXAMPLE_NAME}_c PROPERTY C_STANDARD_REQUIRED ON)
-  target_link_libraries(${EXAMPLE_NAME}_c octra::octra) #  lapack blas cblas lapacke
-endforeach()
+# file(GLOB_RECURSE C_EXAMPLES CONFIGURE_DEPENDS "./source/*.c")
+# foreach(EXAMPLE IN LISTS C_EXAMPLES)
+#   get_filename_component(EXAMPLE_NAME ${EXAMPLE} NAME_WE)
+#   add_executable(${EXAMPLE_NAME}_c ${EXAMPLE})
+#   set_property(TARGET ${EXAMPLE_NAME}_c PROPERTY C_STANDARD 11)
+#   set_property(TARGET ${EXAMPLE_NAME}_c PROPERTY C_STANDARD_REQUIRED ON)
+#   target_link_libraries(${EXAMPLE_NAME}_c octra::octra) #  lapack blas cblas lapacke
+# endforeach()

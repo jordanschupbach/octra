@@ -25,9 +25,9 @@
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 
 #include <time.h> // NOLINT
@@ -78,7 +78,7 @@ typedef enum {
   } while (0)
 #endif
 
-#ifdef __cplusplus
-};
-#endif
+// #ifdef __cplusplus
+// };
+// #endif
 

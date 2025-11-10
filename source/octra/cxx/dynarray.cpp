@@ -25,9 +25,4 @@
 
 #include <octra/cxx/dynarray.hpp>
 
-namespace octra {
-
-
-
-
-}
+// namespace octra { }

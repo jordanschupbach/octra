@@ -23,7 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org/>
 
-#include <octra/c/dynarray.hpp>
+#include <octra/c/dynarray_c.hpp>
 #include <string.h>
 #include <stdio.h>
 

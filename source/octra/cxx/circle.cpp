@@ -26,6 +26,9 @@
 /* File : example.c */
 
 #include <octra/cxx/circle.hpp>
+
+namespace octra {
+
 /* A global variable */
 double Foo = 3.0; // NOTE: globals don't work in R?
 
@@ -49,4 +52,6 @@ double Circle::area() {
 
 double Circle::perimeter() {
   return 2 * 3.14159 * m_radius;
+}
+
 }

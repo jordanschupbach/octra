@@ -1,7 +1,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <octra/c/dynarray.h>
+#include <octra/c/dynarray_c.hpp>
 
 typedef struct {
     void *key;

@@ -25,6 +25,9 @@
 
 #pragma once
 
+
+namespace octra {
+
 // double Foo = 3.0;
 
 int gcd(int x, int y);
@@ -36,3 +39,6 @@ class Circle {
   double area();
   double perimeter();
 };
+
+
+}

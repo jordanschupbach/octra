@@ -28,10 +28,10 @@
 // #include <bits/types/struct_FILE.h>
 // #include <cstddef>
 #include <vector>
+#include <octra/c/dynarray_c.hpp>
 
-extern "C" {
-#include <octra/c/dynarray.hpp>
-}
+// extern "C" {
+// }
 
 #include <iostream>
 #include <string>
@@ -234,6 +234,12 @@ template <typename T> std::string DynArray<T>::to_string() const {
   ret += "]";
   return ret;
 }
+
+
+// template class octra::DynArray<double>;
+
+
+
 
 
 } // namespace octra

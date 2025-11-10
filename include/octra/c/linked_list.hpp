@@ -25,9 +25,9 @@
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 typedef struct octra_linked_list_node {
   void*                          data;
@@ -55,6 +55,6 @@ void               octra_linked_list_print(octra_linked_list* self, void (*print
 
 octra_linked_list_node* octra_linked_list_next();
 
-#ifdef __cplusplus
-};
-#endif
+// #ifdef __cplusplus
+// };
+// #endif

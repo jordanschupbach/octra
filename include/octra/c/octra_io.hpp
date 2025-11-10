@@ -25,9 +25,9 @@
 
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include <stdlib.h>
 
@@ -39,6 +39,6 @@ void octra_print_string(void* val, size_t size);
 
 // void octra_print_string(char* val);
 
-#ifdef __cplusplus
-};
-#endif
+// #ifdef __cplusplus
+// };
+// #endif

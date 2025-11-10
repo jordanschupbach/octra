@@ -27,16 +27,19 @@
 #include <vector>
 #include <octra/cxx/dynarray.hpp>
 
+
+
 int main() {
+
   size_t              n = 100;
   auto   x = octra::DynArray<double>(n);
   for (size_t i = 0; i < n; i++) {
-    x.push_back(static_cast<double>(i));
+    x[i] = static_cast<double>(i);
   }
   for (size_t i = 0; i < n; i++) {
     std::cout << x[i] << " ";
   }
-
   // std::cout << x << std::endl;
   return 0;
+
 }

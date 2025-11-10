@@ -24,9 +24,9 @@
 // For more information, please refer to <http://unlicense.org/>
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include <stdlib.h>
 
@@ -77,6 +77,6 @@ octra_dynarray_t *octra_dynarray_map_alloc(octra_dynarray_t *self, void *(*mapFu
 // octra_dynarray_t *octra_dynarray_ewise_sum_alloc(octra_dynarray_t *self, octra_dynarray_t *other);
 octra_dynarray_t *octra_dynarray_ewise_prod_alloc(octra_dynarray_t *self, octra_dynarray_t *other);
 
-#ifdef __cplusplus
-};
-#endif
+// #ifdef __cplusplus
+// };
+// #endif

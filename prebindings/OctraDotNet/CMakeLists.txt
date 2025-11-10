@@ -1,0 +1,97 @@
+message("Building c# library...")
+
+cmake_minimum_required(VERSION 3.18)
+if(POLICY CMP0122)
+  cmake_policy(SET CMP0122 NEW)
+endif()
+
+project(octradotnet VERSION 0.1)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+  set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES
+      ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+endif()
+
+# Copy source files into working directory
+file(COPY ${PROJECT_SOURCE_DIR}/../../include/octra DESTINATION ${PROJECT_BINARY_DIR}/)
+file(COPY ${PROJECT_SOURCE_DIR}/../../source/octra DESTINATION ${PROJECT_BINARY_DIR}/)
+
+
+# Gather source files
+file(GLOB_RECURSE C_HEADERS "${PROJECT_BINARY_DIR}/*.h")
+file(GLOB_RECURSE CXX_HEADERS "${PROJECT_BINARY_DIR}/*.hpp")
+file(GLOB_RECURSE C_SOURCES "${PROJECT_BINARY_DIR}/*.c")
+file(GLOB_RECURSE CXX_SOURCES "${PROJECT_BINARY_DIR}/*.cpp")
+set(OCTRA_SOURCES ${C_HEADERS} ${CXX_HEADERS} ${C_SOURCES} ${CXX_SOURCES})
+
+# # Copy source files into working directory and transform includes from system to local
+# foreach(filepath ${OCTRA_SOURCES})
+#   file(READ ${filepath} input_content)
+#   string(REGEX REPLACE "#include<octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
+#   string(REGEX REPLACE "#include <octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
+#   file(WRITE ${filepath} "${output_content}")
+# endforeach()
+
+# Copy SWIG interface file into working directory
+file(COPY ${PROJECT_SOURCE_DIR}/swig_src DESTINATION ${PROJECT_BINARY_DIR}/)
+
+# Build SWIG interface
+message("Building SWIG interface...")
+execute_process(COMMAND swig -c++ -csharp -o ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp ${PROJECT_BINARY_DIR}/swig_src/octradotnet.i 
+  WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
+message("Done building SWIG interface...")
+
+
+
+
+file(GLOB_RECURSE C_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.c")
+set(QUOTED_C_SOURCES "")
+foreach(filepath ${C_SOURCES})
+string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" 
+               "src/octradotnet/octra/"
+               relative_filepath ${filepath})
+    set(QUOTED_C_SOURCES "${QUOTED_C_SOURCES}'${relative_filepath}', ")
+endforeach()
+
+file(GLOB_RECURSE CXX_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.cpp")
+set(QUOTED_CXX_SOURCES "")
+foreach(filepath ${CXX_SOURCES})
+message("${filepath}")
+    string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "src/octradotnet/octra/" relative_filepath ${filepath})
+    set(QUOTED_CXX_SOURCES "${QUOTED_CXX_SOURCES}'${relative_filepath}', ")
+endforeach()
+
+message("QUOTED_C_SOURCES: ${QUOTED_C_SOURCES}")
+message("QUOTED_CXX_SOURCES: ${QUOTED_CXX_SOURCES}")
+
+# configure_file(${PROJECT_SOURCE_DIR}/pyproject.toml.in
+#                ${PROJECT_BINARY_DIR}/pyproject.toml.in @ONLY)
+
+message("Project Source Directory: ${PROJECT_SOURCE_DIR}")
+message("Project Bin Directory: ${PROJECT_BINARY_DIR}")
+
+# file(
+#   GENERATE
+#   OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/loctra/pyproject.toml
+#   INPUT ${PROJECT_BINARY_DIR}/pyproject.toml.in)
+
+file(COPY ${PROJECT_BINARY_DIR}/octra/
+     DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/OctraDotNet/OctraDotNet/octra)
+file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp
+     DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/OctraDotNet/OctraDotNet/octra/)
+
+file(GLOB CS_FILES "${PROJECT_BINARY_DIR}/swig_src/*.cs")
+# Copy each .cs file to the destination directory
+foreach(CS_FILE ${CS_FILES})
+    # Extract the filename from the full path
+    get_filename_component(FILENAME ${CS_FILE} NAME)
+    configure_file(${CS_FILE} "${PROJECT_BINARY_DIR}/../../bindings/OctraDotNet/OctraDotNet/${FILENAME}" COPYONLY)
+endforeach()
+
+
+
+# file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra.py DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/loctra/src/loctra)
+
+

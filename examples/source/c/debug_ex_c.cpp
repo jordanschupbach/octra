@@ -1,5 +1,5 @@
 #define LOGGER
-#include <octra/c/debug.h>
+#include <octra/c/debug.hpp>
 
 #include <stdio.h>
 

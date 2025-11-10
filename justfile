@@ -8,8 +8,8 @@ all: build
 
 build:
     @echo "Building examples..."
-    @nix develop . --command bash -c "cmake -S examples -B build/debug/examples"
-    @nix develop . --command bash -c "cmake --build build/debug/examples -j{{ jobs }} --verbose"
+    @nix develop . --command bash -c "cmake -S . -B build/debug/"
+    @nix develop . --command bash -c "cmake --build build/debug/ -j{{ jobs }} --verbose"
 
 examples:
     @echo "Building examples..."
@@ -42,8 +42,13 @@ memcheck: build
 install:
     sudo make cmake -C build install
 
-py-repl:
-    nix develop . --command bash -c "rm -rf ./bindings/pyoctra/build && cmake -S ./prebindings/pyoctra -B ./build/debug/pyoctra && cmake --build ./build/debug/pyoctra -j$(jobs) && cd ./bindings/pyoctra/ && just;"
+build-python:
+    nix develop . --command bash -c "rm -rf ./bindings/pyoctra/build"
+    nix develop . --command bash -c "cmake -S ./prebindings/pyoctra -B ./build/debug/pyoctra"
+    nix develop . --command bash -c "cmake --build ./build/debug/pyoctra -j$(jobs)"
+
+py-repl: build-python
+    nix develop . --command bash -c "cd ./bindings/pyoctra/ && just;"
 
 install-r:
     just -f ./bindings/octraR/justfile install
@@ -53,6 +58,14 @@ clean-r:
 
 repl:
     cling ${CLING_INCLUDE_FLAGS} ${CLING_COMPILE_FLAGS} ${CLING_LINK_FLAGS}
+
+dotnet:
+    nix develop . --command bash -c "cmake -S prebindings/OctraDotNet -B build/OctraDotNet"
+    nix develop . --command bash -c "cmake --build build/OctraDotNet"
+    nix develop ./bindings/OctraDotNet/ --command bash -c "cmake -S ./bindings/OctraDotNet/OctraDotNet/ -B ./bindings/OctraDotNet/OctraDotNet/build/"
+    nix develop ./bindings/OctraDotNet/ --command bash -c "cmake --build ./bindings/OctraDotNet/OctraDotNet/build/"
+    nix develop ./bindings/OctraDotNet/ --command bash -c "cmake --build ./bindings/OctraDotNet/OctraDotNet/build/"
+
 
 js:
     nix develop . --command bash -c "cmake -S prebindings/octrajs -B build/octrajs"
@@ -79,4 +92,9 @@ build-lua:
 
 lua-repl: build-lua
   nix develop ./bindings/loctra/ --command bash -c "pushd ./bindings/loctra && just && lua && popd"
+
+
+build-java: examples test
+    nix develop . --command bash -c "cmake -S prebindings/joctra -B build/joctra"
+    nix develop . --command bash -c "cmake --build build/joctra"
 

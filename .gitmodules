@@ -19,3 +19,9 @@
 [submodule "bindings/loctra"]
 	path = bindings/loctra
 	url = git@github.com:jordanschupbach/loctra.git
+[submodule "bindings/OctraDotNet"]
+	path = bindings/OctraDotNet
+	url = git@github.com:jordanschupbach/octradotnet.git
+[submodule "bindings/joctra"]
+	path = bindings/joctra
+	url = git@github.com:jordanschupbach/joctra.git

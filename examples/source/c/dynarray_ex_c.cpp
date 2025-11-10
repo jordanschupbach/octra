@@ -26,7 +26,7 @@
 // #include <stdio.h>
 
 #include <memory.h>
-#include <octra/c/dynarray.h>
+#include <octra/c/dynarray_c.hpp>
 
 int main() {
 
