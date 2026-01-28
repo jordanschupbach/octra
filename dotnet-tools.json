@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "dotnet-csi": {
+      "version": "1.2.1",
+      "commands": [
+        "dotnet-csi"
+      ],
+      "rollForward": false
+    }
+  }
+}

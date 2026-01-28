@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <memory>
 
 namespace octra {
 
@@ -36,9 +37,20 @@ class Circle {
  public:
   double m_radius;
   explicit Circle(double radius);
-  double area();
-  double perimeter();
+  static std::shared_ptr<Circle> create(double radius);
+  double                         area();
+  double                         perimeter();
 };
 
+class CircleF {
+ private:
+  std::shared_ptr<Circle> m_c;
 
-}
+ public:
+  explicit CircleF(std::shared_ptr<Circle> c);
+  std::shared_ptr<Circle> get();
+  double                  area();
+  double                  perimeter();
+};
+
+} // namespace octra

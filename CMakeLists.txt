@@ -13,9 +13,10 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
 endif()
 
 
-include(cmake/CPM.cmake/cmake/CPM.cmake)
+include(cmake/CPM.cmake)
+include(cmake/PackageProject.cmake)
 
-CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
+# CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
 
 
 # TODO: find somewhere proper for these two lines

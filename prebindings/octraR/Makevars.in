@@ -1,9 +1,0 @@
-SOURCES = $(wildcard *.cpp) $(wildcard octra/cxx/*.cpp)
-OBJECTS = $(SOURCES:%.cpp=%.o)
-
-$(SHLIB):
-	R CMD SHLIB $(SOURCES)
-	R CMD SHLIB -o octrar.so $(OBJECTS)
-
-PKG_CPPFLAGS +=  -I$(CURDIR)/
-PKG_CFLAGS +=  -I$(CURDIR)/

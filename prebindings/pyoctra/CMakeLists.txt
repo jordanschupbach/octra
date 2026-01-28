@@ -7,27 +7,19 @@ endif()
 
 project(pyoctra VERSION 0.1)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
-if(CMAKE_EXPORT_COMPILE_COMMANDS)
-  set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES
-      ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-endif()
-
 # Copy source files into working directory
 file(COPY ${PROJECT_SOURCE_DIR}/../../include/octra DESTINATION ${PROJECT_BINARY_DIR}/)
 file(COPY ${PROJECT_SOURCE_DIR}/../../source/octra DESTINATION ${PROJECT_BINARY_DIR}/)
-
 
 # Gather source files
 file(GLOB_RECURSE C_HEADERS "${PROJECT_BINARY_DIR}/*.h")
 file(GLOB_RECURSE CXX_HEADERS "${PROJECT_BINARY_DIR}/*.hpp")
 file(GLOB_RECURSE C_SOURCES "${PROJECT_BINARY_DIR}/*.c")
 file(GLOB_RECURSE CXX_SOURCES "${PROJECT_BINARY_DIR}/*.cpp")
-set(OCTRA_SOURCES ${C_HEADERS} ${CXX_HEADERS} ${C_SOURCES} ${CXX_SOURCES})
+set(DM_SOURCES ${C_HEADERS} ${CXX_HEADERS} ${C_SOURCES} ${CXX_SOURCES})
 
 # Copy source files into working directory and transform includes from system to local
-foreach(filepath ${OCTRA_SOURCES})
+foreach(filepath ${DM_SOURCES})
   file(READ ${filepath} input_content)
   string(REGEX REPLACE "#include<octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
   string(REGEX REPLACE "#include <octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
@@ -39,14 +31,14 @@ file(COPY ${PROJECT_SOURCE_DIR}/swig_src DESTINATION ${PROJECT_BINARY_DIR}/)
 
 # Build SWIG interface
 message("Building SWIG interface...")
-execute_process(COMMAND swig -c++ -python -o ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp ${PROJECT_BINARY_DIR}/swig_src/pyoctra.i 
+execute_process(COMMAND swig -c++ -doxygen -python -o ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp ${PROJECT_BINARY_DIR}/swig_src/octra.i 
   WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
 message("Done building SWIG interface...")
 
 file(GLOB_RECURSE C_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.c")
 set(QUOTED_C_SOURCES "")
 foreach(filepath ${C_SOURCES})
-string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "src/pyoctra/octra/" relative_filepath ${filepath})
+string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "pyoctra/octra/" relative_filepath ${filepath})
     set(QUOTED_C_SOURCES "${QUOTED_C_SOURCES}'${relative_filepath}', ")
 endforeach()
 
@@ -54,27 +46,21 @@ file(GLOB_RECURSE CXX_SOURCES "${PROJECT_SOURCE_DIR}/../../source/octra/*.cpp")
 set(QUOTED_CXX_SOURCES "")
 foreach(filepath ${CXX_SOURCES})
 message("${filepath}")
-    string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "src/pyoctra/octra/" relative_filepath ${filepath})
+    string(REPLACE "${PROJECT_SOURCE_DIR}/../../source/octra/" "pyoctra/octra/" relative_filepath ${filepath})
     set(QUOTED_CXX_SOURCES "${QUOTED_CXX_SOURCES}'${relative_filepath}', ")
 endforeach()
-
-message("QUOTED_C_SOURCES: ${QUOTED_C_SOURCES}")
-message("QUOTED_CXX_SOURCES: ${QUOTED_CXX_SOURCES}")
 
 configure_file(${PROJECT_SOURCE_DIR}/pyproject.toml.in
                ${PROJECT_BINARY_DIR}/pyproject.toml.in @ONLY)
 
-
-message("Project Source Directory: ${PROJECT_SOURCE_DIR}")
-message("Project Bin Directory: ${PROJECT_BINARY_DIR}")
-
+# Now copy into the Python package
 file(
   GENERATE
   OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/pyproject.toml
   INPUT ${PROJECT_BINARY_DIR}/pyproject.toml.in)
 
-file(COPY ${PROJECT_BINARY_DIR}/octra/ DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/pyoctra/src/pyoctra/octra)
-file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/pyoctra/src/pyoctra/octra)
-file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra.py DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/pyoctra/src/pyoctra)
+file(COPY ${PROJECT_BINARY_DIR}/octra/ DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/pyoctra/octrapy/octra)
 
+file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/pyoctra/pyoctra/octra)
+file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra.py DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/pyoctra/pyoctra)
 

@@ -1,0 +1,8 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/lib64/octra-0.0.1/
+includedir=${prefix}/include/octra-0.0.1/
+Name: octra
+Description: A C++ library
+Version: @PKG_CONFIG_VERSION@
+Libs: -L${libdir} @PKG_CONFIG_LIBS@
+Cflags: -I${includedir}

@@ -14,32 +14,21 @@ if(CMAKE_EXPORT_COMPILE_COMMANDS)
       ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 endif()
 
-# Copy source files into working directory
-file(COPY ${PROJECT_SOURCE_DIR}/../../include/octra DESTINATION ${PROJECT_BINARY_DIR}/include/octra)
-file(COPY ${PROJECT_SOURCE_DIR}/../../source/octra DESTINATION ${PROJECT_BINARY_DIR}/include/octra)
+file(COPY ${PROJECT_SOURCE_DIR}/../../include/octra DESTINATION ${PROJECT_BINARY_DIR}/)
+file(COPY ${PROJECT_SOURCE_DIR}/../../source/octra DESTINATION ${PROJECT_BINARY_DIR}/)
+file(COPY ${PROJECT_SOURCE_DIR}/../../include/ DESTINATION ${PROJECT_BINARY_DIR}/include)
+file(COPY ${PROJECT_SOURCE_DIR}/../../source/ DESTINATION ${PROJECT_BINARY_DIR}/source)
 
-
-# Gather source files
 file(GLOB_RECURSE C_HEADERS "${PROJECT_BINARY_DIR}/*.h")
 file(GLOB_RECURSE CXX_HEADERS "${PROJECT_BINARY_DIR}/*.hpp")
 file(GLOB_RECURSE C_SOURCES "${PROJECT_BINARY_DIR}/*.c")
 file(GLOB_RECURSE CXX_SOURCES "${PROJECT_BINARY_DIR}/*.cpp")
 set(OCTRA_SOURCES ${C_HEADERS} ${CXX_HEADERS} ${C_SOURCES} ${CXX_SOURCES})
 
-# Copy source files into working directory and transform includes from system to local
-foreach(filepath ${OCTRA_SOURCES})
-  file(READ ${filepath} input_content)
-  string(REGEX REPLACE "#include<octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
-  string(REGEX REPLACE "#include <octra/([^>]*)>" "#include \"octra/\\1\"" output_content "${input_content}")
-  file(WRITE ${filepath} "${output_content}")
-endforeach()
-
-# Copy SWIG interface file into working directory
 file(COPY ${PROJECT_SOURCE_DIR}/swig_src DESTINATION ${PROJECT_BINARY_DIR}/)
 
-# Build SWIG interface
 message("Building SWIG interface...")
-execute_process(COMMAND swig -c++ -lua -o ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp ${PROJECT_BINARY_DIR}/swig_src/joctra.i 
+execute_process(COMMAND swig -c++ -java -o ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp ${PROJECT_BINARY_DIR}/swig_src/joctra.i 
   WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
 message("Done building SWIG interface...")
 
@@ -58,24 +47,18 @@ message("${filepath}")
     set(QUOTED_CXX_SOURCES "${QUOTED_CXX_SOURCES}'${relative_filepath}', ")
 endforeach()
 
-message("QUOTED_C_SOURCES: ${QUOTED_C_SOURCES}")
-message("QUOTED_CXX_SOURCES: ${QUOTED_CXX_SOURCES}")
+# message("QUOTED_C_SOURCES: ${QUOTED_C_SOURCES}")
+# message("QUOTED_CXX_SOURCES: ${QUOTED_CXX_SOURCES}")
+# message("Project Source Directory: ${PROJECT_SOURCE_DIR}")
+# message("Project Bin Directory: ${PROJECT_BINARY_DIR}")
 
-# configure_file(${PROJECT_SOURCE_DIR}/pyproject.toml.in
-#                ${PROJECT_BINARY_DIR}/pyproject.toml.in @ONLY)
+file(COPY ${PROJECT_BINARY_DIR}/include/ DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/jOCTRA/octra/src/)
+file(COPY ${PROJECT_BINARY_DIR}/source/ DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/jOCTRA/octra/src/)
+file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/jOCTRA/octra/src/source/octra/)
 
-message("Project Source Directory: ${PROJECT_SOURCE_DIR}")
-message("Project Bin Directory: ${PROJECT_BINARY_DIR}")
-
-# file(
-#   GENERATE
-#   OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/joctra/pyproject.toml
-#   INPUT ${PROJECT_BINARY_DIR}/pyproject.toml.in)
-
-file(COPY ${PROJECT_BINARY_DIR}/octra/include/octra DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/joctra/src/octra)
-file(COPY ${PROJECT_BINARY_DIR}/octra/source/octra DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/joctra/src/octra)
-file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/joctra//octra)
-
-# file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra.py DESTINATION ${PROJECT_BINARY_DIR}/../../../bindings/joctra/src/joctra)
-
+file(GLOB JAVA_FILES "${PROJECT_BINARY_DIR}/swig_src/*.java")
+foreach(JAVA_FILE ${JAVA_FILES})
+    get_filename_component(FILENAME ${JAVA_FILE} NAME)
+    configure_file(${JAVA_FILE} "${PROJECT_BINARY_DIR}/../../bindings/jOCTRA/joctra/src/main/java/msu/octra/joctra/${FILENAME}" COPYONLY)
+endforeach()
 

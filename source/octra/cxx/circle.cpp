@@ -44,7 +44,13 @@ int gcd(int x, int y) {
   return g;
 }
 
+// {{{ Circle
+
 Circle::Circle(double radius) : m_radius(radius) {}
+
+std::shared_ptr<Circle> Circle::create(double radius) {
+  return std::make_shared<Circle>(radius);
+}
 
 double Circle::area() {
   return 3.14159 * m_radius * m_radius;
@@ -54,4 +60,24 @@ double Circle::perimeter() {
   return 2 * 3.14159 * m_radius;
 }
 
+// }}} Circle
+
+// {{{ CircleF
+
+CircleF::CircleF(std::shared_ptr<Circle> c) : m_c(c) {}
+
+std::shared_ptr<Circle> CircleF::get() {
+  return m_c;
 }
+
+double CircleF::area() {
+  return m_c->area();
+}
+
+double CircleF::perimeter() {
+  return m_c->perimeter();
+}
+
+// }}} CircleF
+
+} // namespace octra

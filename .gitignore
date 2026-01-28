@@ -1,6 +1,11 @@
 .direnv
 .cache
-build
 *.so
+node_modules
+build
 **/__pycache__
 compile_commands.json
+octradotnet/bin
+octradotnet/obj
+./buildSrc/.gradle/
+.gradle

@@ -14,17 +14,24 @@
 
 ---
 
-Octra is a C project that has bindings for a variety of languages, including
-Python, R, and JavaScript. It is merely meant to be used as a kickstart
-template for similar projects that need to provide bindings to multiple
-languages. As such, it is permissively licensed under the Unlicense.
+Octra is a C/C++ project that has (nearly) automatically generated bindings for a
+variety of languages, including Python, R, JavaScript, Lua, PHP, Java, C#, D
+and Go. It is merely meant to be used as a kickstart template for similar
+projects that need to provide bindings to multiple languages. As such, it is
+permissively licensed under the Unlicense.
 
 It uses CMake as the build system, and Just as a task runner. The project
 maintains a nix flake for easy development and testing.
 
-To demonstrate nontrivial examples, it provides simple implementations of
+To demonstrate nontrivial examples, it provides simple implementations of some
 common datastructures (e.g. dynamic array) written in C and bound to all
-targeted binding languages.
+targeted binding languages. It is meant to be installable from any of the
+supported languages' package managers (e.g. PyPI for Python, CRAN for R, npm
+for JavaScript, etc). Thus, it also provides build configurations for these
+package managers along with necessary packaging files for each language. While
+this makes the project more complex, it also means that there is a single source
+of truth for the core implementation, and that any bug fixes or improvements
+can be made in one place and propagated to all bindings.
 
 ## 🚗 Test drive
 
@@ -90,23 +97,23 @@ just js-repl
 
 Binding support is (to be) provided for the following languages:
 
-| Language   | Name                                                      | Implemented |
-| ---------- | --------------------------------------------------------- | ----------- |
-| C#         | OctraDotNet                                               | ✖          |
-| D          | DOctra                                                    | ✖          |
-| Go         | Gooctra                                                   | ✖          |
-| Guile      | Goctra                                                    | ✖          |
-| Java       | Joctra                                                    | ✖          |
-| Javascript | [OctraJS](https://www.github.com/jordanschupbach/octrajs) | ✅          |
-| Lua        | Loctra                                                    | ✖          |
-| OCaml      | OctraML                                                   | ✖          |
-| Octave     | MOctra                                                    | ✖          |
-| PHP        | OctraPHP                                                  | ✖          |
-| Perl       | Poctra                                                    | ✖          |
-| Python     | [PyOctra](https://www.github.com/jordanschupbach/pyoctra) | ✅          |
-| R          | [OctraR](https://www.github.com/jordanschupbach/octrar)   | ✅          |
-| Ruby       | RbOctra                                                   | ✖          |
-| Tcl/TK     | OctraTK                                                   | ✖          |
+| Language   | Name          | Implemented |
+| ---------- | --------------| ----------- |
+| C#         | OctraDotNet   | ✖          |
+| D          | DOctra        | ✖          |
+| Go         | Gooctra       | ✖          |
+| Guile      | Goctra        | ✖          |
+| Java       | Joctra        | ✖          |
+| Javascript | OctraJS       | ✅          |
+| Lua        | Loctra        | ✖          |
+| OCaml      | OctraML       | ✖          |
+| Octave     | MOctra        | ✖          |
+| PHP        | OctraPHP      | ✖          |
+| Perl       | Poctra        | ✖          |
+| Python     | PyOctra       | ✅          |
+| R          | OctraR        | ✅          |
+| Ruby       | RbOctra       | ✖          |
+| Tcl/TK     | OctraTK       | ✖          |
 
 They are linked to this repo through git submodules, so you can update source
 code to submodules by running build for the respective language.
