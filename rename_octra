@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ ${1-} == "" ]]; then
+  echo "Usage: $(basename "$0") <replacement>" >&2
+  exit 2
+fi
+
+replacement="$1"
+
+# Refuse path separators to avoid surprising rewrites.
+if [[ "$replacement" == *"/"* ]]; then
+  echo "Error: replacement must not contain '/'." >&2
+  exit 2
+fi
+
+repo_root="$(pwd)"
+
+# 1) Replace whole-word occurrences in file contents.
+#    - Excludes .git
+#    - Skips this script itself
+#    - Uses a null-delimited pipeline to handle spaces
+list_files_with_matches() {
+  if command -v rg >/dev/null 2>&1; then
+    rg -l -0 --hidden --glob '!.git/**' --glob '!rename_octra' --fixed-strings "octra" "$repo_root" || true
+  else
+    # Portable fallback (may scan slower and may traverse hidden dirs).
+    find "$repo_root" -type f -not -path '*/.git/*' -not -name 'rename_octra' -print0 \
+      | xargs -0 grep -IlZ --fixed-strings "octra" 2>/dev/null || true
+  fi
+}
+
+# Prefer perl for reliable in-place editing across platforms.
+if command -v perl >/dev/null 2>&1; then
+  while IFS= read -r -d '' file; do
+    # Replace whole word "octra" only.
+    perl -0777 -i -pe "s/\\boctra\\b/\Q$replacement\E/g" "$file"
+  done < <(list_files_with_matches)
+else
+  while IFS= read -r -d '' file; do
+    # sed fallback (GNU sed recommended). Whole-word matching is best-effort.
+    sed -i -e "s/\\boctra\\b/${replacement//\//\\/}/g" "$file"
+  done < <(list_files_with_matches)
+fi
+
+# 2) Rename files and directories containing "octra".
+#    Use -depth so children are renamed before parents.
+while IFS= read -r -d '' path; do
+  base="$(basename "$path")"
+  dir="$(dirname "$path")"
+  newbase="${base//octra/$replacement}"
+  if [[ "$newbase" != "$base" ]]; then
+    mv -n -- "$path" "$dir/$newbase"
+  fi
+done < <(
+  find "$repo_root" -depth \
+    -not -path '*/.git/*' \
+    -name '*octra*' -print0
+)
+
+echo "Done. Replaced whole-word 'octra' in contents and renamed paths containing 'octra'."

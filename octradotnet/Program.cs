@@ -10,7 +10,7 @@ class Program
     {
         Console.WriteLine("Hello, World!");
 
-        octra.print("Hello, Worldzzzz!");
+        octra.hello();
 
     }
 }

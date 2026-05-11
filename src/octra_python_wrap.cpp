@@ -6156,6 +6156,9 @@ SWIGINTERN std::vector< std::string >::iterator std_vector_Sl_std_string_Sg__era
 SWIGINTERN std::vector< std::string >::iterator std_vector_Sl_std_string_Sg__erase__SWIG_1(std::vector< std::string > *self,std::vector< std::string >::iterator first,std::vector< std::string >::iterator last){ return self->erase(first, last); }
 SWIGINTERN std::vector< std::string >::iterator std_vector_Sl_std_string_Sg__insert__SWIG_0(std::vector< std::string > *self,std::vector< std::string >::iterator pos,std::vector< std::string >::value_type const &x){ return self->insert(pos, x); }
 SWIGINTERN void std_vector_Sl_std_string_Sg__insert__SWIG_1(std::vector< std::string > *self,std::vector< std::string >::iterator pos,std::vector< std::string >::size_type n,std::vector< std::string >::value_type const &x){ self->insert(pos, n, x); }
+
+  #include "octra/octra.hpp"
+
 SWIGINTERN PyObject *_wrap_delete_SwigPyIterator(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   swig::SwigPyIterator *arg1 = 0 ;
@@ -15296,6 +15299,19 @@ SWIGINTERN PyObject *SVector_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *
   return SWIG_Python_InitShadowInstance(args);
 }
 
+SWIGINTERN PyObject *_wrap_hello(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "hello", 0, 0, 0)) SWIG_fail;
+  octra::hello();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -15482,6 +15498,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_SVector", _wrap_delete_SVector, METH_O, NULL},
 	 { "SVector_swigregister", SVector_swigregister, METH_O, NULL},
 	 { "SVector_swiginit", SVector_swiginit, METH_VARARGS, NULL},
+	 { "hello", _wrap_hello, METH_NOARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 

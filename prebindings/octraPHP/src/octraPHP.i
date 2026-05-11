@@ -3,8 +3,6 @@
 
 %module octra
 
-// {{{ stl
-
 // NOTE: no working shared_ptr support in php swig?
 %include <stdint.i>
 %include <std_vector.i>
@@ -17,24 +15,7 @@
 %template(IVector) std::vector<int>;
 %template(SizeVector) std::vector<size_t>;
 
-// }}} stl
-
-// {{{ core 
-
-// {{{ std
-
-// {{{ printing
 %{
-  #include "octra/print/print.hpp"
+  #include "octra/octra.hpp"
 %}
-%include "octra/print/print.hpp"
-// }}} printing
-
-// }}} std
-
-// }}} core 
-
-// %{
-//   #include "octra/octra.hpp"
-// %}
-// %include "octra/octra.hpp"
+%include "octra/octra.hpp"

@@ -2325,5 +2325,16 @@ setMethod('$', '_p_std__vectorT_size_t_t', function(x, name)
 );
 # end of accessor method for std::vector< size_t >
 setMethod('delete', '_p_std__vectorT_size_t_t', function(obj) {delete_std__vectorT_size_t_t(obj)})
+# Start of hello
+
+`hello` = function()
+{
+  ;.Call('R_swig_hello', PACKAGE='octrar');
+  
+}
+
+attr(`hello`, 'returnType') = 'void'
+class(`hello`) = c("SWIGFunction", class('hello'))
+
 
 

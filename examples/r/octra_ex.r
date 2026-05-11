@@ -1,2 +1,3 @@
 library(octrar)
 
+octrar::hello()

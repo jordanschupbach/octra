@@ -619,3 +619,6 @@ class SVector(object):
 # Register SVector in _octra:
 _octra.SVector_swigregister(SVector)
 
+def hello():
+    return _octra.hello()
+

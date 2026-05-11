@@ -73,7 +73,7 @@ static PHP_METHOD(SizeVector,set);
 PHP_METHOD(SizeVector,__set);
 PHP_METHOD(SizeVector,__get);
 PHP_METHOD(SizeVector,__isset);
-static PHP_FUNCTION(c_print);
+static PHP_FUNCTION(hello);
 PHP_MINIT_FUNCTION(octra);
 
 #endif /* PHP_OCTRA_H */

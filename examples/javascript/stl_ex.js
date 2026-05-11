@@ -3,7 +3,7 @@
 // but currently doesnt build the build/Release/octrajs file on install
 const octra = require("@octra/octrajs");
 // current way to load locally built version:
-// const octra = require("./build/Release/octrajs");
+const octra = require("./build/Release/octrajs");
 
 var n = 10;
 var v = new octra.DVector(n);
@@ -29,3 +29,7 @@ console.log(p.second);
 var p2 = new octra.IPair(42, 7);
 console.log(p2.first);
 console.log(p2.second);
+
+octra.hello();
+
+

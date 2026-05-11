@@ -9,3 +9,5 @@ octradotnet/bin
 octradotnet/obj
 ./buildSrc/.gradle/
 .gradle
+dist
+src/pyoctra.egg-info

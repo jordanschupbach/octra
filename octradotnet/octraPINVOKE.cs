@@ -608,6 +608,6 @@ class octraPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_delete_SVector")]
   public static extern void delete_SVector(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_print")]
-  public static extern void print(string jarg1);
+  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_hello")]
+  public static extern void hello();
 }

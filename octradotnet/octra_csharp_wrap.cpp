@@ -902,7 +902,7 @@ SWIGINTERN bool std_vector_Sl_std_string_Sg__Remove(std::vector< std::string > *
         return false;
       }
 
-  #include "octra/print/print.hpp"
+  #include "octra/octra.hpp"
 
 
 #ifdef __cplusplus
@@ -2847,16 +2847,8 @@ SWIGEXPORT void SWIGSTDCALL CSharp_delete_SVector(void * jarg1) {
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_print(const char * jarg1) {
-  std::string *arg1 = 0 ;
-  
-  if (!jarg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
-    return ;
-  }
-  std::string arg1_str(jarg1);
-  arg1 = &arg1_str; 
-  octra::print((std::string const &)*arg1);
+SWIGEXPORT void SWIGSTDCALL CSharp_hello() {
+  octra::hello();
 }
 
 

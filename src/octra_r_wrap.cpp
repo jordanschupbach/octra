@@ -3287,6 +3287,9 @@ SWIGINTERN void std_vector_Sl_size_t_Sg__append(std::vector< size_t > *self,std:
       self->push_back(x);
     }
 
+  #include "octra/octra.hpp"
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -6993,6 +6996,27 @@ R_swig_delete_SizeVector ( SEXP self)
 }
 
 
+SWIGEXPORT SEXP
+R_swig_hello ( )
+{
+  {
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    octra::hello();
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
 #ifdef __cplusplus
 }
 #endif
@@ -7608,6 +7632,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector_push_back", (DL_FUNC) &R_swig_IVector_push_back, 2},
    {"R_swig_delete_IVector", (DL_FUNC) &R_swig_delete_IVector, 1},
    {"R_swig_DVector___delitem__", (DL_FUNC) &R_swig_DVector___delitem__, 2},
+   {"R_swig_hello", (DL_FUNC) &R_swig_hello, 0},
    {"R_swig_IVector_back", (DL_FUNC) &R_swig_IVector_back, 2},
    {"R_swig_DVector_push_back", (DL_FUNC) &R_swig_DVector_push_back, 2},
    {"R_swig_IVector___delslice__", (DL_FUNC) &R_swig_IVector___delslice__, 3},

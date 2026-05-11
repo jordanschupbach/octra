@@ -16,7 +16,7 @@ in
     src = ./.;
     build-system = [setuptools];
     meta = {
-      description = "Python bindings to the OCTRA library.";
+      description = "Python bindings to the octra library.";
       homepage = "https://github.com/jordanschupbac/octra";
       license = lib.licenses.unlicense;
       maintainers = with lib.maintainers; ["Jordan Schupbach"];

@@ -149,6 +149,6 @@ export  class SVector {
   set(i: number, val: string): void;
 }
 
-export function print(message: string): void;
+export function hello(): void;
 
 

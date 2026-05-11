@@ -1,9 +1,5 @@
 %module octrajs
 
-// {{{ core
-
-// {{{ stl
-
 %include <std_shared_ptr.i>
 %include <stdint.i>
 %include <std_vector.i>
@@ -18,13 +14,7 @@
 %template(SizeVector) std::vector<size_t>;
 %template(SVector) std::vector<std::string>;
 
-// }}} stl
-
-// {{{ std
-
 %{
-  #include "octra/print/print.hpp"
+  #include "octra/octra.hpp"
 %}
-%include "octra/print/print.hpp"
-
-// }}} std
+%include "octra/octra.hpp"

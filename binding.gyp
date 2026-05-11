@@ -3,7 +3,7 @@
   'targets': [
     {
       'target_name': 'octrajs',
-      'sources': [ 'source/octra/print/print.cpp', 'src/octra_js_wrap.cpp' ],
+      'sources': [ 'source/octra/octra.cpp', 'src/octra_js_wrap.cpp' ],
       'include_dirs': [
         "include",
         "<!@(node -p \"require('node-addon-api').include\")",

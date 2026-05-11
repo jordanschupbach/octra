@@ -10,9 +10,8 @@
 
 
 public class octra {
-  public static void print(string message) {
-    octraPINVOKE.print(message);
-    if (octraPINVOKE.SWIGPendingException.Pending) throw octraPINVOKE.SWIGPendingException.Retrieve();
+  public static void hello() {
+    octraPINVOKE.hello();
   }
 
 }

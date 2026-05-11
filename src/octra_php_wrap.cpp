@@ -1512,7 +1512,7 @@ SWIGINTERN void std_vector_Sl_size_t_Sg__set(std::vector< size_t > *self,int i,s
           throw std::out_of_range("vector index out of range");
       }
 
-  #include "octra/print/print.hpp"
+  #include "octra/octra.hpp"
 
 static zend_object_handlers Swig_Php_base_object_handlers;
 
@@ -3546,25 +3546,16 @@ fail:
 
 
 
-static PHP_METHOD(octra,c_print) {
-  PHP_FN(c_print)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+static PHP_METHOD(octra,hello) {
+  PHP_FN(hello)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
 
-static PHP_FUNCTION(c_print) {
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  zval args[1];
-  
-  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+static PHP_FUNCTION(hello) {
+  if(ZEND_NUM_ARGS() != 0) {
     WRONG_PARAM_COUNT;
   }
   
-  
-  convert_to_string(&args[0]);
-  temp1.assign(Z_STRVAL(args[0]), Z_STRLEN(args[0]));
-  arg1 = &temp1;
-  
-  octra::print((std::string const &)*arg1);
+  octra::hello();
   
 fail:
   return;
@@ -3610,8 +3601,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_magic_arginfo_isset, 0, 1, MAY_BE_BOOL)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_c_print, 0, 1, MAY_BE_VOID)
- ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_hello, 0, 0, MAY_BE_VOID)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_DPair, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DPair,MAY_BE_DOUBLE,NULL)
@@ -3629,8 +3619,7 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_DVector, 0, 0, 1)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DVector_capacity, 0, 0, MAY_BE_LONG)
 ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DVector_clear, 0, 0, MAY_BE_VOID)
-ZEND_END_ARG_INFO()
+#define swig_arginfo_DVector_clear swig_arginfo_hello
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_DVector_get, 0, 1, MAY_BE_DOUBLE)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
@@ -3658,7 +3647,7 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_IVector, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,IVector,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_IVector_capacity swig_arginfo_DVector_capacity
-#define swig_arginfo_IVector_clear swig_arginfo_DVector_clear
+#define swig_arginfo_IVector_clear swig_arginfo_hello
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_IVector_get, 0, 1, MAY_BE_LONG)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
@@ -3675,7 +3664,7 @@ ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_SizeVector, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SizeVector,MAY_BE_LONG,NULL)
 ZEND_END_ARG_INFO()
 #define swig_arginfo_SizeVector_capacity swig_arginfo_DVector_capacity
-#define swig_arginfo_SizeVector_clear swig_arginfo_DVector_clear
+#define swig_arginfo_SizeVector_clear swig_arginfo_hello
 #define swig_arginfo_SizeVector_get swig_arginfo_IVector_get
 #define swig_arginfo_SizeVector_is_empty swig_arginfo_DVector_is_empty
 #define swig_arginfo_SizeVector_pop swig_arginfo_DVector_capacity
@@ -3766,12 +3755,12 @@ static const zend_function_entry class_SizeVector_functions[] = {
 /* entry subsection */
 /* Every non-class user visible function must have an entry here */
 static const zend_function_entry module_octra_functions[] = {
- PHP_FE(c_print,swig_arginfo_c_print)
+ PHP_FE(hello,swig_arginfo_hello)
  ZEND_FE_END
 };
 
 static const zend_function_entry class_octra_functions[] = {
- PHP_ME(octra,c_print,swig_arginfo_c_print,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,hello,swig_arginfo_hello,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  ZEND_FE_END
 };
 

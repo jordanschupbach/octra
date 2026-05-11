@@ -1277,10 +1277,10 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__set(std::vector< std::string > *sel
                     throw std::out_of_range("vector index out of range");
             }
 
-  #include "octra/print/print.hpp"
+  #include "octra/octra.hpp"
 
 // js_global_declaration
-Napi::Value _wrap_print(const Napi::CallbackInfo &info);
+Napi::Value _wrap_hello(const Napi::CallbackInfo &info);
 
 #define SWIG_NAPI_INIT octrajs_initialize
 
@@ -7226,58 +7226,39 @@ fail:
 
 
 // js_global_function
-Napi::Value _wrap_print(const Napi::CallbackInfo &info) {
+Napi::Value _wrap_hello(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   Napi::Value jsresult;
-  std::string *arg1 = 0 ;
-  int res1 = SWIG_OLDOBJ ;
   
   
 #ifdef NAPI_CPP_EXCEPTIONS
   try {
 #endif
     
-    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
-      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_print.");
-    }
-    
-    {
-      {
-        std::string *ptr = (std::string *)0;
-        res1 = SWIG_AsPtr_std_string(info[0], &ptr);
-        if (!SWIG_IsOK(res1)) {
-          SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "print" "', argument " "1"" of type '" "std::string const &""'"); 
-        }
-        if (!ptr) {
-          SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "print" "', argument " "1"" of type '" "std::string const &""'"); 
-        }
-        arg1 = ptr;
-      }
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_hello.");
     }
     
     
     
     
     
-    octra::print((std::string const &)*arg1);
+    
+    octra::hello();
     
     
     
     jsresult = env.Undefined();
     
-    if (SWIG_IsNewObj(res1)) delete arg1;
     
     return jsresult;
 #ifdef NAPI_CPP_EXCEPTIONS
   } catch (...) {
-    if (SWIG_IsNewObj(res1)) delete arg1;
-    
     std::rethrow_exception(std::current_exception());
   }
 #else
   goto fail;
 fail:
-  if (SWIG_IsNewObj(res1)) delete arg1;
   
 #endif
   return Napi::Value();
@@ -8152,7 +8133,7 @@ do {
 } while (0);
 // jsnapi_register_global_function
 do {
-  Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("print", _wrap_print,
+  Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("hello", _wrap_hello,
     static_cast<napi_property_attributes>(napi_writable | napi_enumerable | napi_configurable));
   NAPI_CHECK_MAYBE(exports.DefineProperty(pd));
 } while (0);
