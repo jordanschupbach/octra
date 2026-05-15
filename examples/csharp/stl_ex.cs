@@ -33,8 +33,5 @@ class stl_ex {
     var p2 = new IPair(42, 7);
     Console.WriteLine(p2.first);
 
-    octra.print("Hello, Worldzzzz!");
-
   }
 }
-

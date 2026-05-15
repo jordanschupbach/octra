@@ -2,7 +2,6 @@ from setuptools import setup, find_packages, Extension
 import subprocess
 import logging
 import os
-import logging
 
 # TODO:
 # def find_cpp_sources(directory):
@@ -43,9 +42,6 @@ def get_pkgconfig_include_dirs(package):
 # sources = find_cpp_sources('source/octra')
 # sources = [ 'source/octra/octra.cpp', 'src/octra_python_wrap.cpp' ]
 include_dirs = ["include/"] # + get_pkgconfig_include_dirs('libxml-2.0')
-
-print("Sources:", sources)
-print("Include dirs:", include_dirs)
 ext_modules = [
     Extension(
         'pyoctra._octra',
@@ -61,7 +57,7 @@ setup(
     version='0.0.1',
     author='Jordan Schupbach',
     author_email='jordan.schupbach@montana.edu',
-    description='A Python interface to the OCTRA C/C++ library',
+    description='A Python interface to the octra C/C++ library',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url='https://github.com/jordanschupbach/octra',
@@ -71,7 +67,7 @@ setup(
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.6',
-    license='Closed Source',
+    license='Unlicense',
 
     packages=["pyoctra"],
     package_dir={"": "src/"},

@@ -47,19 +47,20 @@ endforeach()
 
 message(STATUS "PHP includes cleaned: ${PHP_INCLUDE_LIST_CLEANED}")  # For debugging
 
-# temporarily define the absolute path to the source directory (until permanent fix is made)
-set(SOURCE_DIR "/home/jordan/projects/octra/src")
+set(SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../../src")
 
 # Include the necessary directories for your target
 target_include_directories(
   ${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
-  ${SOURCE_DIR}  # Use the absolute path
+  ${SOURCE_DIR}
   ${PHP_INCLUDE_LIST_CLEANED}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE octra::octra)
+
+string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
 
 PackageProject(
   NAME ${PROJECT_NAME}

@@ -68,6 +68,13 @@ to run TARGET example:
 just run TARGET=example_name
 ```
 
+## Renaming this template
+
+This repo is intended to be cloned and renamed. All occurrences of the project name are expected to be `octra` (lowercase) unless casing is required by a particular ecosystem.
+
+- Rename everything (file contents + paths): `./rename_octra <new_project_name>`
+  - `<new_project_name>` must be lowercase (a-z, 0-9, `_` or `-`)
+
 ## Bindings
 
 ### Test Drive

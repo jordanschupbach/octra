@@ -11,3 +11,4 @@ octradotnet/obj
 .gradle
 dist
 src/pyoctra.egg-info
+result

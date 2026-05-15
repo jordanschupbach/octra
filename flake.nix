@@ -66,7 +66,7 @@
 
         octrar = pkgs.rPackages.buildRPackage {
           name = "octrar";
-          src = ./.;
+          src = pkgs.lib.cleanSource ./.;
           buildInputs = [
             pkgs.libxml2
             pkgs.pkg-config
@@ -79,10 +79,115 @@
 
       in
       {
+        checks = {
+          cpp = pkgs.stdenv.mkDerivation {
+            name = "octra-cpp-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              pkgs.cmake
+              pkgs.pkg-config
+              pkgs.clang
+              pkgs.gtest
+            ];
+            phases = [ "unpackPhase" "buildPhase" "checkPhase" "installPhase" ];
+            buildPhase = ''
+              cmake -S tests -B build/tests -DCMAKE_BUILD_TYPE=Release
+              cmake --build build/tests -j $NIX_BUILD_CORES
+            '';
+            doCheck = true;
+            checkPhase = ''
+              ctest --test-dir build/tests --output-on-failure
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          python = pkgs.stdenv.mkDerivation {
+            name = "octra-python-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              (pkgs.python3.withPackages (ps: [
+                self.packages.${system}.pyoctra
+                ps.pytest
+              ]))
+            ];
+            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            doCheck = true;
+            checkPhase = ''
+              pytest -q bindings_tests/python
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          r = pkgs.stdenv.mkDerivation {
+            name = "octra-r-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              pkgs.R
+              pkgs.rPackages.testthat
+            ];
+            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            doCheck = true;
+            checkPhase = ''
+              if [ ! -d tests/testthat ]; then
+                echo "Expected tests/testthat to exist in source tree." >&2
+                echo "PWD: $PWD" >&2
+                find . -maxdepth 3 -type d -print >&2
+                exit 1
+              fi
+              R -q -e "testthat::test_local(\".\")"
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          javascript = pkgs.buildNpmPackage {
+            pname = "octra-javascript-check";
+            version = "0.0.1";
+            src = pkgs.lib.cleanSource ./.;
+            npmDepsHash = "sha256-hPHfLevEm7v3hC/NhK1uF+7+UTlT7trPOuD3+f7avHY=";
+            nativeBuildInputs = [
+              pkgs.python3
+              pkgs.pkg-config
+            ];
+            buildInputs = [
+              pkgs.libxml2
+            ];
+            env.npm_config_nodedir = "${pkgs.nodejs}";
+            buildPhase = ''
+              runHook preBuild
+              npm run build
+              runHook postBuild
+            '';
+            doCheck = true;
+            checkPhase = ''
+              runHook preCheck
+              npm test
+              runHook postCheck
+            '';
+          };
+        };
+
+        packages = {
+          inherit octra pyoctra octrajs octrar;
+
+          rename-octra = pkgs.writeShellApplication {
+            name = "rename-octra";
+            text = ''exec "${./rename_octra}" "$@"'';
+          };
+        };
+
+        apps.rename-octra = {
+          type = "app";
+          program = "${self.packages.${system}.rename-octra}/bin/rename-octra";
+          meta = {
+            description = "Rename the template project (octra -> <newname>) across files and paths.";
+          };
+        };
+
         devShells.default = pkgs.mkShell { 
           packages = [
 
             octra
+            pkgs.just
             pkgs.lcov
             pkgs.clang 
             # pkgs.cmake 
@@ -108,8 +213,10 @@
           packages = [
 
             octra
+            pkgs.just
             pkgs.jq 
             pkgs.lcov
+            pkgs.gtest
             (pkgs.python3.withPackages (python-pkgs:
               with python-pkgs; [
                 jinja2
@@ -136,6 +243,7 @@
             pkgs.gradle
             pkgs.jdk
             pkgs.cmake
+            pkgs.just
           ];
 
           shellHook = ''
@@ -150,6 +258,7 @@
             # pkgs.cmake
             pkgs.pkg-config
             pkgs.libxml2
+            pkgs.just
             (pkgs.python3.withPackages (python-pkgs:
               with python-pkgs; [
                 pyoctra
@@ -169,6 +278,7 @@
             pkgs.pkg-config
             pkgs.python3
             pkgs.nodejs
+            pkgs.just
             pkgs.prefetch-npm-deps
             pkgs.nodePackages.npm
           ];
@@ -181,6 +291,7 @@
             pkgs.pkg-config
             pkgs.python3
             pkgs.nodejs
+            pkgs.just
             pkgs.prefetch-npm-deps
             pkgs.nodePackages.npm
           ];
@@ -190,8 +301,10 @@
           packages = [
             octrar
             pkgs.R
+            pkgs.rPackages.testthat
             pkgs.pkg-config
             pkgs.libxml2
+            pkgs.just
           ];
         };
 
@@ -201,6 +314,7 @@
             pkgs.dotnet-sdk_10
             pkgs.mono
             pkgs.dotnet-repl
+            pkgs.just
           ];
         };
 
@@ -208,6 +322,7 @@
           packages = [
             phpPackage
             pkgs.cmake
+            pkgs.just
           ];
         };
       }

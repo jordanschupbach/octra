@@ -7,7 +7,7 @@ JOBS := "20"
 run: run-cpp
 
 run-csharp: build-csharp
-  nix develop .#csharp --command bash -c "dotnet run --project ./octradotnet"
+  nix develop .#csharp --command bash -c "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet run --project ./octradotnet"
 
 run-java: build-java
   nix develop .#java --command bash -c "gradle run --no-configuration-cache --args='{{ TARGET }}'"
@@ -92,7 +92,6 @@ build-csharp: prebuild-csharp
   nix develop .#csharp --command bash -c "cmake -S ./octradotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(which make)"
   nix develop .#csharp --command bash -c "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
   nix develop .#csharp --command bash -c "cd ./octradotnet && dotnet build"
-  cp build/dotnet/release/liboctradotnet.so ./octradotnet/bin/Debug/net10.0/liboctra.so
 
 
 build-javascript: prebuild-javascript
@@ -101,8 +100,6 @@ build-javascript: prebuild-javascript
 
 build-java: prebuild-java
   nix develop .#java --command bash -c "gradle cmakeBuild"
-  mkdir -p joctra/build/libs
-  cp joctra-octra/build/cmake/libjoctra.so joctra/build/libs/liboctra.so
   nix develop .#java --command bash -c "gradle build"
 
 build-dotnet:
@@ -128,10 +125,10 @@ repl-php: build-php
   nix develop .#php --command bash -c 'php -a --php-ini .user.ini'
 
 repl-csharp: build-csharp
-  nix develop .#csharp --command bash -c "dotnet tool install dotnet-csi && dotnet csi"
+  nix develop .#csharp --command bash -c "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet tool install dotnet-csi && dotnet csi"
 
 repl-java:
-  nix develop .#java --command bash -c 'export LD_LIBRARY_PATH=joctra/build/libs:$LD_LIBRARY_PATH && jshell --class-path ./joctra/build/libs/joctra.jar'
+  nix develop .#java --command bash -c 'export LD_LIBRARY_PATH=joctra-octra/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./joctra/build/libs/joctra.jar'
 
 repl-cpp:
   nix develop .#cpp --command bash -c 'cling $(pkg-config --cflags octra) $(pkg-config --libs-only-L octra) -loctra -std=c++17'
@@ -143,9 +140,21 @@ repl-cpp:
 test-python-build: prebuild-python
   nix develop .#python --command bash -c 'python setup.py sdist bdist_wheel'
 
-test-js:
-    @echo "Running JavaScript Tests"
-    nix develop ./bindings/octrajs/ --command bash -c "npm --prefix ./bindings/octrajs/ run test"
+test-python: prebuild-python
+  nix develop .#python --command bash -c 'python -m pip install -e .'
+  nix develop .#python --command bash -c 'pytest -q bindings_tests/python'
+
+test-r: prebuild-r
+  nix develop .#r --command bash -c 'R -q -e "testthat::test_local(\\".\\")"'
+
+test-csharp: build-csharp
+  nix develop .#csharp --command bash -c 'LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet test ./octradotnet.tests'
+
+test-java: build-java
+  nix develop .#java --command bash -c 'export LD_LIBRARY_PATH=joctra-octra/build/cmake:$LD_LIBRARY_PATH && gradle test'
+
+test-php: build-php
+  nix develop .#php --command bash -c 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini bindings_tests/php/test_octra.php'
 
 
 test-javascript: build-javascript
@@ -158,12 +167,15 @@ test-cpp:
     nix develop .#cpp --command bash -c "cmake -S tests -B build/debug/tests --preset=debug -DCMAKE_MAKE_PROGRAM=$(which make)"
     nix develop .#cpp --command bash -c "cmake --build build/debug/tests -j{{ JOBS }} --verbose"
     nix develop .#cpp --command bash -c "find ./build/ -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
-    ./build/debug/tests/octraTests
+    ./build/debug/tests/run_tests
 
 
 # }}} test commands
 
 # {{{ utilities
+
+rename NEW:
+  ./rename_octra {{ NEW }}
 
 jq:
     nix develop . --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
@@ -268,7 +280,7 @@ example EXAMPLE:
     ./build/debug/examples/{{ EXAMPLE }}
 
 example-python:
-    python ./bindings/octrapy/examples/hello_world_ex.py
+    nix develop .#python --command bash -c "python examples/python/octra_ex.py"
 
 # }}} example commands
 
@@ -293,6 +305,6 @@ windows-run: build
 
 # {{{ all commands
 
-all-test: test-cpp test-javascript
+all-test: test-cpp test-python test-r test-javascript test-csharp test-java test-php
 
 # }}} all commands

@@ -18,6 +18,10 @@ add_library(${PROJECT_NAME} SHARED
   octra_java_wrap.cpp
 )
 
+# SWIG-generated Java glue uses `System.loadLibrary("octra")` by default.
+# Make the produced JNI library discoverable as `liboctra.so`.
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "octra")
+
 # set(SOURCES)
 # foreach(ENTRY ${SOURCES_})
 #     set(FILE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../include/${ENTRY}.hpp")

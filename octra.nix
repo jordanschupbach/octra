@@ -1,39 +1,36 @@
    { pkgs ? import <nixpkgs> { config.allowUnfree = true; } }:
 
    let
-     octra = pkgs.stdenv.mkDerivation {
+     octra = pkgs.stdenv.mkDerivation rec {
        pname = "octra";
        version = "0.0.1";
 
-       src = ./.;
+       src = pkgs.lib.cleanSource ./.;
 
-       buildInputs = [ 
-         pkgs.cmake 
-         pkgs.gcc 
-         pkgs.clang 
-         pkgs.cling 
-         pkgs.libxml2 
-         pkgs.openssl 
+       nativeBuildInputs = [
+         pkgs.cmake
+         pkgs.pkg-config
        ];
 
+       buildInputs = [
+         pkgs.clang
+       ];
 
-       phases = [ "unpackPhase" "patchPhase" "configurePhase" "buildPhase" "installPhase" ];
+       cmakeFlags = [
+         "-DCMAKE_CXX_COMPILER=clang++"
+       ];
 
        configurePhase = ''
-         cmake . -B tbuild -DCMAKE_INSTALL_PREFIX=$out -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+         cmake -S . -B build -DCMAKE_INSTALL_PREFIX=$out ${pkgs.lib.escapeShellArgs cmakeFlags}
        '';
 
        buildPhase = ''
-         cmake --build tbuild -- -j1
+         cmake --build build -j $NIX_BUILD_CORES
        '';
 
        installPhase = ''
-         cmake --install tbuild --prefix $out
+         cmake --install build --prefix $out
        '';
-      
-       nativeBuildInputs = [
-         pkgs.cling 
-       ];
      };
    in
    octra

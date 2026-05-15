@@ -13,22 +13,11 @@ option(TEST_INSTALLED_VERSION "Test the version found by find_package" OFF)
 
 # ---- Dependencies ----
 
-include(../cmake/CPM.cmake/cmake/CPM.cmake)
-
-# CPMAddPackage("gh:doctest/doctest@2.4.9")
-CPMAddPackage("gh:TheLartians/Format.cmake@1.7.3")
-
+include(../cmake/CPM.cmake)
 
 CPMAddPackage(NAME octra SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+find_package(GTest REQUIRED)
 
 
 # if(TEST_INSTALLED_VERSION)
@@ -53,6 +42,9 @@ target_link_libraries(run_tests
   GTest::gtest_main
 )
 set_target_properties(run_tests PROPERTIES CXX_STANDARD 17)
+
+include(GoogleTest)
+gtest_discover_tests(run_tests)
 
 
 # # enable compiler warnings

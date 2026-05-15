@@ -1,4 +1,4 @@
 rootProject.name = "joctra"
-include("jOCTRA-octra")
-include("jOCTRA")
+include("joctra-octra")
+include("joctra")
 // include("app")

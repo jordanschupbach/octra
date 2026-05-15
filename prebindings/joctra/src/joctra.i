@@ -22,7 +22,7 @@
 
 // }}} core
 
-// %{
-//   #include "octra/octra.hpp"
-// %}
-// %include "octra/octra.hpp"
+%{
+  #include "octra/octra.hpp"
+%}
+%include "octra/octra.hpp"

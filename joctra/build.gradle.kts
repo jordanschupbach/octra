@@ -3,7 +3,6 @@ plugins {
 }
 
 import org.gradle.api.plugins.JavaApplication
-import org.gradle.api.tasks.Copy
 
 application {
     // Define the main class for the application.
@@ -14,15 +13,12 @@ dependencies {
     implementation("org.apache.commons:commons-text")
 }
 
-val copyNativeLib by tasks.registering(Copy::class) {
-    from("$rootDir/octra/build/cmake/liboctra.so")
-    into(layout.buildDirectory.dir("libs"))
-    include("liboctra.so")
-}
+val nativeLibDir = file("$rootDir/joctra-octra/build/cmake").absolutePath
 
 tasks.named<JavaExec>("run") {
-    dependsOn(copyNativeLib)
-    // Set the library path to include the directory with the .so file
-    val libraryPath = layout.buildDirectory.dir("libs").get().asFile.absolutePath
-    jvmArgs = listOf("-Djava.library.path=$libraryPath")
+    jvmArgs = listOf("-Djava.library.path=$nativeLibDir")
+}
+
+tasks.named<Test>("test") {
+    systemProperty("java.library.path", nativeLibDir)
 }

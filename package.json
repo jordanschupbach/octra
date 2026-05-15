@@ -12,14 +12,20 @@
   "scripts": {
     "generate": "node setup.js",
     "build": "npm run generate && node-gyp configure build",
+    "pretest": "npm run build",
     "test": "jest test/javascript",
     "start": "node src/index"
   },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/prebindings/"
+    ]
+  },
   "author": "",
-  "license": "Closed Source",
+  "license": "Unlicense",
   "repository": {
     "type": "git"
   },
   "bugs": { },
-  "description": ""
+  "description": "JavaScript (N-API) bindings for the octra C++ library."
 }
