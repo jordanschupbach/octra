@@ -18,9 +18,8 @@ add_library(${PROJECT_NAME} SHARED
   octra_java_wrap.cpp
 )
 
-# SWIG-generated Java glue uses `System.loadLibrary("octra")` by default.
-# Make the produced JNI library discoverable as `liboctra.so`.
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "octra")
+# SWIG-generated Java glue loads `octra_jni` (see prebuild-java post-processing).
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "octra_jni")
 
 # set(SOURCES)
 # foreach(ENTRY ${SOURCES_})

@@ -93,4 +93,5 @@ public class octraJNI {
   public final static native String SVector_doSet(long jarg1, SVector jarg1_, int jarg2, String jarg3);
   public final static native void SVector_doRemoveRange(long jarg1, SVector jarg1_, int jarg2, int jarg3);
   public final static native void delete_SVector(long jarg1);
+  public final static native void hello();
 }

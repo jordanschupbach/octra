@@ -14,11 +14,12 @@ dependencies {
 }
 
 val nativeLibDir = file("$rootDir/joctra-octra/build/cmake").absolutePath
+val nativeDepsDir = file("$rootDir/joctra-octra/build/cmake/_deps/octra-build").absolutePath
 
 tasks.named<JavaExec>("run") {
-    jvmArgs = listOf("-Djava.library.path=$nativeLibDir")
+    jvmArgs = listOf("-Djava.library.path=$nativeLibDir:$nativeDepsDir")
 }
 
 tasks.named<Test>("test") {
-    systemProperty("java.library.path", nativeLibDir)
+    systemProperty("java.library.path", "$nativeLibDir:$nativeDepsDir")
 }

@@ -644,6 +644,9 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__doRemoveRange(std::vector< std::str
         }
       }
 
+  #include "octra/octra.hpp"
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -2150,6 +2153,13 @@ SWIGEXPORT void JNICALL Java_js_octra_joctra_octraJNI_delete_1SVector(JNIEnv *je
   (void)jcls;
   arg1 = *(std::vector< std::string > **)&jarg1; 
   delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_js_octra_joctra_octraJNI_hello(JNIEnv *jenv, jclass jcls) {
+  (void)jenv;
+  (void)jcls;
+  octra::hello();
 }
 
 

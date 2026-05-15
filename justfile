@@ -2,27 +2,29 @@ TARGET := "octra_ex"
 BENCH_TARGET := ""
 JOBS := "20"
 
+NIX_DEVELOP := "nix develop --accept-flake-config"
+
 # {{{ run commands
 
 run: run-cpp
 
 run-csharp: build-csharp
-  nix develop .#csharp --command bash -c "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet run --project ./octradotnet"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet run --project ./octradotnet"
 
 run-java: build-java
-  nix develop .#java --command bash -c "gradle run --no-configuration-cache --args='{{ TARGET }}'"
+  {{ NIX_DEVELOP }} .#java --command bash -lc "gradle run --no-configuration-cache --args='{{ TARGET }}'"
 
 run-python:
-  nix develop .#python --command bash -c 'python examples/python/{{ TARGET }}.py'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'python examples/python/{{ TARGET }}.py'
 
 run-php: build-php
-  nix develop .#php --command bash -c 'php --php-ini .user.ini examples/php/octra_ex.php'
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'php --php-ini .user.ini examples/php/octra_ex.php'
 
 run-r: prebuild-r
-  nix develop .#r --command bash -c 'Rscript examples/r/octra_ex.r'
+  {{ NIX_DEVELOP }} .#r --command bash -lc 'Rscript examples/r/octra_ex.r'
 
 run-javascript: build-javascript
-  nix develop .#javascript --command bash -c 'node ./examples/javascript/octra_ex.js'
+  {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node ./examples/javascript/octra_ex.js'
 
 run-cpp: examples
     @echo "Running target {{ TARGET }}"
@@ -38,73 +40,77 @@ run-benchmark:
 # {{{ prebuild commands
 
 prebuild-python:
-  cd ./include && swig -c++ -python -o ../src/octra_python_wrap.cpp ../prebindings/pyoctra/src/pyoctra.i && mv ../src/octra.py ../src/pyoctra/octra.py
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -python -o ../src/octra_python_wrap.cpp ../prebindings/pyoctra/src/pyoctra.i && mv ../src/octra.py ../src/pyoctra/octra.py"
 
 prebuild-javascript:
-  cd ./include && swig  -javascript -typescript -napi -c++ -o ../src/octra_js_wrap.cpp ../prebindings/octrajs/src/octrajs.i
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/octra_js_wrap.cpp ../prebindings/octrajs/src/octrajs.i"
 
 prebuild-csharp:
-  find ./octradotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +
-  cd ./include && swig -c++ -csharp -o ../octradotnet/octra_csharp_wrap.cpp ../prebindings/octradotnet/src/octradotnet.i 
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./octradotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -csharp -dllimport octra_csharp -o ../octradotnet/octra_csharp_wrap.cpp ../prebindings/octradotnet/src/octradotnet.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "sed -i 's/DllImport(\"octra\"/DllImport(\"octra_csharp\"/g' ./octradotnet/octraPINVOKE.cs"
 
 prebuild-r:
-  cd ./include && swig -c++ -r -o ../src/octra_r_wrap.cpp ../prebindings/octrar/src/octrar.i && mv ../src/octrar.R ../R
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/octra_r_wrap.cpp ../prebindings/octrar/src/octrar.i && mv ../src/octrar.R ../R"
 
 # TODO:
 prebuild-php:
-  cd ./include && swig -c++ -php7 -o ../src/octra_php_wrap.cpp ../prebindings/octraPHP/src/octraPHP.i
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/octra_php_wrap.cpp ../prebindings/octraPHP/src/octraPHP.i"
 
 prebuild-java:
-  find joctra/src/main/java/js/octra/joctra -type f -name '*.java' ! -name 'App.java' ! -path 'joctra/src/main/java/js/octra/joctra/examples/*' -exec rm {} +
-  cd ./include && swig -c++ -java -o ../joctra-octra/octra_java_wrap.cpp -package js.octra.joctra -outdir ../joctra/src/main/java/js/octra/joctra ../prebindings/joctra/src/joctra.i
+  {{ NIX_DEVELOP }} .#java --command bash -lc "find joctra/src/main/java/js/octra/joctra -type f -name '*.java' ! -name 'App.java' ! -path 'joctra/src/main/java/js/octra/joctra/examples/*' -exec rm {} +"
+  {{ NIX_DEVELOP }} .#java --command bash -lc "rm -rf joctra-octra/build/cmake"
+  {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -c++ -java -o ../joctra-octra/octra_java_wrap.cpp -package js.octra.joctra -outdir ../joctra/src/main/java/js/octra/joctra ../prebindings/joctra/src/joctra.i"
+  {{ NIX_DEVELOP }} .#java --command bash -lc "sed -i 's/System.loadLibrary(\"octra\")/System.loadLibrary(\"octra_jni\")/g' joctra/src/main/java/js/octra/joctra/App.java joctra/src/main/java/js/octra/joctra/examples/StlEx.java"
+  {{ NIX_DEVELOP }} .#java --command bash -lc "perl -0777 -pi -e 's/public class octra \\{/public class octra {\\n  static { System.loadLibrary(\"octra_jni\"); }/s' joctra/src/main/java/js/octra/joctra/octra.java"
 
 # }}} prebuild commands
 
 # {{{ build commands
 
 build-php: prebuild-php
-  nix develop .#php --command bash -c 'cmake -S prebindings/octraPHP -B build/octraPHP'
-  nix develop .#php --command bash -c 'cmake --build build/octraPHP -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'cmake -S prebindings/octraPHP -B build/octraPHP'
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'cmake --build build/octraPHP -j{{ JOBS }} --verbose'
 
 
 build: build-debug
 
 build-example-installed:
-  nix-shell --run 'cmake -S examples -B build/debug/examples --preset=debug -DCMAKE_MAKE_PROGRAM=$(which make) -DBUILD_W_INSTALLED=ON'
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'cmake -S examples/cpp -B build/debug/examples-installed -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=$(command -v make) -DBUILD_W_INSTALLED=ON'
 
 
 build-release:
-  nix develop .#cpp --command bash -c "cmake -S . -B build/release --preset=release-clang-linux-x86 -DCMAKE_MAKE_PROGRAM=$(which make)"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S . -B build/release --preset=release-clang-linux-x86 -DCMAKE_MAKE_PROGRAM=$(command -v make)"
   ln -sf build/release/compile_commands.json compile_commands.json
 
 build-debug:
-  nix develop .#cpp --command bash -c "cmake -S . -B build/debug --preset=debug-clang-linux-x86 -DCMAKE_MAKE_PROGRAM=$(which make)"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S . -B build/debug --preset=debug-clang-linux-x86 -DCMAKE_MAKE_PROGRAM=$(command -v make)"
   ln -sf build/debug/compile_commands.json compile_commands.json
 
 build-cpp:
     @echo "Building octra"
-    nix develop .#cpp --command bash -c "cmake -S . -B build"
-    nix develop .#cpp --command bash -c "cmake --build build -j{{ JOBS }} --verbose"
-    nix develop .#cpp --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S . -B build"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build -j{{ JOBS }} --verbose"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
 
 
 build-csharp: prebuild-csharp
-  nix develop .#csharp --command bash -c "cmake -S ./octradotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(which make)"
-  nix develop .#csharp --command bash -c "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
-  nix develop .#csharp --command bash -c "cd ./octradotnet && dotnet build"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake -S ./octradotnet -B build/dotnet/release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cmake --build build/dotnet/release -j{{ JOBS }} --verbose"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "cd ./octradotnet && dotnet build"
 
 
 build-javascript: prebuild-javascript
-    nix develop .#jsbuild --command bash -c "npm --prefix . run build"
+    {{ NIX_DEVELOP }} .#jsbuild --command bash -lc "npm --prefix . run build"
 
 
 build-java: prebuild-java
-  nix develop .#java --command bash -c "gradle cmakeBuild"
-  nix develop .#java --command bash -c "gradle build"
+  {{ NIX_DEVELOP }} .#java --command bash -lc "gradle cmakeBuild"
+  {{ NIX_DEVELOP }} .#java --command bash -lc "gradle build"
 
 build-dotnet:
-    nix develop . --command bash -c "cmake -S prebindings/octradotnet -B build/octradotnet"
-    nix develop . --command bash -c "cmake --build build/octradotnet"
+    {{ NIX_DEVELOP }} . --command bash -lc "cmake -S prebindings/octradotnet -B build/octradotnet"
+    {{ NIX_DEVELOP }} . --command bash -lc "cmake --build build/octradotnet"
     # nix develop ./bindings/octraDotNet/ --command bash -c "just --justfile ./bindings/octraDotNet/justfile build"
 
 
@@ -113,61 +119,63 @@ build-dotnet:
 # {{{ repl commands
 
 repl-javascript: prebuild-javascript build-javascript
-  nix develop .#javascript --command bash -c 'node'
+  {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node'
 
 repl-python: prebuild-python
-  nix develop .#python --command bash -c 'ipython'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'ipython'
 
 repl-r: prebuild-r
-  nix develop .#r --command bash -c 'R'
+  {{ NIX_DEVELOP }} .#r --command bash -lc 'R'
 
 repl-php: build-php
-  nix develop .#php --command bash -c 'php -a --php-ini .user.ini'
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'php -a --php-ini .user.ini'
 
 repl-csharp: build-csharp
-  nix develop .#csharp --command bash -c "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet tool install dotnet-csi && dotnet csi"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH if command -v dotnet-repl >/dev/null 2>&1; then dotnet-repl; elif command -v csi >/dev/null 2>&1; then csi; else echo 'No C# REPL found (expected dotnet-repl or csi)' >&2; exit 1; fi"
 
 repl-java:
-  nix develop .#java --command bash -c 'export LD_LIBRARY_PATH=joctra-octra/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./joctra/build/libs/joctra.jar'
+  {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH=joctra-octra/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./joctra/build/libs/joctra.jar'
 
 repl-cpp:
-  nix develop .#cpp --command bash -c 'cling $(pkg-config --cflags octra) $(pkg-config --libs-only-L octra) -loctra -std=c++17'
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'cling $(pkg-config --cflags octra) $(pkg-config --libs-only-L octra) -loctra -std=c++17'
 
 # }}} repl commands
 
 # {{{ test commands
 
 test-python-build: prebuild-python
-  nix develop .#python --command bash -c 'python setup.py sdist bdist_wheel'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pyoctra-build'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pyoctra-build/bin/python setup.py sdist bdist_wheel'
 
 test-python: prebuild-python
-  nix develop .#python --command bash -c 'python -m pip install -e .'
-  nix develop .#python --command bash -c 'pytest -q bindings_tests/python'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'python -m venv --system-site-packages build/venv/pyoctra'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pyoctra/bin/python -m pip install -e . --no-build-isolation'
+  {{ NIX_DEVELOP }} .#python --command bash -lc 'build/venv/pyoctra/bin/python -m pytest -q bindings_tests/python'
 
 test-r: prebuild-r
-  nix develop .#r --command bash -c 'R -q -e "testthat::test_local(\\".\\")"'
+  {{ NIX_DEVELOP }} .#r --command bash -lc 'R -q -e "testthat::test_local(\".\")"'
 
 test-csharp: build-csharp
-  nix develop .#csharp --command bash -c 'LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet test ./octradotnet.tests'
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet test ./octradotnet.tests'
 
 test-java: build-java
-  nix develop .#java --command bash -c 'export LD_LIBRARY_PATH=joctra-octra/build/cmake:$LD_LIBRARY_PATH && gradle test'
+  {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH=joctra-octra/build/cmake:$LD_LIBRARY_PATH && gradle test'
 
 test-php: build-php
-  nix develop .#php --command bash -c 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini bindings_tests/php/test_octra.php'
+  {{ NIX_DEVELOP }} .#php --command bash -lc 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini bindings_tests/php/test_octra.php'
 
 
 test-javascript: build-javascript
     @echo "Running Javascript Tests"
-    nix develop .#javascript --command bash -c "npm run test"
+    {{ NIX_DEVELOP }} .#javascript --command bash -lc "npm run test"
 
 
 test-cpp:
     @echo "Running Tests"
-    nix develop .#cpp --command bash -c "cmake -S tests -B build/debug/tests --preset=debug -DCMAKE_MAKE_PROGRAM=$(which make)"
-    nix develop .#cpp --command bash -c "cmake --build build/debug/tests -j{{ JOBS }} --verbose"
-    nix develop .#cpp --command bash -c "find ./build/ -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
-    ./build/debug/tests/run_tests
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S tests -B build/debug/tests -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/tests -j{{ JOBS }} --verbose"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./build/ -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "ctest --test-dir build/debug/tests --output-on-failure"
 
 
 # }}} test commands
@@ -178,13 +186,13 @@ rename NEW:
   ./rename_octra {{ NEW }}
 
 jq:
-    nix develop . --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
+    {{ NIX_DEVELOP }} . --command bash -lc "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
 
 
 playground:
     @echo "Building playground"
-    nix develop .#cpp --command bash -c "cmake -S playground -B build/debug/playground"
-    nix develop .#cpp --command bash -c "cmake --build build/debug/playground -j {{JOBS}} --verbose"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S playground -B build/debug/playground"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/playground -j {{JOBS}} --verbose"
     ./build/debug/playground/playground_cpp
 
 flamechart:
@@ -243,7 +251,7 @@ coverage: test-cpp
 
 
 debuggable:
-  nix-shell --run 'clang++ -g -O0 debug.cpp -o debug $(pkg-config --cflags octra) $(pkg-config --libs-only-L octra) $(pkg-config --cflags libxml-2.0) $(pkg-config --libs-only-L libxml-2.0) -std=c++20 -loctra -lxml2 '
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc 'clang++ -g -O0 debug.cpp -o debug $(pkg-config --cflags octra) $(pkg-config --libs-only-L octra) $(pkg-config --cflags libxml-2.0) $(pkg-config --libs-only-L libxml-2.0) -std=c++20 -loctra -lxml2'
 
 
 clean:
@@ -261,8 +269,8 @@ clean:
 
 docs: build
     @echo "Building docs"
-    nix develop .#cpp --command bash -c "cmake -S docs -B build/debug/docs"
-    nix develop .#cpp --command bash -c "cmake --build build/debug/docs --target GenerateDocs"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S docs -B build/debug/docs"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/docs --target GenerateDocs"
 
 # }}} docs commands
 
@@ -270,9 +278,9 @@ docs: build
 
 examples:
     @echo "Building Examples"
-    nix develop .#cpp --command bash -c "cmake -S examples/cpp -B build/debug/examples --preset=debug -DCMAKE_MAKE_PROGRAM=$(which make) -DBUILD_W_INSTALLED=OFF"
-    nix develop .#cpp --command bash -c "cmake --build build/debug/examples -j{{ JOBS }} --verbose"
-    nix develop .#cpp --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S examples/cpp -B build/debug/examples --preset=debug -DCMAKE_MAKE_PROGRAM=$(command -v make) -DBUILD_W_INSTALLED=OFF"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/examples -j{{ JOBS }} --verbose"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
     # nix develop . --command bash -c "make -C ./build/debug/examples -j10 --verbose"
 
 example EXAMPLE:
@@ -280,7 +288,7 @@ example EXAMPLE:
     ./build/debug/examples/{{ EXAMPLE }}
 
 example-python:
-    nix develop .#python --command bash -c "python examples/python/octra_ex.py"
+    {{ NIX_DEVELOP }} .#python --command bash -lc "python examples/python/octra_ex.py"
 
 # }}} example commands
 
@@ -304,6 +312,18 @@ windows-run: build
 # }}} windows specifics
 
 # {{{ all commands
+
+test-nix:
+  nix flake check --accept-flake-config -L
+
+build-nix PACKAGE="octra":
+  nix build --accept-flake-config ".#{{ PACKAGE }}"
+
+update-java-deps:
+  nix/update-joctra-gradle-deps.sh
+
+update-csharp-deps:
+  nix/update-nuget-deps.sh
 
 all-test: test-cpp test-python test-r test-javascript test-csharp test-java test-php
 

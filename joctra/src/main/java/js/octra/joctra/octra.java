@@ -9,4 +9,9 @@
 package js.octra.joctra;
 
 public class octra {
+  static { System.loadLibrary("octra_jni"); }
+  public static void hello() {
+    octraJNI.hello();
+  }
+
 }

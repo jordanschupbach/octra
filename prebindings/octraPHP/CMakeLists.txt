@@ -49,13 +49,14 @@ message(STATUS "PHP includes cleaned: ${PHP_INCLUDE_LIST_CLEANED}")  # For debug
 
 set(SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../../src")
 
-# Include the necessary directories for your target
 target_include_directories(
-  ${PROJECT_NAME} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
-  $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
-  ${SOURCE_DIR}
-  ${PHP_INCLUDE_LIST_CLEANED}
+  ${PROJECT_NAME}
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
+    $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
+  PRIVATE
+    $<BUILD_INTERFACE:${SOURCE_DIR}>
+    ${PHP_INCLUDE_LIST_CLEANED}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE octra::octra)

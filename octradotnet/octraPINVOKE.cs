@@ -32,7 +32,7 @@ class octraPINVOKE {
     static ExceptionArgumentDelegate argumentNullDelegate = new ExceptionArgumentDelegate(SetPendingArgumentNullException);
     static ExceptionArgumentDelegate argumentOutOfRangeDelegate = new ExceptionArgumentDelegate(SetPendingArgumentOutOfRangeException);
 
-    [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="SWIGRegisterExceptionCallbacks_octra")]
+    [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="SWIGRegisterExceptionCallbacks_octra")]
     public static extern void SWIGRegisterExceptionCallbacks_octra(
                                 ExceptionDelegate applicationDelegate,
                                 ExceptionDelegate arithmeticDelegate,
@@ -46,7 +46,7 @@ class octraPINVOKE {
                                 ExceptionDelegate overflowDelegate, 
                                 ExceptionDelegate systemExceptionDelegate);
 
-    [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="SWIGRegisterExceptionArgumentCallbacks_octra")]
+    [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="SWIGRegisterExceptionArgumentCallbacks_octra")]
     public static extern void SWIGRegisterExceptionCallbacksArgument_octra(
                                 ExceptionArgumentDelegate argumentDelegate,
                                 ExceptionArgumentDelegate argumentNullDelegate,
@@ -173,7 +173,7 @@ class octraPINVOKE {
     public delegate string SWIGStringDelegate(string message);
     static SWIGStringDelegate stringDelegate = new SWIGStringDelegate(CreateString);
 
-    [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="SWIGRegisterStringCallback_octra")]
+    [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="SWIGRegisterStringCallback_octra")]
     public static extern void SWIGRegisterStringCallback_octra(SWIGStringDelegate stringDelegate);
 
     static string CreateString(string cString) {
@@ -190,13 +190,13 @@ class octraPINVOKE {
 
   public class SWIGStringWithLengthHelper {
 
-    [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="SWIG_csharp_string_to_c")]
+    [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="SWIG_csharp_string_to_c")]
     private static extern global::System.IntPtr SWIG_csharp_string_to_c0(int size, int len, [global::System.Runtime.InteropServices.In,global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPStr, SizeParamIndex=0)] string str);
 
-    [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="SWIG_csharp_string_size")]
+    [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="SWIG_csharp_string_size")]
     private static extern int SWIG_csharp_string_size(global::System.IntPtr str);
 
-    [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="SWIG_csharp_string_str")]
+    [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="SWIG_csharp_string_str")]
     private static extern global::System.IntPtr SWIG_csharp_string_str(global::System.IntPtr str);
 
     public static global::System.IntPtr SWIG_csharp_string_to_c(string str) {
@@ -224,390 +224,390 @@ class octraPINVOKE {
   }
 
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_IPair__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_IPair__SWIG_0")]
   public static extern global::System.IntPtr new_IPair__SWIG_0();
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_IPair__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_IPair__SWIG_1")]
   public static extern global::System.IntPtr new_IPair__SWIG_1(int jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_IPair__SWIG_2")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_IPair__SWIG_2")]
   public static extern global::System.IntPtr new_IPair__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IPair_first_set")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IPair_first_set")]
   public static extern void IPair_first_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IPair_first_get")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IPair_first_get")]
   public static extern int IPair_first_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IPair_second_set")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IPair_second_set")]
   public static extern void IPair_second_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IPair_second_get")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IPair_second_get")]
   public static extern int IPair_second_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_delete_IPair")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_delete_IPair")]
   public static extern void delete_IPair(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_DPair__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_DPair__SWIG_0")]
   public static extern global::System.IntPtr new_DPair__SWIG_0();
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_DPair__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_DPair__SWIG_1")]
   public static extern global::System.IntPtr new_DPair__SWIG_1(double jarg1, double jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_DPair__SWIG_2")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_DPair__SWIG_2")]
   public static extern global::System.IntPtr new_DPair__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DPair_first_set")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DPair_first_set")]
   public static extern void DPair_first_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DPair_first_get")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DPair_first_get")]
   public static extern double DPair_first_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DPair_second_set")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DPair_second_set")]
   public static extern void DPair_second_set(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DPair_second_get")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DPair_second_get")]
   public static extern double DPair_second_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_delete_DPair")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_delete_DPair")]
   public static extern void delete_DPair(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_SPair__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_SPair__SWIG_0")]
   public static extern global::System.IntPtr new_SPair__SWIG_0();
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_SPair__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_SPair__SWIG_1")]
   public static extern global::System.IntPtr new_SPair__SWIG_1(string jarg1, string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_SPair__SWIG_2")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_SPair__SWIG_2")]
   public static extern global::System.IntPtr new_SPair__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SPair_first_set")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SPair_first_set")]
   public static extern void SPair_first_set(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SPair_first_get")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SPair_first_get")]
   public static extern string SPair_first_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SPair_second_set")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SPair_second_set")]
   public static extern void SPair_second_set(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SPair_second_get")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SPair_second_get")]
   public static extern string SPair_second_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_delete_SPair")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_delete_SPair")]
   public static extern void delete_SPair(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_IVector__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_IVector__SWIG_0")]
   public static extern global::System.IntPtr new_IVector__SWIG_0();
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_IVector__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_IVector__SWIG_1")]
   public static extern global::System.IntPtr new_IVector__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_Clear")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_Clear")]
   public static extern void IVector_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_Add")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_Add")]
   public static extern void IVector_Add(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_size")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_size")]
   public static extern uint IVector_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_empty")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_empty")]
   public static extern bool IVector_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_capacity")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_capacity")]
   public static extern uint IVector_capacity(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_reserve")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_reserve")]
   public static extern void IVector_reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_IVector__SWIG_2")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_IVector__SWIG_2")]
   public static extern global::System.IntPtr new_IVector__SWIG_2(int jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_getitemcopy")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_getitemcopy")]
   public static extern int IVector_getitemcopy(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_getitem")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_getitem")]
   public static extern int IVector_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_setitem")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_setitem")]
   public static extern void IVector_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_AddRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_AddRange")]
   public static extern void IVector_AddRange(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_GetRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_GetRange")]
   public static extern global::System.IntPtr IVector_GetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_Insert")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_Insert")]
   public static extern void IVector_Insert(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_InsertRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_InsertRange")]
   public static extern void IVector_InsertRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_RemoveAt")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_RemoveAt")]
   public static extern void IVector_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_RemoveRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_RemoveRange")]
   public static extern void IVector_RemoveRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_Repeat")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_Repeat")]
   public static extern global::System.IntPtr IVector_Repeat(int jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_Reverse__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_Reverse__SWIG_0")]
   public static extern void IVector_Reverse__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_Reverse__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_Reverse__SWIG_1")]
   public static extern void IVector_Reverse__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_SetRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_SetRange")]
   public static extern void IVector_SetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_Contains")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_Contains")]
   public static extern bool IVector_Contains(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_IndexOf")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_IndexOf")]
   public static extern int IVector_IndexOf(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_LastIndexOf")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_LastIndexOf")]
   public static extern int IVector_LastIndexOf(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_IVector_Remove")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_IVector_Remove")]
   public static extern bool IVector_Remove(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_delete_IVector")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_delete_IVector")]
   public static extern void delete_IVector(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_DVector__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_DVector__SWIG_0")]
   public static extern global::System.IntPtr new_DVector__SWIG_0();
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_DVector__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_DVector__SWIG_1")]
   public static extern global::System.IntPtr new_DVector__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_Clear")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_Clear")]
   public static extern void DVector_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_Add")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_Add")]
   public static extern void DVector_Add(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_size")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_size")]
   public static extern uint DVector_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_empty")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_empty")]
   public static extern bool DVector_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_capacity")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_capacity")]
   public static extern uint DVector_capacity(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_reserve")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_reserve")]
   public static extern void DVector_reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_DVector__SWIG_2")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_DVector__SWIG_2")]
   public static extern global::System.IntPtr new_DVector__SWIG_2(int jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_getitemcopy")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_getitemcopy")]
   public static extern double DVector_getitemcopy(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_getitem")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_getitem")]
   public static extern double DVector_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_setitem")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_setitem")]
   public static extern void DVector_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, double jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_AddRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_AddRange")]
   public static extern void DVector_AddRange(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_GetRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_GetRange")]
   public static extern global::System.IntPtr DVector_GetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_Insert")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_Insert")]
   public static extern void DVector_Insert(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, double jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_InsertRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_InsertRange")]
   public static extern void DVector_InsertRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_RemoveAt")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_RemoveAt")]
   public static extern void DVector_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_RemoveRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_RemoveRange")]
   public static extern void DVector_RemoveRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_Repeat")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_Repeat")]
   public static extern global::System.IntPtr DVector_Repeat(double jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_Reverse__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_Reverse__SWIG_0")]
   public static extern void DVector_Reverse__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_Reverse__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_Reverse__SWIG_1")]
   public static extern void DVector_Reverse__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_SetRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_SetRange")]
   public static extern void DVector_SetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_Contains")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_Contains")]
   public static extern bool DVector_Contains(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_IndexOf")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_IndexOf")]
   public static extern int DVector_IndexOf(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_LastIndexOf")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_LastIndexOf")]
   public static extern int DVector_LastIndexOf(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_DVector_Remove")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_DVector_Remove")]
   public static extern bool DVector_Remove(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_delete_DVector")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_delete_DVector")]
   public static extern void delete_DVector(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_SizeVector__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_SizeVector__SWIG_0")]
   public static extern global::System.IntPtr new_SizeVector__SWIG_0();
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_SizeVector__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_SizeVector__SWIG_1")]
   public static extern global::System.IntPtr new_SizeVector__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_Clear")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_Clear")]
   public static extern void SizeVector_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_Add")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_Add")]
   public static extern void SizeVector_Add(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_size")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_size")]
   public static extern uint SizeVector_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_empty")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_empty")]
   public static extern bool SizeVector_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_capacity")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_capacity")]
   public static extern uint SizeVector_capacity(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_reserve")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_reserve")]
   public static extern void SizeVector_reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_SizeVector__SWIG_2")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_SizeVector__SWIG_2")]
   public static extern global::System.IntPtr new_SizeVector__SWIG_2(int jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_getitemcopy")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_getitemcopy")]
   public static extern uint SizeVector_getitemcopy(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_getitem")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_getitem")]
   public static extern uint SizeVector_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_setitem")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_setitem")]
   public static extern void SizeVector_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, uint jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_AddRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_AddRange")]
   public static extern void SizeVector_AddRange(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_GetRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_GetRange")]
   public static extern global::System.IntPtr SizeVector_GetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_Insert")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_Insert")]
   public static extern void SizeVector_Insert(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, uint jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_InsertRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_InsertRange")]
   public static extern void SizeVector_InsertRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_RemoveAt")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_RemoveAt")]
   public static extern void SizeVector_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_RemoveRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_RemoveRange")]
   public static extern void SizeVector_RemoveRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_Repeat")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_Repeat")]
   public static extern global::System.IntPtr SizeVector_Repeat(uint jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_Reverse__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_Reverse__SWIG_0")]
   public static extern void SizeVector_Reverse__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_Reverse__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_Reverse__SWIG_1")]
   public static extern void SizeVector_Reverse__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SizeVector_SetRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SizeVector_SetRange")]
   public static extern void SizeVector_SetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_delete_SizeVector")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_delete_SizeVector")]
   public static extern void delete_SizeVector(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_SVector__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_SVector__SWIG_0")]
   public static extern global::System.IntPtr new_SVector__SWIG_0();
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_SVector__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_SVector__SWIG_1")]
   public static extern global::System.IntPtr new_SVector__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_Clear")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_Clear")]
   public static extern void SVector_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_Add")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_Add")]
   public static extern void SVector_Add(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_size")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_size")]
   public static extern uint SVector_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_empty")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_empty")]
   public static extern bool SVector_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_capacity")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_capacity")]
   public static extern uint SVector_capacity(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_reserve")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_reserve")]
   public static extern void SVector_reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_new_SVector__SWIG_2")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_SVector__SWIG_2")]
   public static extern global::System.IntPtr new_SVector__SWIG_2(int jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_getitemcopy")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_getitemcopy")]
   public static extern string SVector_getitemcopy(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_getitem")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_getitem")]
   public static extern string SVector_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_setitem")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_setitem")]
   public static extern void SVector_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, string jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_AddRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_AddRange")]
   public static extern void SVector_AddRange(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_GetRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_GetRange")]
   public static extern global::System.IntPtr SVector_GetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_Insert")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_Insert")]
   public static extern void SVector_Insert(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, string jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_InsertRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_InsertRange")]
   public static extern void SVector_InsertRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_RemoveAt")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_RemoveAt")]
   public static extern void SVector_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_RemoveRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_RemoveRange")]
   public static extern void SVector_RemoveRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_Repeat")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_Repeat")]
   public static extern global::System.IntPtr SVector_Repeat(string jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_Reverse__SWIG_0")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_Reverse__SWIG_0")]
   public static extern void SVector_Reverse__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_Reverse__SWIG_1")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_Reverse__SWIG_1")]
   public static extern void SVector_Reverse__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_SetRange")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_SetRange")]
   public static extern void SVector_SetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_Contains")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_Contains")]
   public static extern bool SVector_Contains(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_IndexOf")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_IndexOf")]
   public static extern int SVector_IndexOf(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_LastIndexOf")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_LastIndexOf")]
   public static extern int SVector_LastIndexOf(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_SVector_Remove")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_SVector_Remove")]
   public static extern bool SVector_Remove(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_delete_SVector")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_delete_SVector")]
   public static extern void delete_SVector(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("octra", EntryPoint="CSharp_hello")]
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_hello")]
   public static extern void hello();
 }

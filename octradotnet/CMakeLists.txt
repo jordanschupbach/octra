@@ -20,9 +20,8 @@ add_library(${PROJECT_NAME} SHARED
   octra_csharp_wrap.cpp
 )
 
-# SWIG-generated C# glue uses `[DllImport("octra")]` by default.
-# Make the produced shared library discoverable as `liboctra.so`.
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "octra")
+# SWIG-generated C# glue uses `[DllImport("octra_csharp")]` (see `%module(dllimport=...)`).
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "octra_csharp")
 
 # set(SOURCES)
 # foreach(ENTRY ${SOURCES_})

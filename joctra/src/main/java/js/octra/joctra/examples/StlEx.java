@@ -6,7 +6,7 @@ import js.octra.joctra.DPair;
 import js.octra.joctra.IPair;
 
 public class StlEx {
-  static { System.loadLibrary("octra"); }
+  static { System.loadLibrary("octra_jni"); }
   public static void run() {
     System.out.println("Stl Example:");
     var v = new DVector(10, 0.0);

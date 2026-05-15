@@ -77,6 +77,17 @@
 
         # }}} Bindings
 
+        gradleWrapped = pkgs.gradle-packages.gradle.wrapped;
+        joctraGradleDeps = gradleWrapped.passthru.fetchDeps {
+          pkg = pkgs.stdenvNoCC.mkDerivation {
+            pname = "joctra";
+            version = "0.0.1";
+            src = pkgs.emptyDirectory;
+            installPhase = "mkdir -p $out";
+          };
+          data = ./nix/joctra-gradle-deps.json;
+        };
+
       in
       {
         checks = {
@@ -164,6 +175,73 @@
               runHook postCheck
             '';
           };
+
+          java = pkgs.stdenv.mkDerivation {
+            name = "octra-java-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              gradleWrapped
+              pkgs.jdk
+              pkgs.cmake
+              pkgs.pkg-config
+            ];
+            buildInputs = [
+              pkgs.libxml2
+            ];
+
+            # Provide a deterministic HTTP replay cache for Gradle via mitm-cache.
+            mitmCache = joctraGradleDeps;
+
+            phases = [ "unpackPhase" "configurePhase" "buildPhase" "installPhase" ];
+            configurePhase = "runHook preConfigure";
+            buildPhase = ''
+              cmake -S joctra-octra -B joctra-octra/build/cmake -DCMAKE_BUILD_TYPE=Release
+              cmake --build joctra-octra/build/cmake -j $NIX_BUILD_CORES
+              export LD_LIBRARY_PATH="$PWD/joctra-octra/build/cmake:''${LD_LIBRARY_PATH:-}"
+              gradle test --no-configuration-cache
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          csharp =
+            let
+              nativeOctra = pkgs.stdenv.mkDerivation {
+                pname = "octra-csharp-native";
+                version = "0.0.1";
+                src = pkgs.lib.cleanSource ./.;
+                nativeBuildInputs = [
+                  pkgs.cmake
+                  pkgs.pkg-config
+                ];
+                buildInputs = [
+                  pkgs.libxml2
+                ];
+                phases = [ "unpackPhase" "buildPhase" "installPhase" ];
+                buildPhase = ''
+                  cmake -S octradotnet -B build -DCMAKE_BUILD_TYPE=Release
+                  cmake --build build -j $NIX_BUILD_CORES
+                '';
+                installPhase = ''
+                  mkdir -p $out/lib
+                  cp -v build/liboctra_csharp.so $out/lib/
+                  cp -v build/_deps/octra-build/liboctra.so $out/lib/
+                '';
+              };
+            in
+            pkgs.buildDotnetModule {
+              name = "octra-csharp-check";
+              src = pkgs.lib.cleanSourceWith {
+                src = ./.;
+                filter = path: type: builtins.baseNameOf path != "dotnet-tools.json";
+              };
+              dotnet-sdk = pkgs.dotnet-sdk_10;
+              nugetDeps = ./nix/nuget-deps.json;
+              testProjectFile = "octradotnet.tests/octradotnet.tests.csproj";
+              runtimeDeps = [ nativeOctra ];
+              doCheck = true;
+              dontDotnetInstall = true;
+              installPhase = "mkdir -p $out";
+            };
         };
 
         packages = {
@@ -240,7 +318,7 @@
 
         devShells.java = pkgs.mkShell { 
           packages = [
-            pkgs.gradle
+            gradleWrapped
             pkgs.jdk
             pkgs.cmake
             pkgs.just
