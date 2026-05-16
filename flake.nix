@@ -15,7 +15,7 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        octra = import ./octra.nix { pkgs = pkgs; };
+        octra = import ./nix/octra.nix { pkgs = pkgs; };
         phpPackage = php-from-source.packages.${system}; # Get the custom PHP package
         lua =
           if pkgs ? lua5_4 then pkgs.lua5_4
@@ -58,13 +58,13 @@
 
 
         pythonPkgs = pkgs.python3.pkgs;
-        pyoctra = import ./pyoctra.nix {
+        pyoctra = import ./nix/pyoctra.nix {
           inherit (pkgs) lib stdenv fetchPypi python libxml2 pkg-config;
           inherit (pythonPkgs) buildPythonPackage setuptools;
         };
 
 
-        octrajs = import ./octrajs.nix {
+        octrajs = import ./nix/octrajs.nix {
           inherit (pkgs) lib buildNpmPackage libxml2 pkg-config;
         };
 
@@ -78,13 +78,13 @@
           ];
         };
 
-        octratcl = import ./octratcl.nix { pkgs = pkgs; };
-        octruby = import ./octruby.nix { pkgs = pkgs; };
-        octralua = import ./octralua.nix { pkgs = pkgs; };
-        octraocaml = import ./octraocaml.nix { pkgs = pkgs; };
-        octraguile = import ./octraguile.nix { pkgs = pkgs; };
-        octraoctave = import ./octraoctave.nix { pkgs = pkgs; };
-        octrad = import ./octrad.nix { pkgs = pkgs; };
+        octratcl = import ./nix/octratcl.nix { pkgs = pkgs; };
+        octruby = import ./nix/octruby.nix { pkgs = pkgs; };
+        octralua = import ./nix/octralua.nix { pkgs = pkgs; };
+        octraocaml = import ./nix/octraocaml.nix { pkgs = pkgs; };
+        octraguile = import ./nix/octraguile.nix { pkgs = pkgs; };
+        octraoctave = import ./nix/octraoctave.nix { pkgs = pkgs; };
+        octrad = import ./nix/octrad.nix { pkgs = pkgs; };
 
 
         # }}} Bindings

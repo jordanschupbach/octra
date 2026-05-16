@@ -11,7 +11,7 @@ buildNpmPackage (finalAttrs: {
   name = "octrajs";
   packageName = "octrajs";
   version = "0.0.1";
-  src = lib.cleanSource ./.;
+  src = lib.cleanSource ../.;
   # npmDepsHash = "sha256-xY8C8qEWDw+4HtFbLI2j4liIAZ6cP7JDS5dXT5N/te8=";
   npmDepsHash = "sha256-hPHfLevEm7v3hC/NhK1uF+7+UTlT7trPOuD3+f7avHY=";
   # Add native build inputs if needed

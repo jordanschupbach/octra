@@ -4,10 +4,10 @@ let
   octra = import ./octra.nix { pkgs = pkgs; };
 in
 pkgs.stdenv.mkDerivation rec {
-  pname = "octraguile";
+  pname = "octraoctave";
   version = "0.0.1";
 
-  src = pkgs.lib.cleanSource ./.;
+  src = pkgs.lib.cleanSource ../.;
 
   nativeBuildInputs = [
     pkgs.cmake
@@ -18,23 +18,23 @@ pkgs.stdenv.mkDerivation rec {
 
   buildInputs = [
     octra
-    pkgs.guile
+    pkgs.octave
   ];
 
   configurePhase = ''
-    cmake -S prebindings/octraguile -B build/octraguile \
+    cmake -S prebindings/octraoctave -B build/octraoctave \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_PREFIX_PATH="${octra}"
   '';
 
   buildPhase = ''
-    cmake --build build/octraguile -j $NIX_BUILD_CORES
+    cmake --build build/octraoctave -j $NIX_BUILD_CORES
   '';
 
   installPhase = ''
-    cmake --install build/octraguile --prefix "$out"
+    cmake --install build/octraoctave --prefix "$out"
 
-    # Ensure the extension can find liboctra.so at runtime inside the Nix store.
+    # Ensure the Octave module can find liboctra.so at runtime inside the Nix store.
     octraLib="$(find "${octra}" -name 'liboctra.so' -print -quit)"
     if [ -z "$octraLib" ]; then
       echo "Could not find liboctra.so in ${octra}" >&2
@@ -43,23 +43,23 @@ pkgs.stdenv.mkDerivation rec {
     fi
     octraLibDir="$(dirname "$octraLib")"
 
-    soPath="$(find "$out" -path '*/guile/*/extensions/octra.so' -print -quit)"
-    if [ -z "$soPath" ]; then
-      echo "Could not find installed octra.so under $out" >&2
+    octFilePath="$(find "$out" -type f -name 'octra.oct' -print -quit)"
+    if [ -z "$octFilePath" ]; then
+      echo "Could not find installed octra.oct under $out" >&2
       find "$out" -maxdepth 6 -type f -print >&2
       exit 1
     fi
 
-    existingRpath="$(${pkgs.patchelf}/bin/patchelf --print-rpath "$soPath" || true)"
+    existingRpath="$(${pkgs.patchelf}/bin/patchelf --print-rpath "$octFilePath" || true)"
     if [ -n "$existingRpath" ]; then
-      ${pkgs.patchelf}/bin/patchelf --set-rpath "$octraLibDir:$existingRpath" "$soPath"
+      ${pkgs.patchelf}/bin/patchelf --set-rpath "$octraLibDir:$existingRpath" "$octFilePath"
     else
-      ${pkgs.patchelf}/bin/patchelf --set-rpath "$octraLibDir" "$soPath"
+      ${pkgs.patchelf}/bin/patchelf --set-rpath "$octraLibDir" "$octFilePath"
     fi
   '';
 
   meta = with pkgs.lib; {
-    description = "Guile (SWIG) bindings for the octra library.";
+    description = "Octave (SWIG) bindings for the octra library.";
     license = licenses.unlicense;
     platforms = platforms.linux;
   };

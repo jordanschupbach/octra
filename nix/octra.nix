@@ -6,7 +6,7 @@
        version = "0.0.1";
 
        src = pkgs.lib.cleanSourceWith {
-         src = ./.;
+         src = ../.;
          filter =
            path: type:
            let

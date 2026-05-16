@@ -7,7 +7,7 @@ pkgs.stdenv.mkDerivation rec {
   pname = "octratcl";
   version = "0.0.1";
 
-  src = pkgs.lib.cleanSource ./.;
+  src = pkgs.lib.cleanSource ../.;
 
   nativeBuildInputs = [
     pkgs.cmake

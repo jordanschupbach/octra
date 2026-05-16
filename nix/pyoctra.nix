@@ -13,7 +13,7 @@ in
     pname = "pyoctra";
     version = "0.0.1";
     pyproject = true;
-    src = lib.cleanSource ./.;
+    src = lib.cleanSource ../.;
     build-system = [setuptools];
     meta = {
       description = "Python bindings to the octra library.";
