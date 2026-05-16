@@ -23,19 +23,8 @@ install:
 	sudo make cmake -C build install
 
 python:
-	rm -rf ./bindings/pyoctra/build
-	make -C ./bindings/pyoctra
-
-# r:
-# 	swig -r -c++ -o ./bindings/octraR/src/octra_wrap.cpp ./prebindings/octraR/swig/octrar.i
-
-
-
-install-r:
-	make -C ./bindings/octraR install
-
-clean-r: 
-	make -C ./bindings/octraR clean
+	rm -rf ./build ./dist
+	python -m pip install -e .
 
 
 CLING_COMPILE_FLAGS:="-std=c++17"
@@ -46,7 +35,6 @@ CLING_LINK_FLAGS += "-L/usr/lib/octra-0.0.1/liboctra.so"
 
 repl:
 	cling ${CLING_INCLUDE_FLAGS} ${CLING_COMPILE_FLAGS} ${CLING_LINK_FLAGS}
-
 
 
 

@@ -40,7 +40,7 @@ pkgs.stdenv.mkDerivation rec {
     mkdir -p "$pkgDir"
 
     cp -v build/octratcl/Octra.so "$pkgDir/"
-    cp -v bindings/octratcl/pkgIndex.tcl "$pkgDir/"
+    cp -v octratcl/pkgIndex.tcl "$pkgDir/"
   '';
 
   meta = with pkgs.lib; {

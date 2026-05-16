@@ -6,15 +6,15 @@
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
 #
-#   MakeMaker ARGV: (q[INSTALL_BASE=/home/jordan/projects/octra/bindings/perloctra/../../build/perl])
+#   MakeMaker ARGV: (q[INSTALL_BASE=/home/jordan/projects/octra/perloctra/../build/perl])
 #
 
 #   MakeMaker Parameters:
 
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     INC => q[-I/home/jordan/projects/octra/bindings/perloctra/../../include]
-#     LIBS => [q[-L/home/jordan/projects/octra/bindings/perloctra/../../build -loctra]]
+#     INC => q[-I/home/jordan/projects/octra/perloctra/../../include]
+#     LIBS => [q[-L/home/jordan/projects/octra/perloctra/../../build -loctra]]
 #     NAME => q[Octra]
 #     OBJECT => q[Octra_wrap$(OBJ_EXT)]
 #     PM => { lib/Octra.pm=>q[$(INST_LIBDIR)/Octra.pm] }
@@ -80,7 +80,7 @@ MAN3EXT = 3
 MAN1SECTION = 1
 MAN3SECTION = 3
 INSTALLDIRS = site
-INSTALL_BASE = /home/jordan/projects/octra/bindings/perloctra/../../build/perl
+INSTALL_BASE = /home/jordan/projects/octra/perloctra/../build/perl
 DESTDIR = 
 PREFIX = $(INSTALL_BASE)
 INSTALLPRIVLIB = $(INSTALL_BASE)/lib/perl5
@@ -157,7 +157,7 @@ BASEEXT = Octra
 PARENT_NAME = 
 DLBASE = $(BASEEXT)
 VERSION_FROM = 
-INC = -I/home/jordan/projects/octra/bindings/perloctra/../../include
+INC = -I/home/jordan/projects/octra/perloctra/../../include
 OBJECT = Octra_wrap$(OBJ_EXT)
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -292,10 +292,6 @@ MPOLLUTE =
 # Octra might depend on some other libraries:
 # See ExtUtils::Liblist for details
 #
-EXTRALIBS = -L/home/jordan/projects/octra/bindings/perloctra/../../build -loctra
-LDLOADLIBS = -L/home/jordan/projects/octra/bindings/perloctra/../../build -loctra
-BSLOADLIBS = 
-LD_RUN_PATH = /home/jordan/projects/octra/bindings/perloctra/../../build
 
 
 # --- MakeMaker const_cccmd section:
@@ -315,7 +311,7 @@ PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 	PREFIX="$(PREFIX)"\
 	INSTALL_BASE="$(INSTALL_BASE)"\
 	PASTHRU_DEFINE='$(DEFINE) $(PASTHRU_DEFINE)'\
-	PASTHRU_INC='-I/home/jordan/projects/octra/bindings/perloctra/../../include $(PASTHRU_INC)'
+	PASTHRU_INC='-I/home/jordan/projects/octra/perloctra/../../include $(PASTHRU_INC)'
 
 
 # --- MakeMaker special_targets section:
@@ -477,7 +473,7 @@ INST_DYNAMIC_FIX =
 
 $(INST_DYNAMIC) : $(OBJECT) $(MYEXTLIB) $(INST_ARCHAUTODIR)$(DFSEP).exists $(EXPORT_LIST) $(PERL_ARCHIVEDEP) $(PERL_ARCHIVE_AFTER) $(INST_DYNAMIC_DEP) 
 	$(RM_F) $@
-	LD_RUN_PATH="$(LD_RUN_PATH)" $(LD)  $(LDDLFLAGS)  $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB) \
+	$(LD)  $(LDDLFLAGS)  $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB) \
 	  $(PERL_ARCHIVE) $(LDLOADLIBS) $(PERL_ARCHIVE_AFTER) $(EXPORT_LIST) \
 	  $(INST_DYNAMIC_FIX)
 	$(CHMOD) $(PERM_RWX) $@
@@ -715,7 +711,7 @@ distdir : create_distdir distmeta
 
 # --- MakeMaker dist_test section:
 disttest : distdir
-	cd $(DISTVNAME) && $(ABSPERLRUN) Makefile.PL "INSTALL_BASE=/home/jordan/projects/octra/bindings/perloctra/../../build/perl"
+	cd $(DISTVNAME) && $(ABSPERLRUN) Makefile.PL "INSTALL_BASE=/home/jordan/projects/octra/perloctra/../build/perl"
 	cd $(DISTVNAME) && $(MAKE) $(PASTHRU)
 	cd $(DISTVNAME) && $(MAKE) test $(PASTHRU)
 
@@ -970,7 +966,7 @@ $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
 	-$(NOECHO) $(RM_F) $(MAKEFILE_OLD)
 	-$(NOECHO) $(MV)   $(FIRST_MAKEFILE) $(MAKEFILE_OLD)
 	- $(MAKE) $(USEMAKEFILE) $(MAKEFILE_OLD) clean $(DEV_NULL)
-	$(PERLRUN) Makefile.PL "INSTALL_BASE=/home/jordan/projects/octra/bindings/perloctra/../../build/perl"
+	$(PERLRUN) Makefile.PL "INSTALL_BASE=/home/jordan/projects/octra/perloctra/../build/perl"
 	$(NOECHO) $(ECHO) "==> Your Makefile has been rebuilt. <=="
 	$(NOECHO) $(ECHO) "==> Please rerun the $(MAKE) command.  <=="
 	$(FALSE)
@@ -993,7 +989,7 @@ $(MAKE_APERL_FILE) : static $(FIRST_MAKEFILE) pm_to_blib
 		Makefile.PL DIR="" \
 		MAKEFILE=$(MAKE_APERL_FILE) LINKTYPE=static \
 		MAKEAPERL=1 NORECURS=1 CCCDLFLAGS= \
-		INSTALL_BASE=/home/jordan/projects/octra/bindings/perloctra/../../build/perl
+		INSTALL_BASE=/home/jordan/projects/octra/perloctra/../build/perl
 
 
 # --- MakeMaker test section:

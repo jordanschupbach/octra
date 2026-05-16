@@ -21,3 +21,4 @@ _build
 .merlin
 bindings_tests/rust/target
 bindings/rust/target
+rustoctra/target

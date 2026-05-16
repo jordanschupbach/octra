@@ -26,13 +26,13 @@ pkgs.stdenv.mkDerivation rec {
 
     export OCTRA_PREFIX="${octra}"
 
-    mkdir -p bindings/octruby/ext/octruby bindings/octruby/lib/octruby
+    mkdir -p octruby/ext/octruby octruby/lib/octruby
     swig -ruby -c++ -Iinclude \
-      -o bindings/octruby/ext/octruby/octruby_wrap.cxx \
-      -outdir bindings/octruby/lib/octruby \
+      -o octruby/ext/octruby/octruby_wrap.cxx \
+      -outdir octruby/lib/octruby \
       prebindings/octruby/src/octruby.i
 
-    pushd bindings/octruby/ext/octruby
+    pushd octruby/ext/octruby
     ruby extconf.rb
     make -j $NIX_BUILD_CORES
     popd
@@ -46,21 +46,21 @@ pkgs.stdenv.mkDerivation rec {
     outLib="$out/lib"
     mkdir -p "$outLib/octruby"
 
-    cp -v bindings/octruby/lib/octruby.rb "$outLib/"
+    cp -v octruby/lib/octruby.rb "$outLib/"
 
     # SWIG's generated Ruby file name depends on the module name; copy whatever it generated.
     shopt -s nullglob
-    rubyRbFiles=(bindings/octruby/lib/octruby/*.rb)
+    rubyRbFiles=(octruby/lib/octruby/*.rb)
     if (( ''${#rubyRbFiles[@]} )); then
       cp -v "''${rubyRbFiles[@]}" "$outLib/octruby/"
     fi
     shopt -u nullglob
 
     # mkmf may place the compiled extension under a subdir (e.g. ext/octruby/octruby/octruby.so).
-    soPath="$(find bindings/octruby/ext/octruby -name '*.so' -print -quit)"
+    soPath="$(find octruby/ext/octruby -name '*.so' -print -quit)"
     if [ -z "$soPath" ]; then
-      echo "Could not find built Ruby extension (.so) under bindings/octruby/ext/octruby" >&2
-      find bindings/octruby/ext/octruby -maxdepth 3 -type f -print >&2
+      echo "Could not find built Ruby extension (.so) under octruby/ext/octruby" >&2
+      find octruby/ext/octruby -maxdepth 3 -type f -print >&2
       exit 1
     fi
     cp -v "$soPath" "$outLib/octruby/octruby.so"

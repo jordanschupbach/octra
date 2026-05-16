@@ -46,7 +46,7 @@ go 1.21
 ")
 
 file(COPY ${PROJECT_BINARY_DIR}/gooctra/
-   DESTINATION ${PROJECT_SOURCE_DIR}/../../bindings/gooctra/)
+   DESTINATION ${PROJECT_SOURCE_DIR}/../../gooctra/)
 
 # For now, we'll just note that Go bindings need special handling
 # Go builds are typically done with 'go build' rather than cmake

@@ -24,10 +24,10 @@ pkgs.stdenv.mkDerivation rec {
   buildPhase = ''
     runHook preBuild
 
-    mkdir -p bindings/octrad/source
+    mkdir -p octrad/source
     swig -c++ -d -Iinclude \
-      -o bindings/octrad/source/octrad_wrap.cpp \
-      -outdir bindings/octrad/source \
+      -o octrad/source/octrad_wrap.cpp \
+      -outdir octrad/source \
       prebindings/octrad/src/octrad.i
 
     export HOME="$TMPDIR"
@@ -49,12 +49,12 @@ pkgs.stdenv.mkDerivation rec {
 
     c++ -shared -fPIC \
       $OCTRA_CFLAGS \
-      -o bindings/octrad/source/liboctra_wrap.so \
-      bindings/octrad/source/octrad_wrap.cpp \
+      -o octrad/source/liboctra_wrap.so \
+      octrad/source/octrad_wrap.cpp \
       $OCTRA_LDFLAGS \
       -Wl,-rpath,"$OCTRA_LIBDIR"
 
-    (cd bindings/octrad && dub build --compiler=ldc2 --build=release)
+    (cd octrad && dub build --compiler=ldc2 --build=release)
 
     runHook postBuild
   '';
@@ -64,13 +64,13 @@ pkgs.stdenv.mkDerivation rec {
 
     pkgDir="$out/share/dub/packages/octrad-${version}"
     mkdir -p "$pkgDir"
-    cp -R bindings/octrad/dub.json bindings/octrad/source "$pkgDir/"
+    cp -R octrad/dub.json octrad/source "$pkgDir/"
 
     # Also ship the built artifact for convenience (name differs by compiler/platform).
     mkdir -p "$out/lib"
-    cp -v bindings/octrad/source/liboctra_wrap.so "$out/lib/"
+    cp -v octrad/source/liboctra_wrap.so "$out/lib/"
     for ext in a so dylib lib; do
-      if ! find bindings/octrad -maxdepth 2 -type f -name "*.$ext" -exec cp -v {} "$out/lib/" \; 2>/dev/null; then
+      if ! find octrad -maxdepth 2 -type f -name "*.$ext" -exec cp -v {} "$out/lib/" \; 2>/dev/null; then
         :
       fi
     done

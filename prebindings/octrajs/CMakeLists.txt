@@ -88,12 +88,12 @@ configure_file(${PROJECT_SOURCE_DIR}/setup.js.in
 
 # file(
 #   GENERATE
-#   OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/OCTRAjs/binding.gyp
+#   OUTPUT ${PROJECT_SOURCE_DIR}/../../binding.gyp
 #   INPUT ${PROJECT_BINARY_DIR}/binding.gyp.in)
 
 file(
   GENERATE
-  OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/OCTRAjs/setup.js
+  OUTPUT ${PROJECT_SOURCE_DIR}/../../setup.js
   INPUT ${PROJECT_BINARY_DIR}/setup.js.in)
 
 
@@ -117,7 +117,7 @@ file(COPY ${PROJECT_SOURCE_DIR}/lib/index.js
 
 
 file(COPY ${PROJECT_BINARY_DIR}/octrajs/
-  DESTINATION ${PROJECT_SOURCE_DIR}/../../bindings/OCTRAjs/)
+  DESTINATION ${PROJECT_SOURCE_DIR}/../../)
 
 
  # add_custom_target(
@@ -127,5 +127,3 @@ file(COPY ${PROJECT_BINARY_DIR}/octrajs/
  #     COMMENT "Running custom command"
  #     VERBATIM
  # )
-
-

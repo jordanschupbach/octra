@@ -56,12 +56,12 @@ message("Project Source Directory: ${PROJECT_SOURCE_DIR}")
 message("Project Bin Directory: ${PROJECT_BINARY_DIR}")
 
 file(COPY ${PROJECT_BINARY_DIR}/octra/
-  DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/OCTRADotNet/OCTRADotNet/octra)
+  DESTINATION ${PROJECT_BINARY_DIR}/../../octradotnet/octra)
 file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp
-  DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/OCTRADotNet/OCTRADotNet/octra/)
+  DESTINATION ${PROJECT_BINARY_DIR}/../../octradotnet/octra/)
 
 file(GLOB CS_FILES "${PROJECT_BINARY_DIR}/swig_src/*.cs")
 foreach(CS_FILE ${CS_FILES})
     get_filename_component(FILENAME ${CS_FILE} NAME)
-    configure_file(${CS_FILE} "${PROJECT_BINARY_DIR}/../../bindings/OCTRADotNet/OCTRADotNet/${FILENAME}" COPYONLY)
+    configure_file(${CS_FILE} "${PROJECT_BINARY_DIR}/../../octradotnet/${FILENAME}" COPYONLY)
 endforeach()

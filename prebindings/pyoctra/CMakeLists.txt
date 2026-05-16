@@ -50,17 +50,13 @@ message("${filepath}")
     set(QUOTED_CXX_SOURCES "${QUOTED_CXX_SOURCES}'${relative_filepath}', ")
 endforeach()
 
-configure_file(${PROJECT_SOURCE_DIR}/pyproject.toml.in
-               ${PROJECT_BINARY_DIR}/pyproject.toml.in @ONLY)
-
-# Now copy into the Python package
-file(
-  GENERATE
-  OUTPUT ${PROJECT_SOURCE_DIR}/../../bindings/pyoctra/pyproject.toml
-  INPUT ${PROJECT_BINARY_DIR}/pyproject.toml.in)
-
-file(COPY ${PROJECT_BINARY_DIR}/octra/ DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/pyoctra/octrapy/octra)
-
-file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/pyoctra/pyoctra/octra)
-file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra.py DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/pyoctra/pyoctra)
-
+configure_file(
+  ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp
+  ${PROJECT_SOURCE_DIR}/../../src/octra_python_wrap.cpp
+  COPYONLY
+)
+configure_file(
+  ${PROJECT_BINARY_DIR}/swig_src/octra.py
+  ${PROJECT_SOURCE_DIR}/../../src/pyoctra/octra.py
+  COPYONLY
+)

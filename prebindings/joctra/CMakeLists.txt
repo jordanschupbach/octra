@@ -52,13 +52,12 @@ endforeach()
 # message("Project Source Directory: ${PROJECT_SOURCE_DIR}")
 # message("Project Bin Directory: ${PROJECT_BINARY_DIR}")
 
-file(COPY ${PROJECT_BINARY_DIR}/include/ DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/jOCTRA/octra/src/)
-file(COPY ${PROJECT_BINARY_DIR}/source/ DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/jOCTRA/octra/src/)
-file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../bindings/jOCTRA/octra/src/source/octra/)
+file(COPY ${PROJECT_BINARY_DIR}/include/ DESTINATION ${PROJECT_BINARY_DIR}/../../joctra-octra/octra/src/)
+file(COPY ${PROJECT_BINARY_DIR}/source/ DESTINATION ${PROJECT_BINARY_DIR}/../../joctra-octra/octra/src/)
+file(COPY ${PROJECT_BINARY_DIR}/swig_src/octra_wrap.cpp DESTINATION ${PROJECT_BINARY_DIR}/../../joctra-octra/octra/src/source/octra/)
 
 file(GLOB JAVA_FILES "${PROJECT_BINARY_DIR}/swig_src/*.java")
 foreach(JAVA_FILE ${JAVA_FILES})
     get_filename_component(FILENAME ${JAVA_FILE} NAME)
-    configure_file(${JAVA_FILE} "${PROJECT_BINARY_DIR}/../../bindings/jOCTRA/joctra/src/main/java/msu/octra/joctra/${FILENAME}" COPYONLY)
+    configure_file(${JAVA_FILE} "${PROJECT_BINARY_DIR}/../../joctra/src/main/java/js/octra/joctra/${FILENAME}" COPYONLY)
 endforeach()
-

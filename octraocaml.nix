@@ -29,14 +29,14 @@ pkgs.stdenv.mkDerivation rec {
     export HOME="$TMPDIR"
     export XDG_CACHE_HOME="$TMPDIR/xdg-cache"
 
-    mkdir -p bindings/octraocaml/src
+    mkdir -p octraocaml/src
 
     swig -ocaml -c++ -Iinclude \
-      -o bindings/octraocaml/src/octra_ocaml_wrap.cxx \
-      -outdir bindings/octraocaml/src \
+      -o octraocaml/src/octra_ocaml_wrap.cxx \
+      -outdir octraocaml/src \
       prebindings/octraocaml/src/octraocaml.i
 
-    (cd bindings/octraocaml && dune build)
+    (cd octraocaml && dune build)
 
     runHook postBuild
   '';
@@ -47,7 +47,7 @@ pkgs.stdenv.mkDerivation rec {
     export OCTRA_PREFIX="${octra}"
     export HOME="$TMPDIR"
     export XDG_CACHE_HOME="$TMPDIR/xdg-cache"
-    (cd bindings/octraocaml && dune install --prefix "$out")
+    (cd octraocaml && dune install --prefix "$out")
 
     runHook postInstall
   '';

@@ -139,5 +139,7 @@ Binding support is (to be) provided for the following languages:
 | Rust       | RustOctra     | ✅          |
 | Tcl/TK     | OctraTK       | ✅          |
 
-They are linked to this repo through git submodules, so you can update source
-code to submodules by running build for the respective language.
+Each binding lives at the repo root (e.g. `rustoctra/`, `gooctra/`, `octruby/`),
+with generator inputs under `prebindings/`. The C/C++ core remains the single
+source of truth; bindings are (re)generated via the `just prebuild-*` /
+`just build-*` workflows.
