@@ -2163,6 +2163,84 @@ SWIGEXPORT void JNICALL Java_js_octra_joctra_octraJNI_hello(JNIEnv *jenv, jclass
 }
 
 
+SWIGEXPORT void JNICALL Java_js_octra_joctra_octraJNI_delete_1Callback(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  octra::Callback *arg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(octra::Callback **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_octra_joctra_octraJNI_Callback_1call(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  jdouble jresult = 0 ;
+  octra::Callback *arg1 = 0 ;
+  double arg2 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(octra::Callback **)&jarg1; 
+  arg2 = (double)jarg2; 
+  result = (double)(arg1)->call(arg2);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_octra_joctra_octraJNI_new_1Callback(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  octra::Callback *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (octra::Callback *)new octra::Callback();
+  *(octra::Callback **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_octra_joctra_octraJNI_call_1with_1callback(JNIEnv *jenv, jclass jcls, jdouble jarg1, jlong jarg2, jobject jarg2_) {
+  jdouble jresult = 0 ;
+  double arg1 ;
+  octra::Callback *arg2 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  arg1 = (double)jarg1; 
+  arg2 = *(octra::Callback **)&jarg2; 
+  result = (double)octra::call_with_callback(arg1,arg2);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_octra_joctra_octraJNI_map_1dvector_1with_1callback(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  octra::Callback *arg2 = 0 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = *(octra::Callback **)&jarg2; 
+  result = octra::map_dvector_with_callback((std::vector< double > const &)*arg1,arg2);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_js_octra_joctra_octraJNI_make_1dvector(JNIEnv *jenv, jclass jcls, jdouble jarg1, jdouble jarg2, jdouble jarg3) {
   jlong jresult = 0 ;
   double arg1 ;

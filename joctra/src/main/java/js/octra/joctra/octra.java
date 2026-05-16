@@ -14,6 +14,14 @@ public class octra {
     octraJNI.hello();
   }
 
+  public static double call_with_callback(double x, Callback cb) {
+    return octraJNI.call_with_callback(x, Callback.getCPtr(cb), cb);
+  }
+
+  public static DVector map_dvector_with_callback(DVector values, Callback cb) {
+    return new DVector(octraJNI.map_dvector_with_callback(DVector.getCPtr(values), values, Callback.getCPtr(cb), cb), true);
+  }
+
   public static DVector make_dvector(double a, double b, double c) {
     return new DVector(octraJNI.make_dvector(a, b, c), true);
   }

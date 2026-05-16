@@ -611,6 +611,21 @@ class octraPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_hello")]
   public static extern void hello();
 
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_delete_Callback")]
+  public static extern void delete_Callback(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_Callback_call")]
+  public static extern double Callback_call(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_new_Callback")]
+  public static extern global::System.IntPtr new_Callback();
+
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_call_with_callback")]
+  public static extern double call_with_callback(double jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_map_dvector_with_callback")]
+  public static extern global::System.IntPtr map_dvector_with_callback(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
   [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_make_dvector")]
   public static extern global::System.IntPtr make_dvector(double jarg1, double jarg2, double jarg3);
 

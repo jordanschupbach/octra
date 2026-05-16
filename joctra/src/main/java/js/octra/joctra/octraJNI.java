@@ -94,6 +94,11 @@ public class octraJNI {
   public final static native void SVector_doRemoveRange(long jarg1, SVector jarg1_, int jarg2, int jarg3);
   public final static native void delete_SVector(long jarg1);
   public final static native void hello();
+  public final static native void delete_Callback(long jarg1);
+  public final static native double Callback_call(long jarg1, Callback jarg1_, double jarg2);
+  public final static native long new_Callback();
+  public final static native double call_with_callback(double jarg1, long jarg2, Callback jarg2_);
+  public final static native long map_dvector_with_callback(long jarg1, DVector jarg1_, long jarg2, Callback jarg2_);
   public final static native long make_dvector(double jarg1, double jarg2, double jarg3);
   public final static native double sum_dvector(long jarg1, DVector jarg1_);
   public final static native long make_dpair(double jarg1, double jarg2);

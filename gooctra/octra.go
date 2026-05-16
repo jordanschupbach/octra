@@ -130,6 +130,11 @@ extern swig_type_27 _wrap_SVector_get_octra_edfc800af80047e0(uintptr_t arg1, swi
 extern void _wrap_SVector_set_octra_edfc800af80047e0(uintptr_t arg1, swig_intgo arg2, swig_type_28 arg3);
 extern void _wrap_delete_SVector_octra_edfc800af80047e0(uintptr_t arg1);
 extern void _wrap_hello_octra_edfc800af80047e0(void);
+extern void _wrap_delete_Callback_octra_edfc800af80047e0(uintptr_t arg1);
+extern double _wrap_Callback_call_octra_edfc800af80047e0(uintptr_t arg1, double arg2);
+extern uintptr_t _wrap_new_Callback_octra_edfc800af80047e0(void);
+extern double _wrap_call_with_callback_octra_edfc800af80047e0(double arg1, uintptr_t arg2);
+extern uintptr_t _wrap_map_dvector_with_callback_octra_edfc800af80047e0(uintptr_t arg1, uintptr_t arg2);
 extern uintptr_t _wrap_make_dvector_octra_edfc800af80047e0(double arg1, double arg2, double arg3);
 extern double _wrap_sum_dvector_octra_edfc800af80047e0(uintptr_t arg1);
 extern uintptr_t _wrap_make_dpair_octra_edfc800af80047e0(double arg1, double arg2);
@@ -950,6 +955,56 @@ type SVector interface {
 
 func Hello() {
 	C._wrap_hello_octra_edfc800af80047e0()
+}
+
+type SwigcptrCallback uintptr
+
+func (p SwigcptrCallback) Swigcptr() uintptr {
+	return (uintptr)(p)
+}
+
+func (p SwigcptrCallback) SwigIsCallback() {
+}
+
+func DeleteCallback(arg1 Callback) {
+	_swig_i_0 := getSwigcptr(arg1)
+	C._wrap_delete_Callback_octra_edfc800af80047e0(C.uintptr_t(_swig_i_0))
+}
+
+func (arg1 SwigcptrCallback) Call(arg2 float64) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := arg2
+	swig_r = (float64)(C._wrap_Callback_call_octra_edfc800af80047e0(C.uintptr_t(_swig_i_0), C.double(_swig_i_1)))
+	return swig_r
+}
+
+func NewCallback() (_swig_ret Callback) {
+	var swig_r Callback
+	swig_r = (Callback)(SwigcptrCallback(C._wrap_new_Callback_octra_edfc800af80047e0()))
+	return swig_r
+}
+
+type Callback interface {
+	Swigcptr() uintptr
+	SwigIsCallback()
+	Call(arg2 float64) (_swig_ret float64)
+}
+
+func Call_with_callback(arg1 float64, arg2 Callback) (_swig_ret float64) {
+	var swig_r float64
+	_swig_i_0 := arg1
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (float64)(C._wrap_call_with_callback_octra_edfc800af80047e0(C.double(_swig_i_0), C.uintptr_t(_swig_i_1)))
+	return swig_r
+}
+
+func Map_dvector_with_callback(arg1 DVector, arg2 Callback) (_swig_ret DVector) {
+	var swig_r DVector
+	_swig_i_0 := getSwigcptr(arg1)
+	_swig_i_1 := getSwigcptr(arg2)
+	swig_r = (DVector)(SwigcptrDVector(C._wrap_map_dvector_with_callback_octra_edfc800af80047e0(C.uintptr_t(_swig_i_0), C.uintptr_t(_swig_i_1))))
+	return swig_r
 }
 
 func Make_dvector(arg1 float64, arg2 float64, arg3 float64) (_swig_ret DVector) {

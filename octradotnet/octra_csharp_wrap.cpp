@@ -2852,6 +2852,70 @@ SWIGEXPORT void SWIGSTDCALL CSharp_hello() {
 }
 
 
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_Callback(void * jarg1) {
+  octra::Callback *arg1 = 0 ;
+  
+  arg1 = (octra::Callback *)jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_Callback_call(void * jarg1, double jarg2) {
+  double jresult ;
+  octra::Callback *arg1 = 0 ;
+  double arg2 ;
+  double result;
+  
+  arg1 = (octra::Callback *)jarg1; 
+  arg2 = (double)jarg2; 
+  result = (double)(arg1)->call(arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_Callback() {
+  void * jresult ;
+  octra::Callback *result = 0 ;
+  
+  result = (octra::Callback *)new octra::Callback();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_call_with_callback(double jarg1, void * jarg2) {
+  double jresult ;
+  double arg1 ;
+  octra::Callback *arg2 = 0 ;
+  double result;
+  
+  arg1 = (double)jarg1; 
+  arg2 = (octra::Callback *)jarg2; 
+  result = (double)octra::call_with_callback(arg1,arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_map_dvector_with_callback(void * jarg1, void * jarg2) {
+  void * jresult ;
+  std::vector< double > *arg1 = 0 ;
+  octra::Callback *arg2 = 0 ;
+  std::vector< double > result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< double > const & is null", 0);
+    return 0;
+  } 
+  arg2 = (octra::Callback *)jarg2; 
+  result = octra::map_dvector_with_callback((std::vector< double > const &)*arg1,arg2);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
 SWIGEXPORT void * SWIGSTDCALL CSharp_make_dvector(double jarg1, double jarg2, double jarg3) {
   void * jresult ;
   double arg1 ;

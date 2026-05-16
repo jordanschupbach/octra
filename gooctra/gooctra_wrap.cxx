@@ -1356,6 +1356,72 @@ void _wrap_hello_octra_edfc800af80047e0() {
 }
 
 
+void _wrap_delete_Callback_octra_edfc800af80047e0(octra::Callback *_swig_go_0) {
+  octra::Callback *arg1 = 0 ;
+  
+  arg1 = *(octra::Callback **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+double _wrap_Callback_call_octra_edfc800af80047e0(octra::Callback *_swig_go_0, double _swig_go_1) {
+  octra::Callback *arg1 = 0 ;
+  double arg2 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(octra::Callback **)&_swig_go_0; 
+  arg2 = (double)_swig_go_1; 
+  
+  result = (double)(arg1)->call(arg2);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+octra::Callback *_wrap_new_Callback_octra_edfc800af80047e0() {
+  octra::Callback *result = 0 ;
+  octra::Callback *_swig_go_result;
+  
+  
+  result = (octra::Callback *)new octra::Callback();
+  *(octra::Callback **)&_swig_go_result = (octra::Callback *)result; 
+  return _swig_go_result;
+}
+
+
+double _wrap_call_with_callback_octra_edfc800af80047e0(double _swig_go_0, octra::Callback *_swig_go_1) {
+  double arg1 ;
+  octra::Callback *arg2 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = (double)_swig_go_0; 
+  arg2 = *(octra::Callback **)&_swig_go_1; 
+  
+  result = (double)octra::call_with_callback(arg1,arg2);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+std::vector< double > *_wrap_map_dvector_with_callback_octra_edfc800af80047e0(std::vector< double > *_swig_go_0, octra::Callback *_swig_go_1) {
+  std::vector< double > *arg1 = 0 ;
+  octra::Callback *arg2 = 0 ;
+  std::vector< double > result;
+  std::vector< double > *_swig_go_result;
+  
+  arg1 = *(std::vector< double > **)&_swig_go_0; 
+  arg2 = *(octra::Callback **)&_swig_go_1; 
+  
+  result = octra::map_dvector_with_callback((std::vector< double > const &)*arg1,arg2);
+  *(std::vector< double > **)&_swig_go_result = new std::vector< double >(result); 
+  return _swig_go_result;
+}
+
+
 std::vector< double > *_wrap_make_dvector_octra_edfc800af80047e0(double _swig_go_0, double _swig_go_1, double _swig_go_2) {
   double arg1 ;
   double arg2 ;
