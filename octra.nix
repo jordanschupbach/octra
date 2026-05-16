@@ -18,6 +18,7 @@
 
        cmakeFlags = [
          "-DCMAKE_CXX_COMPILER=clang++"
+         "-DCMAKE_INSTALL_LIBDIR=lib"
        ];
 
        configurePhase = ''

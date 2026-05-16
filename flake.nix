@@ -82,6 +82,9 @@
         octruby = import ./octruby.nix { pkgs = pkgs; };
         octralua = import ./octralua.nix { pkgs = pkgs; };
         octraocaml = import ./octraocaml.nix { pkgs = pkgs; };
+        octraguile = import ./octraguile.nix { pkgs = pkgs; };
+        octraoctave = import ./octraoctave.nix { pkgs = pkgs; };
+        octrad = import ./octrad.nix { pkgs = pkgs; };
 
 
         # }}} Bindings
@@ -275,6 +278,89 @@
             installPhase = "mkdir -p $out";
           };
 
+          guile = pkgs.stdenv.mkDerivation {
+            name = "octra-guile-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              pkgs.guile
+            ];
+            buildInputs = [
+              octraguile
+            ];
+            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            doCheck = true;
+            checkPhase = ''
+              effectiveVersion="$(${pkgs.pkg-config}/bin/pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
+              if [ -z "$effectiveVersion" ]; then
+                effectiveVersion="3.0"
+              fi
+
+              export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+              export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+              ${pkgs.guile}/bin/guile -s bindings_tests/guile/test_octra.scm
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          octave = pkgs.stdenv.mkDerivation {
+            name = "octra-octave-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              pkgs.octave
+            ];
+            buildInputs = [
+              octraoctave
+            ];
+            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            doCheck = true;
+            checkPhase = ''
+              export OCTAVE_PATH="${octraoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
+              ${pkgs.octave}/bin/octave -qf --eval 'test("bindings_tests/octave/test_octra.m")'
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          d = pkgs.stdenv.mkDerivation {
+            name = "octra-d-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              pkgs.dub
+              pkgs.ldc
+              pkgs.pkg-config
+              pkgs.stdenv.cc
+            ];
+            buildInputs = [
+              octra
+              octrad
+            ];
+            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            doCheck = true;
+            checkPhase = ''
+              export HOME="$TMPDIR"
+              export DUB_HOME="$TMPDIR/dub"
+              mkdir -p "$DUB_HOME"
+
+              export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+              export OCTRA_PREFIX="$(${pkgs.pkg-config}/bin/pkg-config --variable=prefix octra)"
+              export OCTRA_LIBDIR="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir octra)"
+              export OCTRA_CFLAGS="$(${pkgs.pkg-config}/bin/pkg-config --cflags octra)"
+              export OCTRA_LDFLAGS="$(${pkgs.pkg-config}/bin/pkg-config --libs octra)"
+              export CFLAGS="$OCTRA_CFLAGS ''${CFLAGS:-}"
+              export CXXFLAGS="$OCTRA_CFLAGS ''${CXXFLAGS:-}"
+              export LDFLAGS="$OCTRA_LDFLAGS ''${LDFLAGS:-}"
+              export LIBRARY_PATH="$OCTRA_LIBDIR''${LIBRARY_PATH:+:}$LIBRARY_PATH"
+              export LD_LIBRARY_PATH="${octrad}/lib:$OCTRA_LIBDIR''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+
+              octradDubPackages="$TMPDIR/dub-packages"
+              mkdir -p "$octradDubPackages"
+              cp -R "${octrad}/share/dub/packages/octrad-0.0.1" "$octradDubPackages/"
+              chmod -R u+w "$octradDubPackages/octrad-0.0.1" || true
+              dub add-path "$octradDubPackages" >/dev/null
+              dub test --root bindings_tests/d --compiler=ldc2 --build=release
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
           csharp =
             let
               nativeOctra = pkgs.stdenv.mkDerivation {
@@ -317,7 +403,7 @@
         };
 
         packages = {
-          inherit octra pyoctra octrajs octrar octratcl octruby octralua octraocaml;
+          inherit octra pyoctra octrajs octrar octratcl octruby octralua octraocaml octraguile octraoctave octrad;
 
           rename-octra = pkgs.writeShellApplication {
             name = "rename-octra";
@@ -484,6 +570,43 @@
            ];
          };
 
+        devShells.d = pkgs.mkShell {
+          packages = [
+            octra
+            octrad
+            pkgs.dub
+            pkgs.ldc
+            pkgs.swig
+            pkgs.pkg-config
+            pkgs.stdenv.cc
+            pkgs.just
+          ];
+
+          shellHook = ''
+            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            export OCTRA_PREFIX="$(pkg-config --variable=prefix octra)"
+            export OCTRA_LIBDIR="$(pkg-config --variable=libdir octra)"
+            export OCTRA_CFLAGS="$(pkg-config --cflags octra)"
+            export OCTRA_LDFLAGS="$(pkg-config --libs octra)"
+            export CFLAGS="$OCTRA_CFLAGS ''${CFLAGS:-}"
+            export CXXFLAGS="$OCTRA_CFLAGS ''${CXXFLAGS:-}"
+            export LDFLAGS="$OCTRA_LDFLAGS ''${LDFLAGS:-}"
+            export LIBRARY_PATH="$OCTRA_LIBDIR''${LIBRARY_PATH:+:}$LIBRARY_PATH"
+            export LD_LIBRARY_PATH="${octrad}/lib:$OCTRA_LIBDIR''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+
+            export DUB_HOME="$(pwd)/build/dub"
+            mkdir -p "$DUB_HOME"
+
+            octradDubPackages="$(pwd)/build/dub-packages"
+            mkdir -p "$octradDubPackages"
+            if [ ! -d "$octradDubPackages/octrad-0.0.1" ]; then
+              cp -R "${octrad}/share/dub/packages/octrad-0.0.1" "$octradDubPackages/"
+              chmod -R u+w "$octradDubPackages/octrad-0.0.1" || true
+            fi
+            dub add-path "$octradDubPackages" >/dev/null 2>&1 || true
+          '';
+        };
+
         devShells.perl = pkgs.mkShell {
           packages = [
             pkgs.perl
@@ -527,6 +650,23 @@
           shellHook = ''
             export OCTRA_PREFIX="${octra}"
             export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
+          '';
+        };
+
+        devShells.octave = pkgs.mkShell {
+          packages = [
+            octra
+            octraoctave
+            pkgs.octave
+            pkgs.swig
+            pkgs.cmake
+            pkgs.pkg-config
+            pkgs.just
+          ];
+
+          shellHook = ''
+            export OCTRA_PREFIX="${octra}"
+            export OCTAVE_PATH="${octraoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
           '';
         };
 
@@ -574,6 +714,28 @@
             export LD_LIBRARY_PATH="${octra}/lib/octra-0.0.1''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
             export CAML_LD_LIBRARY_PATH="${octra}/lib/octra-0.0.1''${CAML_LD_LIBRARY_PATH:+:}$CAML_LD_LIBRARY_PATH"
             export XDG_CACHE_HOME="$(pwd)/build/xdg-cache"
+          '';
+        };
+
+        devShells.guile = pkgs.mkShell {
+          packages = [
+            octra
+            octraguile
+            pkgs.guile
+            pkgs.swig
+            pkgs.cmake
+            pkgs.pkg-config
+            pkgs.just
+          ];
+
+          shellHook = ''
+            effectiveVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
+            if [ -z "$effectiveVersion" ]; then
+              effectiveVersion="3.0"
+            fi
+
+            export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+            export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
           '';
         };
       }

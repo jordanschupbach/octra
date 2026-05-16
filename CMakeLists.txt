@@ -12,6 +12,7 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   )
 endif()
 
+include(GNUInstallDirs)
 
 include(cmake/CPM.cmake)
 include(cmake/PackageProject.cmake)
@@ -68,3 +69,11 @@ packageProject(
   DEPENDENCIES ""
 )
 
+set(PKG_CONFIG_VERSION "${PROJECT_VERSION}")
+set(PKG_CONFIG_LIBS "-l${PROJECT_NAME}")
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/octra.pc.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/octra.pc"
+  @ONLY
+)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/octra.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")

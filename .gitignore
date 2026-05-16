@@ -6,6 +6,8 @@ node_modules
 build
 **/__pycache__
 compile_commands.json
+.dub
+**/.dub
 octradotnet/bin
 octradotnet/obj
 octradotnet.tests/bin

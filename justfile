@@ -17,6 +17,9 @@ run-java: build-java
 run-go: build-go
     {{ NIX_DEVELOP }} .#go --command bash -lc 'cd bindings/gooctra && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -loctra" go run ../../examples/go/{{ TARGET }}.go'
 
+run-d:
+  {{ NIX_DEVELOP }} .#d --command bash -lc 'cd examples/d && dub run --compiler=ldc2 --build=release'
+
 run-python:
   {{ NIX_DEVELOP }} .#python --command bash -lc 'python examples/python/{{ TARGET }}.py'
 
@@ -38,11 +41,17 @@ run-ruby:
 run-r: prebuild-r
    {{ NIX_DEVELOP }} .#r --command bash -lc 'Rscript examples/r/octra_ex.r'
 
+run-guile:
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'guile --no-auto-compile -s examples/guile/octra_ex.scm'
+
 run-javascript: build-javascript
    {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node ./examples/javascript/octra_ex.js'
 
 run-ocaml:
   {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'just install-ocaml && mkdir -p build/ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && ocamlfind ocamlopt -package octraocaml -linkpkg examples/ocaml/octra_ex.ml -o build/ocaml/octra_ex && ./build/ocaml/octra_ex'
+
+run-octave:
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octraoctave_prefix="$(nix eval --raw .#octraoctave)" && octave -qf --path "$octraoctave_prefix/share/octave/site/m" examples/octave/octra_ex.m'
 
 run-cpp: examples
     @echo "Running target {{ TARGET }}"
@@ -85,6 +94,17 @@ prebuild-tcl:
 # Lua (SWIG)
 prebuild-lua:
   {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/octralua-swig && swig -lua -c++ -Iinclude -outdir build/octralua-swig -o build/octralua-swig/octra_lua_wrap.cxx prebindings/octralua/src/octralua.i"
+
+# D (SWIG)
+prebuild-d:
+  {{ NIX_DEVELOP }} .#d --command bash -lc "mkdir -p bindings/octrad/source && swig -c++ -d -Iinclude -o bindings/octrad/source/octrad_wrap.cpp -outdir bindings/octrad/source prebindings/octrad/src/octrad.i"
+
+# Guile (SWIG)
+prebuild-guile:
+  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/octraguile-swig && swig -guile -c++ -Iinclude -o build/octraguile-swig/octra_guile_wrap.cxx prebindings/octraguile/src/octraguile.i"
+
+prebuild-octave:
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/octraoctave-swig && swig -octave -c++ -Iinclude -o build/octraoctave-swig/octra_octave_wrap.cxx prebindings/octraoctave/src/octraoctave.i"
 
 # TODO:
 prebuild-go:
@@ -158,6 +178,9 @@ build-go: prebuild-go build-cpp
     # Note: This assumes the SWIG-generated files are already in place from prebuild-go
     {{ NIX_DEVELOP }} .#go --command bash -lc 'cd bindings/gooctra && CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -loctra" go build'
 
+build-d: prebuild-d
+  {{ NIX_DEVELOP }} .#d --command bash -lc 'cd bindings/octrad && dub build --compiler=ldc2 --build=release'
+
 build-perl: prebuild-perl build-cpp
   {{ NIX_DEVELOP }} .#perl --command bash -lc 'cd bindings/perloctra && rm -rf blib Makefile Makefile.old pm_to_blib MYMETA.* && perl Makefile.PL INSTALL_BASE="$(pwd)/../../build/perl" && make -j{{ JOBS }} && make install'
 
@@ -172,6 +195,14 @@ build-tcl: prebuild-tcl
 build-lua: prebuild-lua
   {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake -S prebindings/octralua -B build/octralua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
   {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --build build/octralua -j{{ JOBS }} --verbose'
+
+build-guile: prebuild-guile
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake -S prebindings/octraguile -B build/octraguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --build build/octraguile -j{{ JOBS }} --verbose'
+
+build-octave: prebuild-octave
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake -S prebindings/octraoctave -B build/octraoctave -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'cmake --build build/octraoctave -j{{ JOBS }} --verbose'
 
 build-ocaml: prebuild-ocaml
   {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'test -n "${OCTRA_PREFIX:-}" || (echo "OCTRA_PREFIX is not set" >&2; exit 1) && cd bindings/octraocaml && dune build'
@@ -222,6 +253,15 @@ repl-ruby:
 repl-ocaml:
   {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'utop'
 
+repl-guile:
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'guile'
+
+repl-octave:
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octraoctave_prefix="$(nix eval --raw .#octraoctave)" && octave -qf --path "$octraoctave_prefix/share/octave/site/m"'
+
+repl-d:
+  {{ NIX_DEVELOP }} .#d --command bash -lc 'cd examples/d && dub run --compiler=ldc2 --build=release'
+
 # }}} repl commands
 
 # {{{ test commands
@@ -258,6 +298,15 @@ test-tcl: build-tcl
 
 test-ruby:
   {{ NIX_DEVELOP }} .#ruby --command bash -lc 'ruby -I bindings_tests/ruby -e "require \"test_octra\""'
+
+test-guile:
+  {{ NIX_DEVELOP }} .#guile --command bash -lc 'guile --no-auto-compile -s bindings_tests/guile/test_octra.scm'
+
+test-octave:
+  {{ NIX_DEVELOP }} .#octave --command bash -lc 'octraoctave_prefix="$(nix eval --raw .#octraoctave)" && octave -qf --path "$octraoctave_prefix/share/octave/site/m" --eval '"'"'test("bindings_tests/octave/test_octra.m")'"'"''
+
+test-d: prebuild-d
+  {{ NIX_DEVELOP }} .#d --command bash -lc 'dub test --root bindings_tests/d --compiler=ldc2 --build=release'
 
 
 test-go: build-go
@@ -427,7 +476,7 @@ update-java-deps:
 update-csharp-deps:
   nix/update-nuget-deps.sh
 
-all-test: test-cpp test-python test-r test-javascript test-csharp test-java test-php test-go test-perl test-ocaml
+all-test: test-cpp test-python test-r test-javascript test-csharp test-java test-php test-go test-perl test-ocaml test-guile test-d
 
 test-all: all-test
 

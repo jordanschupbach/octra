@@ -1,0 +1,8 @@
+{
+  "name": "octrad-tests",
+  "description": "Binding smoke tests for octrad.",
+  "license": "Unlicense",
+  "dependencies": {
+    "octrad": "*"
+  }
+}
