@@ -27,3 +27,17 @@ def test_std_vector_templates():
     assert pytest.approx(v[0]) == 3.0
     assert pytest.approx(v[1]) == 4.5
 
+
+def test_can_pass_callback_into_cpp():
+    from pyoctra import octra
+
+    class TimesTwo(octra.Callback):
+        def call(self, x):
+            return x * 2.0
+
+    cb = TimesTwo()
+    assert pytest.approx(octra.call_with_callback(3.0, cb)) == 6.0
+
+    v = octra.make_dvector(1.0, 2.0, 3.0)
+    out = octra.map_dvector_with_callback(v, cb)
+    assert pytest.approx(octra.sum_dvector(out)) == 12.0

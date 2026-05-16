@@ -13,8 +13,8 @@
 
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     INC => q[-I/home/jordan/projects/octra/perloctra/../../include]
-#     LIBS => [q[-L/home/jordan/projects/octra/perloctra/../../build -loctra]]
+#     INC => q[-I/mnt/projects/octra/perloctra/../include]
+#     LIBS => [q[-L/mnt/projects/octra/perloctra/../build -loctra]]
 #     NAME => q[Octra]
 #     OBJECT => q[Octra_wrap$(OBJ_EXT)]
 #     PM => { lib/Octra.pm=>q[$(INST_LIBDIR)/Octra.pm] }
@@ -157,7 +157,7 @@ BASEEXT = Octra
 PARENT_NAME = 
 DLBASE = $(BASEEXT)
 VERSION_FROM = 
-INC = -I/home/jordan/projects/octra/perloctra/../../include
+INC = -I/mnt/projects/octra/perloctra/../include
 OBJECT = Octra_wrap$(OBJ_EXT)
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -167,7 +167,7 @@ BOOTDEP =
 XS_FILES = 
 C_FILES  = Octra_wrap.cxx
 O_FILES  = Octra_wrap.o
-H_FILES  = 
+H_FILES  = Octra_wrap.h
 MAN1PODS = 
 MAN3PODS = 
 
@@ -292,6 +292,10 @@ MPOLLUTE =
 # Octra might depend on some other libraries:
 # See ExtUtils::Liblist for details
 #
+EXTRALIBS = -L/mnt/projects/octra/perloctra/../build -loctra
+LDLOADLIBS = -L/mnt/projects/octra/perloctra/../build -loctra
+BSLOADLIBS = 
+LD_RUN_PATH = /mnt/projects/octra/perloctra/../build
 
 
 # --- MakeMaker const_cccmd section:
@@ -311,7 +315,7 @@ PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 	PREFIX="$(PREFIX)"\
 	INSTALL_BASE="$(INSTALL_BASE)"\
 	PASTHRU_DEFINE='$(DEFINE) $(PASTHRU_DEFINE)'\
-	PASTHRU_INC='-I/home/jordan/projects/octra/perloctra/../../include $(PASTHRU_INC)'
+	PASTHRU_INC='-I/mnt/projects/octra/perloctra/../include $(PASTHRU_INC)'
 
 
 # --- MakeMaker special_targets section:
@@ -374,6 +378,8 @@ subdirs :: $(MYEXTLIB)
 
 config :: $(FIRST_MAKEFILE) blibdirs
 	$(NOECHO) $(NOOP)
+
+$(O_FILES) : $(H_FILES)
 
 help :
 	perldoc ExtUtils::MakeMaker
@@ -473,7 +479,7 @@ INST_DYNAMIC_FIX =
 
 $(INST_DYNAMIC) : $(OBJECT) $(MYEXTLIB) $(INST_ARCHAUTODIR)$(DFSEP).exists $(EXPORT_LIST) $(PERL_ARCHIVEDEP) $(PERL_ARCHIVE_AFTER) $(INST_DYNAMIC_DEP) 
 	$(RM_F) $@
-	$(LD)  $(LDDLFLAGS)  $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB) \
+	LD_RUN_PATH="$(LD_RUN_PATH)" $(LD)  $(LDDLFLAGS)  $(LDFROM) $(OTHERLDFLAGS) -o $@ $(MYEXTLIB) \
 	  $(PERL_ARCHIVE) $(LDLOADLIBS) $(PERL_ARCHIVE_AFTER) $(EXPORT_LIST) \
 	  $(INST_DYNAMIC_FIX)
 	$(CHMOD) $(PERM_RWX) $@

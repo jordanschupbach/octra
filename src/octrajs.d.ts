@@ -151,6 +151,17 @@ export  class SVector {
 
 export function hello(): void;
 
+export  class Callback {
+
+  call(x: number): number;
+
+  constructor();
+}
+
+export function call_with_callback(x: number, cb: Callback): number;
+
+export function map_dvector_with_callback(values: any, cb: Callback): any;
+
 export function make_dvector(a: number, b: number, c: number): any;
 
 export function sum_dvector(values: any): number;

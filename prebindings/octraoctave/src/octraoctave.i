@@ -1,4 +1,4 @@
-%module octra
+%module(directors="1") octra
 
 %include <std_shared_ptr.i>
 %include <stdint.i>
@@ -13,6 +13,8 @@
 %template(DVector) std::vector<double>;
 %template(SizeVector) std::vector<size_t>;
 %template(SVector) std::vector<std::string>;
+
+%feature("director") octra::Callback;
 
 %{
   #include "octra/octra.hpp"

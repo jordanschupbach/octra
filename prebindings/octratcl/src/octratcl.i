@@ -1,4 +1,4 @@
-%module Octra
+%module(directors="1") Octra
 
 %include <stdint.i>
 %include <std_vector.i>
@@ -6,6 +6,8 @@
 
 %template(DPair) std::pair<double, double>;
 %template(DVector) std::vector<double>;
+
+%feature("director") octra::Callback;
 
 %{
 #include "octra/octra.hpp"

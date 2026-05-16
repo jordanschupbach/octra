@@ -482,6 +482,98 @@ void hello() {
   octra_im.hello();
 }
 
+class Callback {
+  private void* swigCPtr;
+  protected bool swigCMemOwn;
+
+  public this(void* cObject, bool ownCObject) {
+    swigCPtr = cObject;
+    swigCMemOwn = ownCObject;
+  }
+
+  public static void* swigGetCPtr(typeof(this) obj) {
+    return (obj is null) ? null : obj.swigCPtr;
+  }
+
+  public static void* swigRelease(typeof(this) obj) {
+    if (obj !is null) {
+      if (!obj.swigCMemOwn)
+        throw new Exception("Cannot release ownership as memory is not owned");
+      void* ptr = obj.swigCPtr;
+      obj.swigCMemOwn = false;
+      obj.dispose();
+      return ptr;
+    } else {
+      return null;
+    }
+  }
+
+  mixin octra_im.SwigOperatorDefinitions;
+
+  ~this() {
+    dispose();
+  }
+
+  public void dispose() {
+    synchronized(this) {
+      if (swigCPtr !is null) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          octra_im.delete_Callback(cast(void*)swigCPtr);
+        }
+        swigCPtr = null;
+      }
+    }
+  }
+
+  public double call(double x) {
+    auto ret = ((swigIsMethodOverridden!(double delegate(double), double function(double), call)()) ? octra_im.Callback_callSwigExplicitCallback(cast(void*)swigCPtr, x) : octra_im.Callback_call(cast(void*)swigCPtr, x));
+    return ret;
+  }
+
+  public this() {
+    this(octra_im.new_Callback(), true);
+    swigDirectorConnect();
+  }
+
+  private void swigDirectorConnect() {
+    octra_im.SwigDirector_Callback_Callback0 callback0;
+    if (swigIsMethodOverridden!(double delegate(double), double function(double), call)()) {
+      callback0 = &swigDirectorCallback_Callback_call;
+    }
+
+    octra_im.Callback_director_connect(cast(void*)swigCPtr, cast(void*)this, callback0);
+  }
+
+  private bool swigIsMethodOverridden(DelegateType, FunctionType, alias fn)() {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+  private bool swigIsMethodOverriddenConst(DelegateType, FunctionType, alias fn)() inout {
+    DelegateType dg = &fn;
+    return dg.funcptr != SwigNonVirtualAddressOf!(FunctionType, fn);
+  }
+
+  private static Function SwigNonVirtualAddressOf(Function, alias fn)() {
+    return cast(Function) &fn;
+  }
+}
+
+private extern(C) double swigDirectorCallback_Callback_call(void* dObject, double x) {
+  return (cast(Callback)dObject).call(x);
+}
+
+double call_with_callback(double x, Callback cb) {
+  auto ret = octra_im.call_with_callback(x, Callback.swigGetCPtr(cb));
+  return ret;
+}
+
+DVector map_dvector_with_callback(DVector values, Callback cb) {
+  DVector ret = new DVector(octra_im.map_dvector_with_callback(DVector.swigGetCPtr(values), Callback.swigGetCPtr(cb)), true);
+  if (octra_im.SwigPendingException.isPending) throw octra_im.SwigPendingException.retrieve();
+  return ret;
+}
+
 DVector make_dvector(double a, double b, double c) {
   DVector ret = new DVector(octra_im.make_dvector(a, b, c), true);
   return ret;

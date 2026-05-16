@@ -9,6 +9,7 @@
 
 #define SWIG_VERSION 0x050006
 #define SWIGPERL
+#define SWIG_DIRECTORS
 #define SWIG_CASTRANK_MODE
 
 /* -----------------------------------------------------------------------------
@@ -1768,33 +1769,366 @@ SWIG_Perl_SetModule(swig_module_info *module) {
 
   #define SWIG_exception(code, msg) do { SWIG_Error(code, msg); SWIG_fail;; } while(0) 
 
+/* -----------------------------------------------------------------------------
+ * director_common.swg
+ *
+ * This file contains support for director classes which is common between
+ * languages.
+ * ----------------------------------------------------------------------------- */
+
+/*
+  Use -DSWIG_DIRECTOR_STATIC if you prefer to avoid the use of the
+  'Swig' namespace. This could be useful for multi-modules projects.
+*/
+#ifdef SWIG_DIRECTOR_STATIC
+/* Force anonymous (static) namespace */
+#define Swig
+#endif
+/* -----------------------------------------------------------------------------
+ * director.swg
+ *
+ * This file contains support for director classes so that Perl proxy
+ * methods can be called from C++.
+ * ----------------------------------------------------------------------------- */
+
+#ifndef SWIG_DIRECTOR_PERL_HEADER_
+#define SWIG_DIRECTOR_PERL_HEADER_
+
+#include <string>
+#include <iostream>
+#include <exception>
+#include <vector>
+#include <map>
+
+
+/*
+  Use -DSWIG_DIRECTOR_NORTTI if you prefer to avoid the use of the
+  native C++ RTTI and dynamic_cast<>. But be aware that directors
+  could stop working when using this option.
+*/
+#ifdef SWIG_DIRECTOR_NORTTI
+/*
+   When we don't use the native C++ RTTI, we implement a minimal one
+   only for Directors.
+*/
+# ifndef SWIG_DIRECTOR_RTDIR
+# define SWIG_DIRECTOR_RTDIR
+
+namespace Swig {
+  class Director;
+  SWIGINTERN std::map<void *, Director *>& get_rtdir_map() {
+    static std::map<void *, Director *> rtdir_map;
+    return rtdir_map;
+  }
+
+  SWIGINTERNINLINE void set_rtdir(void *vptr, Director *rtdir) {
+    get_rtdir_map()[vptr] = rtdir;
+  }
+
+  SWIGINTERNINLINE Director *get_rtdir(void *vptr) {
+    std::map<void *, Director *>::const_iterator pos = get_rtdir_map().find(vptr);
+    Director *rtdir = (pos != get_rtdir_map().end()) ? pos->second : 0;
+    return rtdir;
+  }
+}
+# endif /* SWIG_DIRECTOR_RTDIR */
+
+# define SWIG_DIRECTOR_CAST(ARG) Swig::get_rtdir(static_cast<void *>(ARG))
+# define SWIG_DIRECTOR_RGTR(ARG1, ARG2) Swig::set_rtdir(static_cast<void *>(ARG1), ARG2)
+
+#else
+
+# define SWIG_DIRECTOR_CAST(ARG) dynamic_cast<Swig::Director *>(ARG)
+# define SWIG_DIRECTOR_RGTR(ARG1, ARG2)
+
+#endif /* SWIG_DIRECTOR_NORTTI */
+
+extern "C" {
+  struct swig_type_info;
+}
+
+namespace Swig {
+
+  /* memory handler */
+  struct GCItem {
+    virtual ~GCItem() {}
+
+    virtual int get_own() const {
+      return 0;
+    }
+  };
+
+  struct GCItem_var {
+    GCItem_var(GCItem *item = 0) : _item(item) {
+    }
+
+    GCItem_var& operator=(GCItem *item) {
+      GCItem *tmp = _item;
+      _item = item;
+      delete tmp;
+      return *this;
+    }
+
+    ~GCItem_var() {
+      delete _item;
+    }
+
+    GCItem *operator->() const {
+      return _item;
+    }
+
+  private:
+    GCItem *_item;
+  };
+
+  struct GCItem_Object : GCItem {
+    GCItem_Object(int own) : _own(own) {
+    }
+
+    virtual ~GCItem_Object() {
+    }
+
+    int get_own() const {
+      return _own;
+    }
+
+  private:
+    int _own;
+  };
+
+  template <typename Type>
+  struct GCItem_T : GCItem {
+    GCItem_T(Type *ptr) : _ptr(ptr) {
+    }
+
+    virtual ~GCItem_T() {
+      delete _ptr;
+    }
+
+  private:
+    Type *_ptr;
+  };
+
+  template <typename Type>
+  struct GCArray_T : GCItem {
+    GCArray_T(Type *ptr) : _ptr(ptr) {
+    }
+
+    virtual ~GCArray_T() {
+      delete[] _ptr;
+    }
+
+  private:
+    Type *_ptr;
+  };
+
+  /* base class for director exceptions */
+  class DirectorException : public std::exception {
+  public:
+    virtual SV *getNative() const = 0;
+  };
+
+  /* exceptions emitted by Perl */
+  class DirectorMethodException : public DirectorException {
+  protected:
+    SV *err;
+  public:
+    DirectorMethodException(SV *sv = sv_mortalcopy(ERRSV)) : err(sv) {
+      SvREFCNT_inc(err);
+    }
+
+    const char *what() const SWIG_NOEXCEPT {
+      return SvPV_nolen(err);
+    }
+
+    SV *getNative() const {
+      return sv_2mortal(newSVsv(err));
+    }
+
+    static void raise(SV *sv) {
+      throw DirectorMethodException(sv);
+    }
+  };
+
+  /* exceptions emitted by wrap code */
+  class DirectorWrapException : public DirectorException {
+  protected:
+    std::string msg;
+    DirectorWrapException(const char *str) : msg(str) {
+    }
+
+  public:
+    virtual ~DirectorWrapException() SWIG_NOEXCEPT {
+    }
+
+    const char *what() const SWIG_NOEXCEPT {
+      return msg.c_str();
+    }
+
+    virtual SV *getNative() const {
+      return sv_2mortal(newSVpvn(msg.data(), msg.size()));
+    }
+  };
+
+  class DirectorTypeMismatchException : public DirectorWrapException {
+  public:
+    DirectorTypeMismatchException(const char *str) : DirectorWrapException(str) {
+    }
+
+    static void raise(const char *type, const char *msg) {
+      std::string err = std::string(type);
+      err += ": ";
+      err += msg;
+      throw DirectorTypeMismatchException(err.c_str());
+    }
+  };
+
+  class DirectorPureVirtualException : public DirectorWrapException {
+  public:
+    DirectorPureVirtualException(const char *name)
+      : DirectorWrapException("SWIG director pure virtual method called: ") {
+      msg += name;
+    }
+
+    static void raise(const char *name) {
+      throw DirectorPureVirtualException(name);
+    }
+  };
+
+  /* director base class */
+  class Director {
+  private:
+    /* pointer to the wrapped perl object */
+    SV *swig_self;
+    /* class of wrapped perl object */
+    std::string swig_class;
+    /* flag indicating whether the object is owned by perl or c++ */
+    mutable bool swig_disown_flag;
+
+    /* decrement the reference count of the wrapped perl object */
+    void swig_decref() const {
+      if (swig_disown_flag) {
+        SvREFCNT_dec(swig_self);
+      }
+    }
+
+  public:
+    /* wrap a Perl object. */
+    Director(SV *pkg) : swig_disown_flag(false) {
+      STRLEN len;
+      char *str = SvPV(pkg, len);
+      swig_class = std::string(str, len);
+      swig_self = newRV_inc((SV *)newHV());
+    }
+
+    /* discard our reference at destruction */
+    virtual ~Director() {
+      swig_decref();
+    }
+
+    /* return a pointer to the wrapped Perl object */
+    SV *swig_get_self() const {
+      return swig_self;
+    }
+
+    const char *swig_get_class() const {
+      return swig_class.c_str();
+    }
+
+    /* acquire ownership of the wrapped Perl object (the sense of "disown" is from perl) */
+    void swig_disown() const {
+      if (!swig_disown_flag) {
+        swig_disown_flag=true;
+        swig_incref();
+      }
+    }
+
+    /* increase the reference count of the wrapped Perl object */
+    void swig_incref() const {
+      if (swig_disown_flag) {
+        SvREFCNT_inc(swig_self);
+      }
+    }
+
+    /* methods to implement pseudo protected director members */
+    virtual bool swig_get_inner(const char * /* swig_protected_method_name */) const {
+      return true;
+    }
+
+    virtual void swig_set_inner(const char * /* swig_protected_method_name */, bool /* swig_val */) const {
+    }
+
+  /* ownership management */
+  private:
+    typedef std::map<void *, GCItem_var> swig_ownership_map;
+    mutable swig_ownership_map swig_owner;
+
+  public:
+    template <typename Type>
+    void swig_acquire_ownership_array(Type *vptr) const {
+      if (vptr) {
+        swig_owner[vptr] = new GCArray_T<Type>(vptr);
+      }
+    }
+
+    template <typename Type>
+    void swig_acquire_ownership(Type *vptr) const {
+      if (vptr) {
+        swig_owner[vptr] = new GCItem_T<Type>(vptr);
+      }
+    }
+
+    void swig_acquire_ownership_obj(void *vptr, int own) const {
+      if (vptr && own) {
+        swig_owner[vptr] = new GCItem_Object(own);
+      }
+    }
+
+    int swig_release_ownership(void *vptr) const {
+      int own = 0;
+      if (vptr) {
+        swig_ownership_map::iterator iter = swig_owner.find(vptr);
+        if (iter != swig_owner.end()) {
+          own = iter->second->get_own();
+          swig_owner.erase(iter);
+        }
+      }
+      return own;
+    }
+  };
+
+}
+
+#endif
+
 #define SWIGTYPE_p_char swig_types[0]
 #define SWIGTYPE_p_difference_type swig_types[1]
 #define SWIGTYPE_p_first_type swig_types[2]
 #define SWIGTYPE_p_int swig_types[3]
 #define SWIGTYPE_p_long_long swig_types[4]
-#define SWIGTYPE_p_second_type swig_types[5]
-#define SWIGTYPE_p_short swig_types[6]
-#define SWIGTYPE_p_signed_char swig_types[7]
-#define SWIGTYPE_p_size_t swig_types[8]
-#define SWIGTYPE_p_size_type swig_types[9]
-#define SWIGTYPE_p_std__out_of_range swig_types[10]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[11]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[12]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[13]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[14]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[15]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[16]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[17]
-#define SWIGTYPE_p_unsigned_char swig_types[18]
-#define SWIGTYPE_p_unsigned_int swig_types[19]
-#define SWIGTYPE_p_unsigned_long_long swig_types[20]
-#define SWIGTYPE_p_unsigned_short swig_types[21]
-#define SWIGTYPE_p_value_type swig_types[22]
+#define SWIGTYPE_p_octra__Callback swig_types[5]
+#define SWIGTYPE_p_second_type swig_types[6]
+#define SWIGTYPE_p_short swig_types[7]
+#define SWIGTYPE_p_signed_char swig_types[8]
+#define SWIGTYPE_p_size_t swig_types[9]
+#define SWIGTYPE_p_size_type swig_types[10]
+#define SWIGTYPE_p_std__out_of_range swig_types[11]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[12]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[13]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[14]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[15]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[16]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[17]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[18]
+#define SWIGTYPE_p_unsigned_char swig_types[19]
+#define SWIGTYPE_p_unsigned_int swig_types[20]
+#define SWIGTYPE_p_unsigned_long_long swig_types[21]
+#define SWIGTYPE_p_unsigned_short swig_types[22]
+#define SWIGTYPE_p_value_type swig_types[23]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[24];
-SWIGINTERN swig_module_info swig_module = {swig_types, 23, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[25];
+SWIGINTERN swig_module_info swig_module = {swig_types, 24, 0, 0, 0, 0};
 #define SWIG_init    boot_Octra
 
 #define SWIG_name   "Octrac::boot_Octra"
@@ -2487,6 +2821,8 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__set(std::vector< std::string > *sel
 
 #include "octra/octra.hpp"
 
+#include "Octra_wrap.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -2501,6 +2837,73 @@ SWIGCLASS_STATIC int swig_magic_readonly(pTHX_ SV *SWIGUNUSEDPARM(sv), MAGIC *SW
 #ifdef __cplusplus
 }
 #endif
+
+
+
+/* ---------------------------------------------------
+ * C++ director class methods
+ * --------------------------------------------------- */
+
+SwigDirector_Callback::SwigDirector_Callback(SV *self): octra::Callback(), Swig::Director(self) {
+  SWIG_DIRECTOR_RGTR((octra::Callback *)this, this); 
+}
+
+
+
+
+SwigDirector_Callback::~SwigDirector_Callback() {
+    dSP;
+    SV *self = SWIG_NewPointerObj(SWIG_as_voidptr(this), SWIGTYPE_p_octra__Callback, SWIG_SHADOW);
+    
+    sv_bless(self, gv_stashpv(swig_get_class(), 0));
+    ENTER;
+    SAVETMPS;
+    PUSHMARK(SP);
+    XPUSHs(self);
+    XPUSHs(&PL_sv_yes);
+    PUTBACK;
+    call_method("DESTROY", G_EVAL | G_VOID);
+    FREETMPS;
+    LEAVE;
+}
+
+double SwigDirector_Callback::call(double x) {
+  double c_result = SwigValueInit< double >() ;
+  SV *result;
+  dSP;
+  SV *swigself;
+  
+  swigself = SWIG_NewPointerObj(SWIG_as_voidptr(this), SWIGTYPE_p_octra__Callback, SWIG_SHADOW);
+  sv_bless(swigself, gv_stashpv(swig_get_class(), 0));
+  SV *obj0;
+  obj0 = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(x));
+  ENTER;
+  SAVETMPS;
+  PUSHMARK(SP);
+  XPUSHs(swigself);
+  XPUSHs(obj0);
+  PUTBACK;
+  call_method("call", G_EVAL | G_SCALAR);
+  if (SvTRUE(ERRSV)) {
+    PUTBACK;
+    FREETMPS;
+    LEAVE;
+    Swig::DirectorMethodException::raise(ERRSV);
+  }
+  SPAGAIN;
+  result = POPs;
+  double swig_val;
+  int swig_res = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(result, &swig_val);
+  if (!SWIG_IsOK(swig_res)) {
+    Swig::DirectorTypeMismatchException::raise(SWIG_ErrorType(SWIG_ArgError(swig_res)), "in output value of type '""double""'");
+  }
+  c_result = static_cast< double >(swig_val);
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+  return (double) c_result;
+}
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -5863,6 +6266,286 @@ XS(_wrap_hello) {
 }
 
 
+XS(_wrap_delete_Callback) {
+  {
+    octra::Callback *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: delete_Callback(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_octra__Callback, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Callback" "', argument " "1"" of type '" "octra::Callback *""'"); 
+    }
+    arg1 = reinterpret_cast< octra::Callback * >(argp1);
+    delete arg1;
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_Callback_call) {
+  {
+    octra::Callback *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    double val2 ;
+    int ecode2 = 0 ;
+    int argvi = 0;
+    Swig::Director *director = 0;
+    bool upcall = false;
+    double result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: Callback_call(self,x);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Callback_call" "', argument " "1"" of type '" "octra::Callback *""'"); 
+    }
+    arg1 = reinterpret_cast< octra::Callback * >(argp1);
+    ecode2 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(1), &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Callback_call" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    director = SWIG_DIRECTOR_CAST(arg1);
+    upcall = director && SvSTASH(SvRV(ST(0))) == gv_stashpv(director->swig_get_class(), 0);
+    try {
+      if (upcall) {
+        result = (double)(arg1)->octra::Callback::call(arg2);
+      } else {
+        result = (double)(arg1)->call(arg2);
+      }
+    } catch (Swig::DirectorException& swig_err) {
+      sv_setsv(ERRSV, swig_err.getNative());
+      SWIG_fail;
+    }
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_new_Callback) {
+  {
+    SV *arg1 = 0 ;
+    int argvi = 0;
+    octra::Callback *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: new_Callback(self);");
+    }
+    arg1 = ST(0);
+    if ( strcmp(SvPV_nolen(ST(0)), "Octra::Callback") != 0 ) {
+      /* subclassed */
+      result = (octra::Callback *)new SwigDirector_Callback(arg1); 
+    } else {
+      result = (octra::Callback *)new octra::Callback(); 
+    }
+    
+    ST(argvi) = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_octra__Callback, SWIG_OWNER | SWIG_SHADOW); argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_disown_Callback) {
+  {
+    octra::Callback *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: disown_Callback(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "disown_Callback" "', argument " "1"" of type '" "octra::Callback *""'"); 
+    }
+    arg1 = reinterpret_cast< octra::Callback * >(argp1);
+    {
+      Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+      if (director) director->swig_disown();
+    }
+    
+    ST(argvi) = &PL_sv_undef;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_swig_get_attr_Callback) {
+  {
+    octra::Callback *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    int argvi = 0;
+    SV *result = 0 ;
+    dXSARGS;
+    
+    if ((items < 1) || (items > 1)) {
+      SWIG_croak("Usage: swig_get_attr_Callback(self);");
+    }
+    res1 = SWIG_ConvertPtr(ST(0), &argp1,SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "swig_get_attr_Callback" "', argument " "1"" of type '" "octra::Callback *""'"); 
+    }
+    arg1 = reinterpret_cast< octra::Callback * >(argp1);
+    {
+      Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+      result = sv_newmortal();
+      if (director) sv_setsv(result, director->swig_get_self());
+    }
+    
+    ST(argvi) = result; argvi++ ;
+    
+    XSRETURN(argvi);
+    fail:;
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_call_with_callback) {
+  {
+    double arg1 ;
+    octra::Callback *arg2 = 0 ;
+    double val1 ;
+    int ecode1 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    double result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: call_with_callback(x,cb);");
+    }
+    ecode1 = SWIG_AsVal_double SWIG_PERL_CALL_ARGS_2(ST(0), &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "call_with_callback" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "call_with_callback" "', argument " "2"" of type '" "octra::Callback *""'"); 
+    }
+    arg2 = reinterpret_cast< octra::Callback * >(argp2);
+    result = (double)octra::call_with_callback(arg1,arg2);
+    ST(argvi) = SWIG_From_double  SWIG_PERL_CALL_ARGS_1(static_cast< double >(result)); argvi++ ;
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
+XS(_wrap_map_dvector_with_callback) {
+  {
+    std::vector< double > *arg1 = 0 ;
+    octra::Callback *arg2 = 0 ;
+    std::vector< double > temp1 ;
+    std::vector< double > *v1 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    int argvi = 0;
+    std::vector< double > result;
+    dXSARGS;
+    
+    if ((items < 2) || (items > 2)) {
+      SWIG_croak("Usage: map_dvector_with_callback(values,cb);");
+    }
+    {
+      if (SWIG_ConvertPtr(ST(0),(void **) &v1, 
+          SWIGTYPE_p_std__vectorT_double_t,1) != -1) {
+        arg1 = v1;
+      } else if (SvROK(ST(0))) {
+        AV *av = (AV *)SvRV(ST(0));
+        if (SvTYPE(av) != SVt_PVAV)
+        SWIG_croak("Type error in argument 1 of map_dvector_with_callback. "
+          "Expected an array of ""double");
+        SV **tv;
+        SSize_t len = av_len(av) + 1;
+        for (int i=0; i<len; i++) {
+          tv = av_fetch(av, i, 0);
+          if (SvNIOK(*tv)) {
+            temp1.push_back((double)SwigSvToNumber(*tv));
+          } else {
+            SWIG_croak("Type error in argument 1 of "
+              "map_dvector_with_callback. "
+              "Expected an array of ""double");
+          }
+        }
+        arg1 = &temp1;
+      } else {
+        SWIG_croak("Type error in argument 1 of map_dvector_with_callback. "
+          "Expected an array of ""double");
+      }
+    }
+    res2 = SWIG_ConvertPtr(ST(1), &argp2,SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "map_dvector_with_callback" "', argument " "2"" of type '" "octra::Callback *""'"); 
+    }
+    arg2 = reinterpret_cast< octra::Callback * >(argp2);
+    result = octra::map_dvector_with_callback((std::vector< double > const &)*arg1,arg2);
+    {
+      size_t len = (&result)->size();
+      SV **svs = new SV*[len];
+      for (size_t i=0; i<len; i++) {
+        svs[i] = sv_newmortal();
+        sv_setnv(svs[i], result[i]);
+      }
+      AV *myav = av_make(len, svs);
+      delete[] svs;
+      ST(argvi) = newRV_noinc((SV*) myav);
+      sv_2mortal(ST(argvi));
+      argvi++;
+    }
+    
+    
+    XSRETURN(argvi);
+    fail:;
+    
+    
+  }
+  SWIG_croak_null();
+}
+
+
 XS(_wrap_make_dvector) {
   {
     double arg1 ;
@@ -6050,6 +6733,7 @@ SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "di
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_octra__Callback = {"_p_octra__Callback", "octra::Callback *", 0, 0, (void*)"Octra::Callback", 0};
 SWIGINTERN swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_signed_char = {"_p_signed_char", "int8_t *|int_fast8_t *|int_least8_t *|signed char *", 0, 0, (void*)0, 0};
@@ -6078,6 +6762,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
+  &_swigt__p_octra__Callback,
   &_swigt__p_second_type,
   &_swigt__p_short,
   &_swigt__p_signed_char,
@@ -6103,6 +6788,7 @@ SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_differenc
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_octra__Callback[] = {  {&_swigt__p_octra__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_signed_char[] = {  {&_swigt__p_signed_char, 0, 0, 0},{0, 0, 0, 0}};
@@ -6128,6 +6814,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
+  _swigc__p_octra__Callback,
   _swigc__p_second_type,
   _swigc__p_short,
   _swigc__p_signed_char,
@@ -6216,6 +6903,13 @@ static swig_command_info swig_commands[] = {
 {"Octrac::SVector_set", _wrap_SVector_set},
 {"Octrac::delete_SVector", _wrap_delete_SVector},
 {"Octrac::hello", _wrap_hello},
+{"Octrac::delete_Callback", _wrap_delete_Callback},
+{"Octrac::Callback_call", _wrap_Callback_call},
+{"Octrac::new_Callback", _wrap_new_Callback},
+{"Octrac::disown_Callback", _wrap_disown_Callback},
+{"Octrac::swig_get_attr_Callback", _wrap_swig_get_attr_Callback},
+{"Octrac::call_with_callback", _wrap_call_with_callback},
+{"Octrac::map_dvector_with_callback", _wrap_map_dvector_with_callback},
 {"Octrac::make_dvector", _wrap_make_dvector},
 {"Octrac::sum_dvector", _wrap_sum_dvector},
 {"Octrac::make_dpair", _wrap_make_dpair},
@@ -6693,6 +7387,7 @@ XS(SWIG_init) {
   SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_double_t, (void*) "Octra::DVector");
   SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_size_t_t, (void*) "Octra::SizeVector");
   SWIG_TypeClientData(SWIGTYPE_p_std__vectorT_std__string_t, (void*) "Octra::SVector");
+  SWIG_TypeClientData(SWIGTYPE_p_octra__Callback, (void*) "Octra::Callback");
   ST(0) = &PL_sv_yes;
   XSRETURN(1);
 }

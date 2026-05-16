@@ -5,7 +5,7 @@
 # the SWIG interface file instead.
 
 ##   Generated via the command line invocation:
-##	 swig -c++ -r -o ../src/octra_r_wrap.cpp ../prebindings/octrar/src/octrar.i
+##	 swig -c++ -r -o ../src/octra_r_wrap.cpp -oh ../src/octra_r_wrap.h ../prebindings/octrar/src/octrar.i
 
 
 #                         srun.swg                            #
@@ -185,6 +185,7 @@ setClass("std::pair<(double,double)>",
 setClass('_p_std__vectorT_int_t', contains = 'C++Reference')
 setClass('_p_std__vectorT_double_t', contains = 'C++Reference')
 setClass('_p_std__vectorT_size_t_t', contains = 'C++Reference')
+setClass('_p_octra__Callback', contains = 'C++Reference')
 
 
 
@@ -2335,6 +2336,94 @@ setMethod('delete', '_p_std__vectorT_size_t_t', function(obj) {delete_std__vecto
 
 attr(`hello`, 'returnType') = 'void'
 class(`hello`) = c("SWIGFunction", class('hello'))
+
+# Start of delete_Callback
+
+`delete_Callback` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_Callback', self, PACKAGE='octrar');
+  
+}
+
+attr(`delete_Callback`, 'returnType') = 'void'
+attr(`delete_Callback`, "inputTypes") = c('_p_octra__Callback')
+class(`delete_Callback`) = c("SWIGFunction", class('delete_Callback'))
+
+# Start of Callback_call
+
+`Callback_call` = function(self, x, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_Callback_call', self, x, as.logical(.copy), PACKAGE='octrar');
+  
+}
+
+attr(`Callback_call`, 'returnType') = 'numeric'
+attr(`Callback_call`, "inputTypes") = c('_p_octra__Callback', 'numeric')
+class(`Callback_call`) = c("SWIGFunction", class('Callback_call'))
+
+# Start of new_Callback
+
+`Callback` = function()
+{
+  ;ans = .Call('R_swig_new_Callback', PACKAGE='octrar');
+  ans <- if (is.null(ans)) ans
+  else new("_p_octra__Callback", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_Callback);
+  ans
+  
+}
+
+attr(`Callback`, 'returnType') = '_p_octra__Callback'
+class(`Callback`) = c("SWIGFunction", class('Callback'))
+
+# Start of accessor method for octra::Callback
+setMethod('$', '_p_octra__Callback', function(x, name)
+
+{
+  accessorFuns = list('call' = Callback_call);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for octra::Callback
+setMethod('delete', '_p_octra__Callback', function(obj) {delete_octra__Callback(obj)})
+# Start of call_with_callback
+
+`call_with_callback` = function(x, cb, .copy = FALSE)
+{
+  if (inherits(cb, "ExternalReference")) cb = slot(cb,"ref"); 
+  ;.Call('R_swig_call_with_callback', x, cb, as.logical(.copy), PACKAGE='octrar');
+  
+}
+
+attr(`call_with_callback`, 'returnType') = 'numeric'
+attr(`call_with_callback`, "inputTypes") = c('numeric', '_p_octra__Callback')
+class(`call_with_callback`) = c("SWIGFunction", class('call_with_callback'))
+
+# Start of map_dvector_with_callback
+
+`map_dvector_with_callback` = function(values, cb, .copy = FALSE)
+{
+  values = as.numeric(values);
+  if (inherits(cb, "ExternalReference")) cb = slot(cb,"ref"); 
+  ;.Call('R_swig_map_dvector_with_callback', values, cb, as.logical(.copy), PACKAGE='octrar');
+  
+}
+
+attr(`map_dvector_with_callback`, 'returnType') = 'numeric'
+attr(`map_dvector_with_callback`, "inputTypes") = c('_p_std__vectorT_double_t', '_p_octra__Callback')
+class(`map_dvector_with_callback`) = c("SWIGFunction", class('map_dvector_with_callback'))
 
 # Start of make_dvector
 

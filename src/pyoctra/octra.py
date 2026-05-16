@@ -58,6 +58,8 @@ class _SwigNonDynamicMeta(type):
     __setattr__ = _swig_setattr_nondynamic_class_variable(type.__setattr__)
 
 
+import weakref
+
 SHARED_PTR_DISOWN = _octra.SHARED_PTR_DISOWN
 class SwigPyIterator(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -621,6 +623,33 @@ _octra.SVector_swigregister(SVector)
 
 def hello():
     return _octra.hello()
+class Callback(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _octra.delete_Callback
+
+    def call(self, x):
+        return _octra.Callback_call(self, x)
+
+    def __init__(self):
+        if self.__class__ == Callback:
+            _self = None
+        else:
+            _self = self
+        _octra.Callback_swiginit(self, _octra.new_Callback(_self, ))
+    def __disown__(self):
+        self.this.disown()
+        _octra.disown_Callback(self)
+        return weakref.proxy(self)
+
+# Register Callback in _octra:
+_octra.Callback_swigregister(Callback)
+
+def call_with_callback(x, cb):
+    return _octra.call_with_callback(x, cb)
+
+def map_dvector_with_callback(values, cb):
+    return _octra.map_dvector_with_callback(values, cb)
 
 def make_dvector(a, b, c):
     return _octra.make_dvector(a, b, c)

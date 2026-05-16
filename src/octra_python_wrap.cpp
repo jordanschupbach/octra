@@ -9,6 +9,7 @@
 
 #define SWIG_VERSION 0x050006
 #define SWIGPYTHON
+#define SWIG_DIRECTORS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
 #define SWIG_name    "_octra"
@@ -3521,39 +3522,543 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 
   #define SWIG_exception(code, msg) do { SWIG_Error(code, msg); SWIG_fail;; } while(0) 
 
+/* -----------------------------------------------------------------------------
+ * director_common.swg
+ *
+ * This file contains support for director classes which is common between
+ * languages.
+ * ----------------------------------------------------------------------------- */
+
+/*
+  Use -DSWIG_DIRECTOR_STATIC if you prefer to avoid the use of the
+  'Swig' namespace. This could be useful for multi-modules projects.
+*/
+#ifdef SWIG_DIRECTOR_STATIC
+/* Force anonymous (static) namespace */
+#define Swig
+#endif
+/* -----------------------------------------------------------------------------
+ * director_py_mutex.swg
+ *
+ * contains python mutex for threads
+ * ----------------------------------------------------------------------------- */
+
+#if defined(SWIG_PYTHON_THREADS) && !defined(SWIG_THREADS)
+#define SWIG_THREADS 1
+#endif
+#if defined(SWIG_THREADS) && !defined(Py_LIMITED_API)
+#include "pythread.h"
+#define SWIG_HAVE_MUTEX
+namespace Swig {
+   class Mutex
+   {
+       PyThread_type_lock mutex_;
+   public:
+       Mutex() : mutex_(PyThread_allocate_lock()) {}
+       ~Mutex() { PyThread_free_lock(mutex_); }
+       void lock() { PyThread_acquire_lock(mutex_, WAIT_LOCK); }
+       void unlock() { PyThread_release_lock(mutex_); }
+   };
+}
+#endif
+/* -----------------------------------------------------------------------------
+ * director_guard.swg
+ *
+ * Generic Mutex implementation for directors
+ *
+ * Before including this file, there are two macros to define for choosing
+ * an implementation as follows:
+ * - SWIG_THREADS:
+ *   If defined than mutexes are used.
+ *   If not defined then mutexes are not used.
+ * - SWIG_HAVE_MUTEX:
+ *   If there is a target language defined 'Mutex' class available, the target
+ *     language will define this macro to use the class over the options below.
+ *     The language 'Mutex' class needs to be Basic Lockable.
+ *     It must have public 'void lock()' and 'void unlock()' methods.
+ *     See: https://en.cppreference.com/w/cpp/named_req/BasicLockable
+ *   If the macro is not defined, one of the following will be used in this order:
+ *   - std::mutex if using C++11 or later.
+ *   - CRITICAL_SECTION on Windows.
+ *   - POSIX pthread mutex.
+ * ----------------------------------------------------------------------------- */
+
+#ifdef SWIG_THREADS
+
+#if __cplusplus >= 201103L
+/*
+ * C++ 11 or above
+ * std::mutex        https://en.cppreference.com/w/cpp/thread/mutex
+ * std::unique_lock  https://en.cppreference.com/w/cpp/thread/unique_lock
+ */
+#include <mutex>
+#ifdef SWIG_HAVE_MUTEX
+/* Use Language defined Mutex class */
+#define SWIG_GUARD(_mutex) std::unique_lock<Mutex> _guard(_mutex)
+#define SWIG_GUARD_DEFINITION(_cls, _mutex) Mutex _cls::_mutex
+#define SWIG_GUARD_DECLARATION(_mutex) static Mutex _mutex
+#else
+#define SWIG_GUARD(_mutex) std::unique_lock<std::mutex> _guard(_mutex)
+#define SWIG_GUARD_DEFINITION(_cls, _mutex) std::mutex _cls::_mutex
+#define SWIG_GUARD_DECLARATION(_mutex) static std::mutex _mutex
+#endif
+
+#else /* __cplusplus */
+
+#ifdef SWIG_HAVE_MUTEX
+/* Use Language defined Mutex class */
+
+#elif defined(_WIN32)
+/*
+ * Windows Critical Section Objects
+ * https://learn.microsoft.com/en-us/windows/win32/Sync/critical-section-objects
+ */
+#include <windows.h>
+#include <synchapi.h>
+namespace Swig {
+    class Mutex {
+        CRITICAL_SECTION mutex_;
+    public:
+        Mutex() { InitializeCriticalSection(&mutex_); }
+        ~Mutex() { DeleteCriticalSection(&mutex_); }
+        void lock() { EnterCriticalSection(&mutex_); }
+        void unlock() { LeaveCriticalSection(&mutex_); }
+    };
+}
+
+#else /* _WIN32 */
+/*
+ * POSIX Thread mutex
+ * https://pubs.opengroup.org/onlinepubs/7908799/xsh/pthread.h.html
+ */
+#include <pthread.h>
+namespace Swig {
+    class Mutex {
+        pthread_mutex_t mutex_;
+    public:
+        Mutex() { pthread_mutex_init(&mutex_, NULL); }
+        ~Mutex() { pthread_mutex_destroy(&mutex_); }
+        void lock() { pthread_mutex_lock(&mutex_); }
+        void unlock() { pthread_mutex_unlock(&mutex_); }
+    };
+}
+
+#endif /* _WIN32 */
+
+namespace Swig {
+    class Unique_lock {
+        Mutex &mutex_;
+    public:
+        Unique_lock(Mutex &_mutex) : mutex_(_mutex) { mutex_.lock(); }
+        ~Unique_lock() { mutex_.unlock(); }
+    };
+}
+#define SWIG_GUARD(_mutex) Unique_lock _guard(_mutex)
+#define SWIG_GUARD_DEFINITION(_cls, _mutex) Mutex _cls::_mutex
+#define SWIG_GUARD_DECLARATION(_mutex) static Mutex _mutex
+
+#endif /* __cplusplus */
+
+#else /* SWIG_THREADS */
+
+#define SWIG_GUARD(_mutex)
+#define SWIG_GUARD_DEFINITION(_cls, _mutex)
+#define SWIG_GUARD_DECLARATION(_mutex)
+
+#endif /* SWIG_THREADS */
+/* -----------------------------------------------------------------------------
+ * director.swg
+ *
+ * This file contains support for director classes so that Python proxy
+ * methods can be called from C++.
+ * ----------------------------------------------------------------------------- */
+
+#ifndef SWIG_DIRECTOR_PYTHON_HEADER_
+#define SWIG_DIRECTOR_PYTHON_HEADER_
+
+#include <string>
+#include <iostream>
+#include <exception>
+#include <vector>
+#include <map>
+
+/*
+  Use -DSWIG_PYTHON_DIRECTOR_NO_VTABLE if you don't want to generate a 'virtual
+  table', and avoid multiple GetAttr calls to retrieve the python
+  methods.
+*/
+
+#ifndef SWIG_PYTHON_DIRECTOR_NO_VTABLE
+#ifndef SWIG_PYTHON_DIRECTOR_VTABLE
+#define SWIG_PYTHON_DIRECTOR_VTABLE
+#endif
+#endif
+
+
+
+/*
+  Use -DSWIG_DIRECTOR_NO_UEH if you prefer to avoid the use of the
+  Undefined Exception Handler provided by swig.
+*/
+#ifndef SWIG_DIRECTOR_NO_UEH
+#ifndef SWIG_DIRECTOR_UEH
+#define SWIG_DIRECTOR_UEH
+#endif
+#endif
+
+
+/*
+  Use -DSWIG_DIRECTOR_NORTTI if you prefer to avoid the use of the
+  native C++ RTTI and dynamic_cast<>. But be aware that directors
+  could stop working when using this option.
+*/
+#ifdef SWIG_DIRECTOR_NORTTI
+/*
+   When we don't use the native C++ RTTI, we implement a minimal one
+   only for Directors.
+*/
+# ifndef SWIG_DIRECTOR_RTDIR
+# define SWIG_DIRECTOR_RTDIR
+
+namespace Swig {
+  class Director;
+  SWIGINTERN std::map<void *, Director *>& get_rtdir_map() {
+    static std::map<void *, Director *> rtdir_map;
+    return rtdir_map;
+  }
+
+  SWIGINTERNINLINE void set_rtdir(void *vptr, Director *rtdir) {
+    get_rtdir_map()[vptr] = rtdir;
+  }
+
+  SWIGINTERNINLINE Director *get_rtdir(void *vptr) {
+    std::map<void *, Director *>::const_iterator pos = get_rtdir_map().find(vptr);
+    Director *rtdir = (pos != get_rtdir_map().end()) ? pos->second : 0;
+    return rtdir;
+  }
+}
+# endif /* SWIG_DIRECTOR_RTDIR */
+
+# define SWIG_DIRECTOR_CAST(ARG) Swig::get_rtdir(static_cast<void *>(ARG))
+# define SWIG_DIRECTOR_RGTR(ARG1, ARG2) Swig::set_rtdir(static_cast<void *>(ARG1), ARG2)
+
+#else
+
+# define SWIG_DIRECTOR_CAST(ARG) dynamic_cast<Swig::Director *>(ARG)
+# define SWIG_DIRECTOR_RGTR(ARG1, ARG2)
+
+#endif /* SWIG_DIRECTOR_NORTTI */
+
+extern "C" {
+  struct swig_type_info;
+}
+
+namespace Swig {
+
+  /* memory handler */
+  struct GCItem {
+    virtual ~GCItem() {}
+
+    virtual int get_own() const {
+      return 0;
+    }
+  };
+
+  struct GCItem_var {
+    GCItem_var(GCItem *item = 0) : _item(item) {
+    }
+
+    GCItem_var& operator=(GCItem *item) {
+      GCItem *tmp = _item;
+      _item = item;
+      delete tmp;
+      return *this;
+    }
+
+    ~GCItem_var() {
+      delete _item;
+    }
+
+    GCItem * operator->() const {
+      return _item;
+    }
+
+  private:
+    GCItem *_item;
+  };
+
+  struct GCItem_Object : GCItem {
+    GCItem_Object(int own) : _own(own) {
+    }
+
+    virtual ~GCItem_Object() {
+    }
+
+    int get_own() const {
+      return _own;
+    }
+
+  private:
+    int _own;
+  };
+
+  template <typename Type>
+  struct GCItem_T : GCItem {
+    GCItem_T(Type *ptr) : _ptr(ptr) {
+    }
+
+    virtual ~GCItem_T() {
+      delete _ptr;
+    }
+
+  private:
+    Type *_ptr;
+  };
+
+  template <typename Type>
+  struct GCArray_T : GCItem {
+    GCArray_T(Type *ptr) : _ptr(ptr) {
+    }
+
+    virtual ~GCArray_T() {
+      delete[] _ptr;
+    }
+
+  private:
+    Type *_ptr;
+  };
+
+  /* base class for director exceptions */
+  class DirectorException : public std::exception {
+  protected:
+    std::string swig_msg;
+  public:
+    DirectorException(PyObject *error, const char *hdr ="", const char *msg ="") : swig_msg(hdr) {
+      SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+      if (msg[0]) {
+        swig_msg += " ";
+        swig_msg += msg;
+      }
+      if (!PyErr_Occurred()) {
+        PyErr_SetString(error, swig_msg.c_str());
+      }
+      SWIG_PYTHON_THREAD_END_BLOCK;
+    }
+
+    virtual ~DirectorException() SWIG_NOEXCEPT {
+    }
+
+    /* Deprecated, use what() instead */
+    const char *getMessage() const {
+      return what();
+    }
+
+    const char *what() const SWIG_NOEXCEPT {
+      return swig_msg.c_str();
+    }
+
+    static void raise(PyObject *error, const char *msg) {
+      throw DirectorException(error, msg);
+    }
+
+    static void raise(const char *msg) {
+      raise(PyExc_RuntimeError, msg);
+    }
+  };
+
+  /* type mismatch in the return value from a python method call */
+  class DirectorTypeMismatchException : public DirectorException {
+  public:
+    DirectorTypeMismatchException(PyObject *error, const char *msg="")
+      : DirectorException(error, "SWIG director type mismatch", msg) {
+    }
+
+    DirectorTypeMismatchException(const char *msg="")
+      : DirectorException(PyExc_TypeError, "SWIG director type mismatch", msg) {
+    }
+
+    static void raise(PyObject *error, const char *msg) {
+      throw DirectorTypeMismatchException(error, msg);
+    }
+
+    static void raise(const char *msg) {
+      throw DirectorTypeMismatchException(msg);
+    }
+  };
+
+  /* any python exception that occurs during a director method call */
+  class DirectorMethodException : public DirectorException {
+  public:
+    DirectorMethodException(const char *msg = "")
+      : DirectorException(PyExc_RuntimeError, "SWIG director method error.", msg) {
+    }
+
+    static void raise(const char *msg) {
+      throw DirectorMethodException(msg);
+    }
+  };
+
+  /* attempt to call a pure virtual method via a director method */
+  class DirectorPureVirtualException : public DirectorException {
+  public:
+    DirectorPureVirtualException(const char *msg = "")
+      : DirectorException(PyExc_RuntimeError, "SWIG director pure virtual method called", msg) {
+    }
+
+    static void raise(const char *msg) {
+      throw DirectorPureVirtualException(msg);
+    }
+  };
+
+
+
+  /* director base class */
+  class Director {
+  private:
+    /* pointer to the wrapped python object */
+    PyObject *swig_self;
+    /* flag indicating whether the object is owned by python or c++ */
+    mutable bool swig_disown_flag;
+
+    /* decrement the reference count of the wrapped python object */
+    void swig_decref() const {
+      if (swig_disown_flag) {
+        SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+        SWIG_Py_DECREF(swig_self);
+        SWIG_PYTHON_THREAD_END_BLOCK;
+      }
+    }
+
+  public:
+    /* wrap a python object. */
+    Director(PyObject *self) : swig_self(self), swig_disown_flag(false) {
+    }
+
+    /* discard our reference at destruction */
+    virtual ~Director() {
+      swig_decref();
+    }
+
+    /* return a pointer to the wrapped python object */
+    PyObject *swig_get_self() const {
+      return swig_self;
+    }
+
+    /* acquire ownership of the wrapped python object (the sense of "disown" is from python) */
+    void swig_disown() const {
+      if (!swig_disown_flag) {
+        swig_disown_flag=true;
+        swig_incref();
+      }
+    }
+
+    /* increase the reference count of the wrapped python object */
+    void swig_incref() const {
+      if (swig_disown_flag) {
+        SWIG_Py_INCREF(swig_self);
+      }
+    }
+
+    /* methods to implement pseudo protected director members */
+    virtual bool swig_get_inner(const char * /* swig_protected_method_name */) const {
+      return true;
+    }
+
+    virtual void swig_set_inner(const char * /* swig_protected_method_name */, bool /* swig_val */) const {
+    }
+
+  /* ownership management */
+  private:
+    typedef std::map<void *, GCItem_var> swig_ownership_map;
+    mutable swig_ownership_map swig_owner;
+    SWIG_GUARD_DECLARATION(swig_mutex_own);
+
+  public:
+    template <typename Type>
+    void swig_acquire_ownership_array(Type *vptr) const {
+      if (vptr) {
+        SWIG_GUARD(swig_mutex_own);
+        swig_owner[vptr] = new GCArray_T<Type>(vptr);
+      }
+    }
+
+    template <typename Type>
+    void swig_acquire_ownership(Type *vptr) const {
+      if (vptr) {
+        SWIG_GUARD(swig_mutex_own);
+        swig_owner[vptr] = new GCItem_T<Type>(vptr);
+      }
+    }
+
+    void swig_acquire_ownership_obj(void *vptr, int own) const {
+      if (vptr && own) {
+        SWIG_GUARD(swig_mutex_own);
+        swig_owner[vptr] = new GCItem_Object(own);
+      }
+    }
+
+    int swig_release_ownership(void *vptr) const {
+      int own = 0;
+      if (vptr) {
+        SWIG_GUARD(swig_mutex_own);
+        swig_ownership_map::iterator iter = swig_owner.find(vptr);
+        if (iter != swig_owner.end()) {
+          own = iter->second->get_own();
+          swig_owner.erase(iter);
+        }
+      }
+      return own;
+    }
+
+    template <typename Type>
+    static PyObject *swig_pyobj_disown(PyObject *pyobj, PyObject *SWIGUNUSEDPARM(args)) {
+      SwigPyObject *sobj = (SwigPyObject *)pyobj;
+      sobj->own = 0;
+      Director *d = SWIG_DIRECTOR_CAST(reinterpret_cast<Type *>(sobj->ptr));
+      if (d)
+        d->swig_disown();
+      return PyWeakref_NewProxy(pyobj, NULL);
+    }
+  };
+
+  SWIG_GUARD_DEFINITION(Director, swig_mutex_own);
+}
+
+#endif
 #define SWIGTYPE_p_allocator_type swig_types[0]
 #define SWIGTYPE_p_char swig_types[1]
 #define SWIGTYPE_p_difference_type swig_types[2]
 #define SWIGTYPE_p_first_type swig_types[3]
 #define SWIGTYPE_p_int swig_types[4]
 #define SWIGTYPE_p_long_long swig_types[5]
-#define SWIGTYPE_p_p_PyObject swig_types[6]
-#define SWIGTYPE_p_second_type swig_types[7]
-#define SWIGTYPE_p_short swig_types[8]
-#define SWIGTYPE_p_signed_char swig_types[9]
-#define SWIGTYPE_p_size_type swig_types[10]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[11]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[12]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[13]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[14]
-#define SWIGTYPE_p_std__invalid_argument swig_types[15]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[16]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[17]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[18]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[19]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[20]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[21]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[22]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[23]
-#define SWIGTYPE_p_unsigned_char swig_types[24]
-#define SWIGTYPE_p_unsigned_int swig_types[25]
-#define SWIGTYPE_p_unsigned_long_long swig_types[26]
-#define SWIGTYPE_p_unsigned_short swig_types[27]
-#define SWIGTYPE_p_value_type swig_types[28]
+#define SWIGTYPE_p_octra__Callback swig_types[6]
+#define SWIGTYPE_p_p_PyObject swig_types[7]
+#define SWIGTYPE_p_second_type swig_types[8]
+#define SWIGTYPE_p_short swig_types[9]
+#define SWIGTYPE_p_signed_char swig_types[10]
+#define SWIGTYPE_p_size_type swig_types[11]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[12]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[13]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[14]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[15]
+#define SWIGTYPE_p_std__invalid_argument swig_types[16]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[17]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[18]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[19]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[20]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[21]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[22]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[23]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[24]
+#define SWIGTYPE_p_unsigned_char swig_types[25]
+#define SWIGTYPE_p_unsigned_int swig_types[26]
+#define SWIGTYPE_p_unsigned_long_long swig_types[27]
+#define SWIGTYPE_p_unsigned_short swig_types[28]
+#define SWIGTYPE_p_value_type swig_types[29]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[30];
-SWIGINTERN swig_module_info swig_module = {swig_types, 29, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[31];
+SWIGINTERN swig_module_info swig_module = {swig_types, 30, 0, 0, 0, 0};
 #ifdef SWIG_TypeQuery
 # undef SWIG_TypeQuery
 #endif
@@ -6158,6 +6663,57 @@ SWIGINTERN std::vector< std::string >::iterator std_vector_Sl_std_string_Sg__ins
 SWIGINTERN void std_vector_Sl_std_string_Sg__insert__SWIG_1(std::vector< std::string > *self,std::vector< std::string >::iterator pos,std::vector< std::string >::size_type n,std::vector< std::string >::value_type const &x){ self->insert(pos, n, x); }
 
   #include "octra/octra.hpp"
+
+
+
+/* ---------------------------------------------------
+ * C++ director class methods
+ * --------------------------------------------------- */
+
+#include "octra_python_wrap.h"
+
+SwigDirector_Callback::SwigDirector_Callback(PyObject *self): octra::Callback(), Swig::Director(self) {
+  SWIG_DIRECTOR_RGTR((octra::Callback *)this, this); 
+}
+
+
+
+
+SwigDirector_Callback::~SwigDirector_Callback() {
+}
+
+double SwigDirector_Callback::call(double x) {
+  double c_result = SwigValueInit< double >() ;
+  
+  swig::SwigVar_PyObject obj0;
+  obj0 = SWIG_From_double(static_cast< double >(x));
+  if (!swig_get_self()) {
+    Swig::DirectorException::raise("'self' uninitialized, maybe you forgot to call Callback.__init__.");
+  }
+#if defined(SWIG_PYTHON_DIRECTOR_VTABLE)
+  const size_t swig_method_index = 0;
+  const char *const swig_method_name = "call";
+  PyObject *method = swig_get_method(swig_method_index, swig_method_name);
+  swig::SwigVar_PyObject result = PyObject_CallFunctionObjArgs(method ,(PyObject *)obj0, NULL);
+#else
+  swig::SwigVar_PyObject swig_method_name = SWIG_Python_str_FromChar("call");
+  swig::SwigVar_PyObject result = PyObject_CallMethodObjArgs(swig_get_self(), (PyObject *) swig_method_name ,(PyObject *)obj0, NULL);
+#endif
+  if (!result) {
+    PyObject *error = PyErr_Occurred();
+    if (error) {
+      Swig::DirectorMethodException::raise("Error detected when calling 'Callback.call'");
+    }
+  }
+  double swig_val;
+  int swig_res = SWIG_AsVal_double(result, &swig_val);
+  if (!SWIG_IsOK(swig_res)) {
+    Swig::DirectorTypeMismatchException::raise(SWIG_ErrorType(SWIG_ArgError(swig_res)), "in output value of type '""double""'");
+  }
+  c_result = static_cast< double >(swig_val);
+  return (double) c_result;
+}
+
 
 SWIGINTERN PyObject *_wrap_delete_SwigPyIterator(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
@@ -15312,6 +15868,203 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_delete_Callback(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  octra::Callback *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_octra__Callback, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Callback" "', argument " "1"" of type '" "octra::Callback *""'"); 
+  }
+  arg1 = reinterpret_cast< octra::Callback * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Callback_call(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  octra::Callback *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Callback_call", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_octra__Callback, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Callback_call" "', argument " "1"" of type '" "octra::Callback *""'"); 
+  }
+  arg1 = reinterpret_cast< octra::Callback * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Callback_call" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  director = SWIG_DIRECTOR_CAST(arg1);
+  upcall = (director && (director->swig_get_self()==swig_obj[0]));
+  try {
+    if (upcall) {
+      result = (double)(arg1)->octra::Callback::call(arg2);
+    } else {
+      result = (double)(arg1)->call(arg2);
+    }
+  } catch (Swig::DirectorException&) {
+    SWIG_fail;
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Callback(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PyObject *arg1 = 0 ;
+  PyObject *swig_obj[1] ;
+  octra::Callback *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  arg1 = swig_obj[0];
+  if ( arg1 != Py_None ) {
+    /* subclassed */
+    result = (octra::Callback *)new SwigDirector_Callback(arg1); 
+  } else {
+    result = (octra::Callback *)new octra::Callback(); 
+  }
+  
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_octra__Callback, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_disown_Callback(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  octra::Callback *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_octra__Callback, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "disown_Callback" "', argument " "1"" of type '" "octra::Callback *""'"); 
+  }
+  arg1 = reinterpret_cast< octra::Callback * >(argp1);
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *Callback_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_octra__Callback, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *Callback_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_call_with_callback(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  octra::Callback *arg2 = 0 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "call_with_callback", 2, 2, swig_obj)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "call_with_callback" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_octra__Callback, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "call_with_callback" "', argument " "2"" of type '" "octra::Callback *""'"); 
+  }
+  arg2 = reinterpret_cast< octra::Callback * >(argp2);
+  result = (double)octra::call_with_callback(arg1,arg2);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_map_dvector_with_callback(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  octra::Callback *arg2 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "map_dvector_with_callback", 2, 2, swig_obj)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "map_dvector_with_callback" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "map_dvector_with_callback" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_octra__Callback, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "map_dvector_with_callback" "', argument " "2"" of type '" "octra::Callback *""'"); 
+  }
+  arg2 = reinterpret_cast< octra::Callback * >(argp2);
+  result = octra::map_dvector_with_callback((std::vector< double,std::allocator< double > > const &)*arg1,arg2);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_make_dvector(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   double arg1 ;
@@ -15631,6 +16384,14 @@ static PyMethodDef SwigMethods[] = {
 	 { "SVector_swigregister", SVector_swigregister, METH_O, NULL},
 	 { "SVector_swiginit", SVector_swiginit, METH_VARARGS, NULL},
 	 { "hello", _wrap_hello, METH_NOARGS, NULL},
+	 { "delete_Callback", _wrap_delete_Callback, METH_O, NULL},
+	 { "Callback_call", _wrap_Callback_call, METH_VARARGS, NULL},
+	 { "new_Callback", _wrap_new_Callback, METH_O, NULL},
+	 { "disown_Callback", _wrap_disown_Callback, METH_O, NULL},
+	 { "Callback_swigregister", Callback_swigregister, METH_O, NULL},
+	 { "Callback_swiginit", Callback_swiginit, METH_VARARGS, NULL},
+	 { "call_with_callback", _wrap_call_with_callback, METH_VARARGS, NULL},
+	 { "map_dvector_with_callback", _wrap_map_dvector_with_callback, METH_VARARGS, NULL},
 	 { "make_dvector", _wrap_make_dvector, METH_VARARGS, NULL},
 	 { "sum_dvector", _wrap_sum_dvector, METH_O, NULL},
 	 { "make_dpair", _wrap_make_dpair, METH_VARARGS, NULL},
@@ -15653,6 +16414,7 @@ SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "di
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_octra__Callback = {"_p_octra__Callback", "octra::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_p_PyObject = {"_p_p_PyObject", "PyObject **", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
@@ -15687,6 +16449,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
+  &_swigt__p_octra__Callback,
   &_swigt__p_p_PyObject,
   &_swigt__p_second_type,
   &_swigt__p_short,
@@ -15718,6 +16481,7 @@ SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_differenc
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_octra__Callback[] = {  {&_swigt__p_octra__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_p_PyObject[] = {  {&_swigt__p_p_PyObject, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
@@ -15749,6 +16513,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
+  _swigc__p_octra__Callback,
   _swigc__p_p_PyObject,
   _swigc__p_second_type,
   _swigc__p_short,

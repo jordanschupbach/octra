@@ -1470,29 +1470,30 @@ SWIGINTERN void SWIG_R_Raise(SEXP obj, const char *msg) {
 #define SWIGTYPE_p_first_type swig_types[3]
 #define SWIGTYPE_p_int swig_types[4]
 #define SWIGTYPE_p_long_long swig_types[5]
-#define SWIGTYPE_p_second_type swig_types[6]
-#define SWIGTYPE_p_short swig_types[7]
-#define SWIGTYPE_p_signed_char swig_types[8]
-#define SWIGTYPE_p_size_type swig_types[9]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[10]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[11]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[12]
-#define SWIGTYPE_p_std__invalid_argument swig_types[13]
-#define SWIGTYPE_p_std__out_of_range swig_types[14]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[15]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[16]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[17]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[18]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[19]
-#define SWIGTYPE_p_unsigned_char swig_types[20]
-#define SWIGTYPE_p_unsigned_int swig_types[21]
-#define SWIGTYPE_p_unsigned_long_long swig_types[22]
-#define SWIGTYPE_p_unsigned_short swig_types[23]
-#define SWIGTYPE_p_value_type swig_types[24]
+#define SWIGTYPE_p_octra__Callback swig_types[6]
+#define SWIGTYPE_p_second_type swig_types[7]
+#define SWIGTYPE_p_short swig_types[8]
+#define SWIGTYPE_p_signed_char swig_types[9]
+#define SWIGTYPE_p_size_type swig_types[10]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[11]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[12]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[13]
+#define SWIGTYPE_p_std__invalid_argument swig_types[14]
+#define SWIGTYPE_p_std__out_of_range swig_types[15]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[16]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[17]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[18]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[19]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[20]
+#define SWIGTYPE_p_unsigned_char swig_types[21]
+#define SWIGTYPE_p_unsigned_int swig_types[22]
+#define SWIGTYPE_p_unsigned_long_long swig_types[23]
+#define SWIGTYPE_p_unsigned_short swig_types[24]
+#define SWIGTYPE_p_value_type swig_types[25]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[26];
-SWIGINTERN swig_module_info swig_module = {swig_types, 25, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[27];
+SWIGINTERN swig_module_info swig_module = {swig_types, 26, 0, 0, 0, 0};
 
 
 #ifdef __cplusplus
@@ -7018,6 +7019,167 @@ R_swig_hello ( )
 
 
 SWIGEXPORT SEXP
+R_swig_delete_Callback ( SEXP self)
+{
+  {
+    octra::Callback *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_octra__Callback, SWIG_POINTER_DISOWN |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Callback" "', argument " "1"" of type '" "octra::Callback *""'"); 
+    }
+    arg1 = reinterpret_cast< octra::Callback * >(argp1);
+    delete arg1;
+    r_ans = R_NilValue;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    R_ClearExternalPtr(self);
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_Callback_call ( SEXP self, SEXP x, SEXP s_swig_copy)
+{
+  {
+    double result;
+    octra::Callback *arg1 = 0 ;
+    double arg2 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(self, &argp1, SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Callback_call" "', argument " "1"" of type '" "octra::Callback *""'"); 
+    }
+    arg1 = reinterpret_cast< octra::Callback * >(argp1);
+    arg2 = static_cast< double >(REAL(x)[0]);
+    result = (double)(arg1)->call(arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_new_Callback ( )
+{
+  {
+    octra::Callback *result = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    result = (octra::Callback *)new octra::Callback();
+    r_ans = SWIG_R_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_octra__Callback, SWIG_POINTER_OWN |  0 );
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_call_with_callback ( SEXP x, SEXP cb, SEXP s_swig_copy)
+{
+  {
+    double result;
+    double arg1 ;
+    octra::Callback *arg2 = 0 ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< double >(REAL(x)[0]);
+    res2 = SWIG_R_ConvertPtr(cb, &argp2, SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "call_with_callback" "', argument " "2"" of type '" "octra::Callback *""'"); 
+    }
+    arg2 = reinterpret_cast< octra::Callback * >(argp2);
+    result = (double)octra::call_with_callback(arg1,arg2);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_map_dvector_with_callback ( SEXP values, SEXP cb, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    std::vector< double,std::allocator< double > > *arg1 = 0 ;
+    octra::Callback *arg2 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    void *argp2 = 0 ;
+    int res2 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res1 = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "map_dvector_with_callback" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "map_dvector_with_callback" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    res2 = SWIG_R_ConvertPtr(cb, &argp2, SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "map_dvector_with_callback" "', argument " "2"" of type '" "octra::Callback *""'"); 
+    }
+    arg2 = reinterpret_cast< octra::Callback * >(argp2);
+    result = octra::map_dvector_with_callback((std::vector< double,std::allocator< double > > const &)*arg1,arg2);
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
 R_swig_make_dvector ( SEXP a, SEXP b, SEXP c, SEXP s_swig_copy)
 {
   {
@@ -7157,6 +7319,7 @@ SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "di
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_octra__Callback = {"_p_octra__Callback", "octra::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_signed_char = {"_p_signed_char", "int8_t *|int_fast8_t *|int_least8_t *|signed char *", 0, 0, (void*)0, 0};
@@ -7187,6 +7350,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
+  &_swigt__p_octra__Callback,
   &_swigt__p_second_type,
   &_swigt__p_short,
   &_swigt__p_signed_char,
@@ -7214,6 +7378,7 @@ SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_differenc
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_octra__Callback[] = {  {&_swigt__p_octra__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_signed_char[] = {  {&_swigt__p_signed_char, 0, 0, 0},{0, 0, 0, 0}};
@@ -7241,6 +7406,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
+  _swigc__p_octra__Callback,
   _swigc__p_second_type,
   _swigc__p_short,
   _swigc__p_signed_char,
@@ -7689,6 +7855,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SizeVector_get_allocator", (DL_FUNC) &R_swig_SizeVector_get_allocator, 2},
    {"R_swig_IVector_empty", (DL_FUNC) &R_swig_IVector_empty, 2},
    {"R_swig_make_dvector", (DL_FUNC) &R_swig_make_dvector, 4},
+   {"R_swig_call_with_callback", (DL_FUNC) &R_swig_call_with_callback, 3},
    {"R_swig_make_dpair", (DL_FUNC) &R_swig_make_dpair, 3},
    {"R_swig_DVector_pop_back", (DL_FUNC) &R_swig_DVector_pop_back, 1},
    {"R_swig_SizeVector_capacity", (DL_FUNC) &R_swig_SizeVector_capacity, 2},
@@ -7697,6 +7864,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DPair_second_set", (DL_FUNC) &R_swig_DPair_second_set, 2},
    {"R_swig_IPair_first_get", (DL_FUNC) &R_swig_IPair_first_get, 2},
    {"R_swig_SizeVector_pop", (DL_FUNC) &R_swig_SizeVector_pop, 2},
+   {"R_swig_new_Callback", (DL_FUNC) &R_swig_new_Callback, 0},
    {"R_swig_DVector_capacity", (DL_FUNC) &R_swig_DVector_capacity, 2},
    {"R_swig_DVector___len__", (DL_FUNC) &R_swig_DVector___len__, 2},
    {"R_swig_SizeVector___getitem__", (DL_FUNC) &R_swig_SizeVector___getitem__, 3},
@@ -7726,6 +7894,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector___nonzero__", (DL_FUNC) &R_swig_IVector___nonzero__, 2},
    {"R_swig_new_DVector__SWIG_2", (DL_FUNC) &R_swig_new_DVector__SWIG_2, 1},
    {"R_swig_new_DVector__SWIG_3", (DL_FUNC) &R_swig_new_DVector__SWIG_3, 2},
+   {"R_swig_delete_Callback", (DL_FUNC) &R_swig_delete_Callback, 1},
    {"R_swig_SizeVector___delitem__", (DL_FUNC) &R_swig_SizeVector___delitem__, 2},
    {"R_swig_DVector_empty", (DL_FUNC) &R_swig_DVector_empty, 2},
    {"R_swig_IPair_second_get", (DL_FUNC) &R_swig_IPair_second_get, 2},
@@ -7735,6 +7904,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector___getslice__", (DL_FUNC) &R_swig_IVector___getslice__, 3},
    {"R_swig_new_IVector__SWIG_0", (DL_FUNC) &R_swig_new_IVector__SWIG_0, 0},
    {"R_swig_SizeVector___nonzero__", (DL_FUNC) &R_swig_SizeVector___nonzero__, 2},
+   {"R_swig_map_dvector_with_callback", (DL_FUNC) &R_swig_map_dvector_with_callback, 3},
    {"R_swig_IVector___setslice__", (DL_FUNC) &R_swig_IVector___setslice__, 4},
    {"R_swig_IPair_first_set", (DL_FUNC) &R_swig_IPair_first_set, 2},
    {"R_swig_new_IVector__SWIG_1", (DL_FUNC) &R_swig_new_IVector__SWIG_1, 1},
@@ -7743,6 +7913,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector_swap", (DL_FUNC) &R_swig_IVector_swap, 2},
    {"R_swig_DVector_clear", (DL_FUNC) &R_swig_DVector_clear, 1},
    {"R_swig_new_SizeVector__SWIG_1", (DL_FUNC) &R_swig_new_SizeVector__SWIG_1, 1},
+   {"R_swig_Callback_call", (DL_FUNC) &R_swig_Callback_call, 3},
    {"R_swig_new_IVector__SWIG_3", (DL_FUNC) &R_swig_new_IVector__SWIG_3, 2},
    {"R_swig_DVector___delslice__", (DL_FUNC) &R_swig_DVector___delslice__, 3},
    {"R_swig_new_SizeVector__SWIG_2", (DL_FUNC) &R_swig_new_SizeVector__SWIG_2, 1},

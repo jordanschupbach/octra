@@ -141,6 +141,42 @@ let _hello arg = match _hello_f ((fnhelper arg)) with
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
+external _delete_Callback_f : c_obj list -> c_obj list = "_wrap_delete_Callbackoctra" ;;
+let _delete_Callback arg = match _delete_Callback_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _Callback_call_f : c_obj list -> c_obj list = "_wrap_Callback_calloctra" ;;
+let _Callback_call arg = match _Callback_call_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _new_Callback_f : c_obj list -> c_obj list = "_wrap_new_Callbackoctra" ;;
+let _new_Callback arg = match _new_Callback_f (director_core_helper (fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if true then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _disown_Callback_f : c_obj list -> c_obj list = "_wrap_disown_Callbackoctra" ;;
+let _disown_Callback arg = match _disown_Callback_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _call_with_callback_f : c_obj list -> c_obj list = "_wrap_call_with_callbackoctra" ;;
+let _call_with_callback arg = match _call_with_callback_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _map_dvector_with_callback_f : c_obj list -> c_obj list = "_wrap_map_dvector_with_callbackoctra" ;;
+let _map_dvector_with_callback arg = match _map_dvector_with_callback_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
 external _make_dvector_f : c_obj list -> c_obj list = "_wrap_make_dvectoroctra" ;;
 let _make_dvector arg = match _make_dvector_f ((fnhelper arg)) with
   [] -> C_void
@@ -320,8 +356,76 @@ let _ = Callback.register
           create_std_xxvector_xx_ldbrace_xx_lparendouble_xx_rparen_xx_rdbrace_from_ptr
 
 
+
+let create_octra_xxCallback_from_ptr raw_ptr =
+  C_obj 
+begin
+  let h = Hashtbl.create 20 in
+    List.iter (fun (nm,fn) -> Hashtbl.replace h nm fn) 
+	[ "nop", (fun args -> C_void) ;
+	      "~", _delete_Callback ;
+    "call", _Callback_call ;
+    "", _disown_Callback ;
+ 
+	 "&", (fun args -> raw_ptr) ;
+       ":parents",
+       (fun args ->
+          C_list
+	  (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (x,y) :: !out) h ;
+          (List.map	
+	     (fun (x,y) ->
+		C_string (String.sub x 2 ((String.length x) - 2)))
+	     (List.filter
+		(fun (x,y) ->
+		   ((String.length x) > 2)
+		   && x.[0] == ':' && x.[1] == ':') !out)))) ;
+       ":classof", (fun args -> C_string "octra::Callback") ;
+       ":methods", (fun args -> 
+	  C_list (let out = ref [] in 
+	    Hashtbl.iter (fun x y -> out := (C_string x) :: !out) h ; !out))
+	] ; 
+	let rec invoke_inner raw_ptr mth arg = 
+	begin
+	  try
+	    let application = Hashtbl.find h mth in
+	      application
+		(match arg with 
+		     C_list l -> (C_list (raw_ptr :: l)) 
+		   | C_void -> (C_list [ raw_ptr ])
+		   | v -> (C_list [ raw_ptr ; v ]))
+	  with Not_found -> 
+		(* Try parent classes *)
+		begin
+		  let parent_classes = [
+		    
+		  ] in
+		  let rec try_parent plist raw_ptr =
+		    match plist with
+			p :: tl -> 
+			  begin
+			    try
+			      (invoke (p raw_ptr)) mth arg
+			    with (BadMethodName (p,m,s)) -> 
+			      try_parent tl raw_ptr
+			  end
+		      | [] ->
+			  raise (BadMethodName (raw_ptr,mth,"octra::Callback"))
+		  in try_parent parent_classes raw_ptr
+		end
+	end in
+	  (fun mth arg -> invoke_inner raw_ptr mth arg)
+end
+
+let _ = register_class_byname "octra::Callback" create_octra_xxCallback_from_ptr
+let _ = Callback.register 
+          "create_octra::Callback_from_ptr"
+          create_octra_xxCallback_from_ptr
+
+
 let new_DPair clst = _new_DPair clst
 let new_DVector clst = _new_DVector clst
+let new_Callback clst = _new_Callback clst
 
   let rec swig_val t v = 
     match v with

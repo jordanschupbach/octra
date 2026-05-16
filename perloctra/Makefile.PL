@@ -3,10 +3,12 @@ use warnings;
 
 use ExtUtils::MakeMaker;
 use Config;
+use FindBin;
+use File::Spec;
 
-my $octra_root = "$ENV{PWD}/../..";
-my $include_dir = "$octra_root/include";
-my $lib_dir = "$octra_root/build";
+my $octra_root = File::Spec->catdir($FindBin::Bin, '..');
+my $include_dir = File::Spec->catdir($octra_root, 'include');
+my $lib_dir = File::Spec->catdir($octra_root, 'build');
 
 WriteMakefile(
   NAME         => 'Octra',
@@ -18,4 +20,3 @@ WriteMakefile(
   dynamic_lib  => { OTHERLDFLAGS => $Config{lddlflags} },
   clean        => { FILES => 'Octra_wrap.* Octra.pm lib/Octra.pm' },
 );
-

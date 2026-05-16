@@ -6,6 +6,22 @@ void hello() {
   std::cout << "Hello octra" << std::endl;
 }
 
+double call_with_callback(double x, Callback* cb) {
+  return cb ? cb->call(x) : x;
+}
+
+std::vector<double> map_dvector_with_callback(const std::vector<double>& values, Callback* cb) {
+  if (!cb) {
+    return values;
+  }
+  std::vector<double> out;
+  out.reserve(values.size());
+  for (double v : values) {
+    out.push_back(cb->call(v));
+  }
+  return out;
+}
+
 std::vector<double> make_dvector(double a, double b, double c) {
   return { a, b, c };
 }

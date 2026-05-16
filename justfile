@@ -9,7 +9,7 @@ NIX_DEVELOP := "nix develop --accept-flake-config"
 run: run-cpp
 
 run-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet run --project ./octradotnet"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/octra-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet run --project ./octradotnet'
 
 run-java: build-java
   {{ NIX_DEVELOP }} .#java --command bash -lc "gradle run --no-configuration-cache --args='{{ TARGET }}'"
@@ -70,62 +70,65 @@ run-benchmark:
 # {{{ prebuild commands
 
 prebuild-python:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -python -o ../src/octra_python_wrap.cpp ../prebindings/pyoctra/src/pyoctra.i && mv ../src/octra.py ../src/pyoctra/octra.py"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -python -o ../src/octra_python_wrap.cpp -oh ../src/octra_python_wrap.h ../prebindings/pyoctra/src/pyoctra.i && mv ../src/octra.py ../src/pyoctra/octra.py"
 
 prebuild-javascript:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/octra_js_wrap.cpp ../prebindings/octrajs/src/octrajs.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/octra_js_wrap.cpp -oh ../src/octra_js_wrap.h ../prebindings/octrajs/src/octrajs.i"
+  # Inject deterministic JS->C callback bridge helpers (SWIG Node backend doesn't support directors here).
+  perl -0777 -pi -e 's/#include <napi.h>\n/#include <napi.h>\n#include \"octra_js_callbacks.inl\"\n/s' src/octra_js_wrap.cpp
+  perl -0777 -pi -e 's/SWIG_InitializeModule\(env\);\n/SWIG_InitializeModule(env);\n  OctraJS_RegisterCallbackBridge(env, exports);\n/s' src/octra_js_wrap.cpp
 
 prebuild-csharp:
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./octradotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +"
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -csharp -dllimport octra_csharp -o ../octradotnet/octra_csharp_wrap.cpp ../prebindings/octradotnet/src/octradotnet.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -csharp -dllimport octra_csharp -o ../octradotnet/octra_csharp_wrap.cpp -oh ../octradotnet/octra_csharp_wrap.h ../prebindings/octradotnet/src/octradotnet.i"
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "sed -i 's/DllImport(\"octra\"/DllImport(\"octra_csharp\"/g' ./octradotnet/octraPINVOKE.cs"
 
 prebuild-r:
-   {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/octra_r_wrap.cpp ../prebindings/octrar/src/octrar.i && mv ../src/octrar.R ../R"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/octra_r_wrap.cpp -oh ../src/octra_r_wrap.h ../prebindings/octrar/src/octrar.i && mv ../src/octrar.R ../R"
 
 prebuild-perl:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p perloctra/lib && swig -perl5 -c++ -Iinclude -o perloctra/Octra_wrap.cxx -outdir perloctra/lib prebindings/perloctra/src/perloctra.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p perloctra/lib && swig -perl5 -c++ -Iinclude -o perloctra/Octra_wrap.cxx -oh perloctra/Octra_wrap.h -outdir perloctra/lib prebindings/perloctra/src/perloctra.i"
 
 # Ruby (SWIG)
 prebuild-ruby:
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc "mkdir -p octruby/ext/octruby octruby/lib/octruby && swig -ruby -c++ -Iinclude -o octruby/ext/octruby/octruby_wrap.cxx -outdir octruby/lib/octruby prebindings/octruby/src/octruby.i"
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc "mkdir -p octruby/ext/octruby octruby/lib/octruby && swig -ruby -c++ -Iinclude -o octruby/ext/octruby/octruby_wrap.cxx -oh octruby/ext/octruby/octruby_wrap.h -outdir octruby/lib/octruby prebindings/octruby/src/octruby.i"
 
 # Tcl (SWIG)
 prebuild-tcl:
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/octratcl/swig && swig -tcl8 -c++ -Iinclude -o build/octratcl/swig/octra_tcl_wrap.cxx prebindings/octratcl/src/octratcl.i"
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/octratcl/swig && swig -tcl8 -c++ -Iinclude -o build/octratcl/swig/octra_tcl_wrap.cxx -oh build/octratcl/swig/octra_tcl_wrap.h prebindings/octratcl/src/octratcl.i"
 
 # Lua (SWIG)
 prebuild-lua:
-  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/octralua-swig && swig -lua -c++ -Iinclude -outdir build/octralua-swig -o build/octralua-swig/octra_lua_wrap.cxx prebindings/octralua/src/octralua.i"
+  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/octralua-swig && swig -lua -c++ -Iinclude -outdir build/octralua-swig -o build/octralua-swig/octra_lua_wrap.cxx -oh build/octralua-swig/octra_lua_wrap.h prebindings/octralua/src/octralua.i"
 
 # D (SWIG)
 prebuild-d:
-  {{ NIX_DEVELOP }} .#d --command bash -lc "mkdir -p octrad/source && swig -c++ -d -Iinclude -o octrad/source/octrad_wrap.cpp -outdir octrad/source prebindings/octrad/src/octrad.i"
+  {{ NIX_DEVELOP }} .#d --command bash -lc "mkdir -p octrad/source && swig -c++ -d -Iinclude -o octrad/source/octrad_wrap.cpp -oh octrad/source/octrad_wrap.h -outdir octrad/source prebindings/octrad/src/octrad.i"
 
 # Guile (SWIG)
 prebuild-guile:
-  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/octraguile-swig && swig -guile -c++ -Iinclude -o build/octraguile-swig/octra_guile_wrap.cxx prebindings/octraguile/src/octraguile.i"
+  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/octraguile-swig && swig -guile -c++ -Iinclude -o build/octraguile-swig/octra_guile_wrap.cxx -oh build/octraguile-swig/octra_guile_wrap.h prebindings/octraguile/src/octraguile.i"
 
 prebuild-octave:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/octraoctave-swig && swig -octave -c++ -Iinclude -o build/octraoctave-swig/octra_octave_wrap.cxx prebindings/octraoctave/src/octraoctave.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/octraoctave-swig && swig -octave -c++ -Iinclude -o build/octraoctave-swig/octra_octave_wrap.cxx -oh build/octraoctave-swig/octra_octave_wrap.h prebindings/octraoctave/src/octraoctave.i"
 
 # TODO:
 prebuild-go:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -go -c++ -intgosize 64 -Iinclude -o gooctra/gooctra_wrap.cxx -outdir gooctra prebindings/gooctra/src/gooctra.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -go -c++ -intgosize 64 -Iinclude -o gooctra/gooctra_wrap.cxx -oh gooctra/gooctra_wrap.h -outdir gooctra prebindings/gooctra/src/gooctra.i"
 
 # TODO:
 prebuild-php:
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/octra_php_wrap.cpp ../prebindings/octraPHP/src/octraPHP.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/octra_php_wrap.cpp -oh ../src/octra_php_wrap.h ../prebindings/octraPHP/src/octraPHP.i"
 
 prebuild-java:
     {{ NIX_DEVELOP }} .#java --command bash -lc "find joctra/src/main/java/js/octra/joctra -type f -name '*.java' ! -name 'App.java' ! -path 'joctra/src/main/java/js/octra/joctra/examples/*' -exec rm {} +"
     {{ NIX_DEVELOP }} .#java --command bash -lc "rm -rf joctra-octra/build/cmake"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -c++ -java -o ../joctra-octra/octra_java_wrap.cpp -package js.octra.joctra -outdir ../joctra/src/main/java/js/octra/joctra ../prebindings/joctra/src/joctra.i"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -c++ -java -o ../joctra-octra/octra_java_wrap.cpp -oh ../joctra-octra/octra_java_wrap.h -package js.octra.joctra -outdir ../joctra/src/main/java/js/octra/joctra ../prebindings/joctra/src/joctra.i"
     {{ NIX_DEVELOP }} .#java --command bash -lc "sed -i 's/System.loadLibrary(\"octra\")/System.loadLibrary(\"octra_jni\")/g' joctra/src/main/java/js/octra/joctra/App.java joctra/src/main/java/js/octra/joctra/examples/StlEx.java"
     {{ NIX_DEVELOP }} .#java --command bash -lc "perl -0777 -pi -e 's/public class octra \\{/public class octra {\\n  static { System.loadLibrary(\"octra_jni\"); }/s' joctra/src/main/java/js/octra/joctra/octra.java"
 
 prebuild-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${OCTRA_PREFIX:-}\" || (echo 'OCTRA_PREFIX is not set' >&2; exit 1) && mkdir -p octraocaml/src && swig -ocaml -c++ -Iinclude -o octraocaml/src/octra_ocaml_wrap.cxx -outdir octraocaml/src prebindings/octraocaml/src/octraocaml.i"
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${OCTRA_PREFIX:-}\" || (echo 'OCTRA_PREFIX is not set' >&2; exit 1) && mkdir -p octraocaml/src && swig -ocaml -c++ -Iinclude -o octraocaml/src/octra_ocaml_wrap.cxx -oh octraocaml/src/octra_ocaml_wrap.h -outdir octraocaml/src prebindings/octraocaml/src/octraocaml.i"
 
 # }}} prebuild commands
 
@@ -246,7 +249,7 @@ repl-perl: build-perl
   {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl -de 1'
 
 repl-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH if command -v dotnet-repl >/dev/null 2>&1; then dotnet-repl; elif command -v csi >/dev/null 2>&1; then csi; else echo 'No C# REPL found (expected dotnet-repl or csi)' >&2; exit 1; fi"
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/octra-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" if command -v dotnet-repl >/dev/null 2>&1; then dotnet-repl; elif command -v csi >/dev/null 2>&1; then csi; else echo "No C# REPL found (expected dotnet-repl or csi)" >&2; exit 1; fi'
 
 repl-java:
   {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH=joctra-octra/build/cmake:$LD_LIBRARY_PATH && jshell --class-path ./joctra/build/libs/joctra.jar'

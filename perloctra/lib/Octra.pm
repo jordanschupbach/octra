@@ -50,6 +50,8 @@ sub this {
 package Octra;
 
 *hello = *Octrac::hello;
+*call_with_callback = *Octrac::call_with_callback;
+*map_dvector_with_callback = *Octrac::map_dvector_with_callback;
 *make_dvector = *Octrac::make_dvector;
 *sum_dvector = *Octrac::sum_dvector;
 *make_dpair = *Octrac::make_dpair;
@@ -353,6 +355,64 @@ sub ACQUIRE {
     $OWNER{$ptr} = 1;
 }
 
+
+############# Class : Octra::Callback ##############
+
+package Octra::Callback;
+use vars qw(@ISA %OWNER %ITERATORS %BLESSEDMEMBERS);
+@ISA = qw( Octra );
+%OWNER = ();
+%ITERATORS = ();
+sub DESTROY {
+    return unless $_[0]->isa('HASH');
+    my $self = tied(%{$_[0]});
+    return unless defined $self;
+    delete $ITERATORS{$self};
+    if (exists $OWNER{$self}) {
+        Octrac::delete_Callback($self);
+        delete $OWNER{$self};
+    }
+}
+
+*call = *Octrac::Callback_call;
+sub new {
+    my $pkg = $_[0];
+    my $self = Octrac::new_Callback(@_);
+    bless $self, $pkg if defined($self);
+}
+
+sub DISOWN {
+    my $self = shift;
+    Octrac::disown_Callback($self);
+    my $ptr = tied(%$self);
+    delete $OWNER{$ptr};
+}
+
+sub ACQUIRE {
+    my $self = shift;
+    my $ptr = tied(%$self);
+    $OWNER{$ptr} = 1;
+}
+
+sub FETCH {
+    my ($self,$field) = @_;
+    my $member_func = "swig_${field}_get";
+    if (not $self->can($member_func)) {
+        my $h = Octrac::swig_get_attr_Callback($self);
+        return $h->{$field} if $h;
+    }
+    return $self->$member_func;
+}
+
+sub STORE {
+    my ($self,$field,$newval) = @_;
+    my $member_func = "swig_${field}_set";
+    if (not $self->can($member_func)) {
+        my $h = Octrac::swig_get_attr_Callback($self);
+        return $h->{$field} = $newval if $h;
+    }
+    return $self->$member_func($newval);
+}
 
 # ------- VARIABLE STUBS --------
 

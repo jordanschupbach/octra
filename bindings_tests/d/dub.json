@@ -3,6 +3,8 @@
   "description": "Binding smoke tests for octrad.",
   "license": "Unlicense",
   "dependencies": {
-    "octrad": "*"
+    "octrad": {
+      "path": "../../octrad"
+    }
   }
 }

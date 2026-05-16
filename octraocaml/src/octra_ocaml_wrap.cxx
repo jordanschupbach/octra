@@ -10,6 +10,7 @@
 #define SWIG_VERSION 0x040301
 #define SWIGOCAML
 #define SWIG_MODULE "octra"
+#define SWIG_DIRECTORS
 
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
@@ -1497,14 +1498,117 @@ extern "C" {
 #define  SWIG_NullReferenceError   -13
 
 
+/* -----------------------------------------------------------------------------
+ * director_common.swg
+ *
+ * This file contains support for director classes which is common between
+ * languages.
+ * ----------------------------------------------------------------------------- */
+
+/*
+  Use -DSWIG_DIRECTOR_STATIC if you prefer to avoid the use of the
+  'Swig' namespace. This could be useful for multi-modules projects.
+*/
+#ifdef SWIG_DIRECTOR_STATIC
+/* Force anonymous (static) namespace */
+#define Swig
+#endif
+/* -----------------------------------------------------------------------------
+ * director.swg
+ *
+ * This file contains support for director classes so that Ocaml proxy
+ * methods can be called from C++.
+ * ----------------------------------------------------------------------------- */
+
+#include <string>
+#include <exception>
+
+# define SWIG_DIRECTOR_CAST(ARG) dynamic_cast<Swig::Director *>(ARG)
+
+namespace Swig {
+  /* base class for director exceptions */
+  class DirectorException : public std::exception {
+    protected:
+      std::string swig_msg;
+
+    public:
+      DirectorException(const char *msg="") : swig_msg(msg) {
+      }
+
+      virtual ~DirectorException() throw() {
+      }
+
+      const char *what() const throw() {
+        return swig_msg.c_str();
+      }
+  };
+
+  /* type mismatch in the return value from a Ocaml method call */
+  class DirectorTypeMismatchException : public DirectorException {
+    public:
+      DirectorTypeMismatchException(const char *msg="") : DirectorException(msg) {
+      }
+  };
+
+  /* any Ocaml exception that occurs during a director method call */
+  class DirectorMethodException : public DirectorException {};
+
+  /* attempt to call a pure virtual method via a director method */
+  class DirectorPureVirtualException : public DirectorException {
+    public:
+      DirectorPureVirtualException(const char *msg="") : DirectorException(msg) {
+      }
+
+      static void raise(const char *msg) {
+        throw DirectorPureVirtualException(msg);
+      }
+  };
+
+  /* director base class */
+  class Director {
+    private:
+      /* pointer to the wrapped ocaml object */
+      value swig_self;
+      /* flag indicating whether the object is owned by ocaml or c++ */
+      mutable bool swig_disown_flag;
+
+    public:
+      /* wrap a ocaml object. */
+      Director(value self) : swig_self(self), swig_disown_flag(false) {
+        caml_register_global_root(&swig_self);
+      }
+
+      /* discard our reference at destruction */
+      virtual ~Director() {
+        caml_remove_global_root(&swig_self);
+        swig_disown();
+        // Disown is safe here because we're just divorcing a reference that points to us.
+      }
+
+      /* return a pointer to the wrapped ocaml object */
+      value swig_get_self() const {
+	  return swig_self;
+      }
+
+      /* acquire ownership of the wrapped ocaml object (the sense of "disown" is from ocaml) */
+      void swig_disown() const {
+        if (!swig_disown_flag) {
+          swig_disown_flag=true;
+          caml_callback(*caml_named_value("caml_obj_disown"),swig_self);
+        }
+      }
+  };
+}
+
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
 #define SWIGTYPE_p_double swig_types[0]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[1]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[2]
-static swig_type_info *swig_types[4];
-static swig_module_info swig_module = {swig_types, 3, 0, 0, 0, 0};
+#define SWIGTYPE_p_octra__Callback swig_types[1]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[2]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[3]
+static swig_type_info *swig_types[5];
+static swig_module_info swig_module = {swig_types, 4, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1641,6 +1745,15 @@ SWIGINTERN double *std_vector_Sl_double_Sg__to_array(std::vector< double > *self
 	    }
 
   #include "octra/octra.hpp"
+
+
+class SwigDirector_Callback : public octra::Callback, public Swig::Director {
+
+public:
+    SwigDirector_Callback(value self);
+    virtual ~SwigDirector_Callback();
+    virtual double call(double x);
+};
 
 SWIGEXT value _wrap_new_DPair__SWIG_0octra (value args)
 {
@@ -2284,6 +2397,167 @@ SWIGEXT value _wrap_hellooctra (value args)
 }
 
 
+SWIGEXT value _wrap_delete_Callbackoctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  octra::Callback *arg1 = (octra::Callback *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'delete_Callback'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (octra::Callback *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_octra__Callback);
+  }
+  delete arg1;
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_Callback_calloctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  octra::Callback *arg1 = (octra::Callback *) 0 ;
+  double arg2 ;
+  Swig::Director *director = 0;
+  bool upcall = false;
+  double result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'Callback_call'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (octra::Callback *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_octra__Callback);
+  }
+  {
+    arg2 = caml_double_val(caml_list_nth(args,1));
+  }
+  director = dynamic_cast<Swig::Director *>(arg1);
+  upcall = (director);
+  if (upcall) {
+    result = (double)(arg1)->octra::Callback::call(arg2);
+  } else {
+    result = (double)(arg1)->call(arg2);
+  }
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_new_Callbackoctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  value arg1 ;
+  octra::Callback *result = 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'new_Callback'");
+  }
+  swig_result = Val_unit;
+  arg1=caml_list_nth(args,0);
+  if ( caml_list_nth(args,0) != Val_unit ) {
+    /* subclassed */
+    result = (octra::Callback *)new SwigDirector_Callback(SWIG_STD_MOVE(arg1)); 
+  } else {
+    result = (octra::Callback *)new octra::Callback(); 
+  }
+  
+  {
+    rv = SWIG_Ocaml_ptr_to_val("create_octra::Callback_from_ptr", (void *)result, SWIGTYPE_p_octra__Callback);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_disown_Callbackoctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  octra::Callback *arg1 = (octra::Callback *) 0 ;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'disown_Callback'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (octra::Callback *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_octra__Callback);
+  }
+  {
+    Swig::Director *director = SWIG_DIRECTOR_CAST(arg1);
+    if (director) director->swig_disown();
+  }
+  
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_call_with_callbackoctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  double arg1 ;
+  octra::Callback *arg2 = (octra::Callback *) 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'call_with_callback'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = caml_double_val(caml_list_nth(args,0));
+  }
+  {
+    arg2 = (octra::Callback *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_octra__Callback);
+  }
+  result = (double)octra::call_with_callback(arg1,arg2);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_map_dvector_with_callbackoctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::vector< double > *arg1 = 0 ;
+  octra::Callback *arg2 = (octra::Callback *) 0 ;
+  std::vector< double > result;
+  
+  if (caml_list_length(args) < 2 || caml_list_length(args) > 2) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'map_dvector_with_callback'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (std::vector< double > *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_std__vectorT_double_t);
+  }
+  {
+    arg2 = (octra::Callback *)caml_ptr_val(caml_list_nth(args,1),SWIGTYPE_p_octra__Callback);
+  }
+  result = octra::map_dvector_with_callback((std::vector< double > const &)*arg1,arg2);
+  {
+    std::vector< double > * temp = new std::vector< double >(result);
+    rv = SWIG_Ocaml_ptr_to_val("create_std::vector< double >_from_ptr", (void *)temp, SWIGTYPE_p_std__vectorT_double_t);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_make_dvectoroctra (value args)
 {
   CAMLparam1(args);
@@ -2394,27 +2668,66 @@ SWIGEXT value _wrap_sum_dpairoctra (value args)
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
 static swig_type_info _swigt__p_double = {"_p_double", "double *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_octra__Callback = {"_p_octra__Callback", "octra::Callback *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT_double_double_t", "std::pair< double,double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double > *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_double,
+  &_swigt__p_octra__Callback,
   &_swigt__p_std__pairT_double_double_t,
   &_swigt__p_std__vectorT_double_t,
 };
 
 static swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_octra__Callback[] = {  {&_swigt__p_octra__Callback, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__pairT_double_double_t[] = {  {&_swigt__p_std__pairT_double_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_double,
+  _swigc__p_octra__Callback,
   _swigc__p_std__pairT_double_double_t,
   _swigc__p_std__vectorT_double_t,
 };
 
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (END) -------- */
+
+SwigDirector_Callback::SwigDirector_Callback(value self): octra::Callback(), Swig::Director(self) {
+  
+}
+
+
+
+SwigDirector_Callback::~SwigDirector_Callback() {
+}
+
+double SwigDirector_Callback::call(double x) {
+  CAMLparam0();
+  double c_result = SwigValueInit< double >() ;
+  CAMLlocal2(swig_result, args);
+  
+  swig_result = Val_unit;
+  args = Val_unit;
+  {
+    args = caml_list_append(args, caml_val_double(x));
+  }
+  swig_result = caml_swig_alloc(1,C_list);
+  Store_field(swig_result,0,args);
+  args = swig_result;
+  swig_result = Val_unit;
+  static const value *swig_ocaml_func_val = NULL;
+  if (!swig_ocaml_func_val) {
+    swig_ocaml_func_val = caml_named_value("swig_runmethod");
+  }
+  swig_result = caml_callback3(*swig_ocaml_func_val,swig_get_self(),caml_copy_string("call"),args);
+  {
+    c_result = caml_double_val(swig_result);
+  }
+  CAMLreturnT(double, (double)c_result);
+}
+
 
 #define SWIG_init f_octra_init
 /* -----------------------------------------------------------------------------

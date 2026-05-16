@@ -1,4 +1,4 @@
-%module octruby
+%module(directors="1") octruby
 
 %include <stdint.i>
 %include <std_vector.i>
@@ -13,9 +13,10 @@
 %template(SizeVector) std::vector<size_t>;
 %template(SVector) std::vector<std::string>;
 
+%feature("director") octra::Callback;
+
 %{
 #include "octra/octra.hpp"
 %}
 
 %include "octra/octra.hpp"
-

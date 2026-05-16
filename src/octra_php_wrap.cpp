@@ -1286,24 +1286,25 @@ SWIG_Php_AppendOutput(zval *target, zval *o, int is_void) {
 #define SWIGTYPE_p_first_type swig_types[1]
 #define SWIGTYPE_p_int swig_types[2]
 #define SWIGTYPE_p_long_long swig_types[3]
-#define SWIGTYPE_p_second_type swig_types[4]
-#define SWIGTYPE_p_short swig_types[5]
-#define SWIGTYPE_p_signed_char swig_types[6]
-#define SWIGTYPE_p_size_type swig_types[7]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[8]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[9]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[10]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[11]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[12]
-#define SWIGTYPE_p_unsigned_char swig_types[13]
-#define SWIGTYPE_p_unsigned_int swig_types[14]
-#define SWIGTYPE_p_unsigned_long_long swig_types[15]
-#define SWIGTYPE_p_unsigned_short swig_types[16]
-#define SWIGTYPE_p_value_type swig_types[17]
+#define SWIGTYPE_p_octra__Callback swig_types[4]
+#define SWIGTYPE_p_second_type swig_types[5]
+#define SWIGTYPE_p_short swig_types[6]
+#define SWIGTYPE_p_signed_char swig_types[7]
+#define SWIGTYPE_p_size_type swig_types[8]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[9]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[10]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[11]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[12]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[13]
+#define SWIGTYPE_p_unsigned_char swig_types[14]
+#define SWIGTYPE_p_unsigned_int swig_types[15]
+#define SWIGTYPE_p_unsigned_long_long swig_types[16]
+#define SWIGTYPE_p_unsigned_short swig_types[17]
+#define SWIGTYPE_p_value_type swig_types[18]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[19];
-SWIGINTERN swig_module_info swig_module = {swig_types, 18, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[20];
+SWIGINTERN swig_module_info swig_module = {swig_types, 19, 0, 0, 0, 0};
 /* header section */
 #define SWIG_name  "octra"
 #ifdef __cplusplus
@@ -1548,6 +1549,12 @@ static void SWIG_Php_free_obj_SizeVector(zend_object *object) {delete (std::vect
 
 static zend_class_entry *SWIG_Php_ce_octra;
 
+static zend_class_entry *SWIG_Php_ce_Callback;
+
+static zend_object_handlers Callback_object_handlers;
+static zend_object *SWIG_Php_create_object_Callback(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &Callback_object_handlers);}
+static void SWIG_Php_free_obj_Callback(zend_object *object) {delete (octra::Callback *)SWIG_Php_free_obj(object);}
+
 /* class entry for pointer to _p_int */
 static zend_class_entry *SWIG_Php_ce__p_int;
 
@@ -1594,6 +1601,7 @@ SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "di
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_octra__Callback = {"_p_octra__Callback", "octra::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_signed_char = {"_p_signed_char", "int8_t *|int_fast8_t *|int_least8_t *|signed char *", 0, 0, (void*)0, 0};
@@ -1617,6 +1625,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
+  &_swigt__p_octra__Callback,
   &_swigt__p_second_type,
   &_swigt__p_short,
   &_swigt__p_signed_char,
@@ -1637,6 +1646,7 @@ SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_differenc
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_octra__Callback[] = {  {&_swigt__p_octra__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_signed_char[] = {  {&_swigt__p_signed_char, 0, 0, 0},{0, 0, 0, 0}};
@@ -1657,6 +1667,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
+  _swigc__p_octra__Callback,
   _swigc__p_second_type,
   _swigc__p_short,
   _swigc__p_signed_char,
@@ -3562,6 +3573,219 @@ fail:
 }
 
 
+static PHP_METHOD(Callback,call) {
+  octra::Callback *arg1 = 0 ;
+  double arg2 ;
+  zval args[1];
+  double result;
+  
+  arg1 = (octra::Callback *)SWIG_Z_FETCH_OBJ_P(ZEND_THIS)->ptr;
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  result = (double)(arg1)->call(arg2);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(Callback,__construct) {
+  octra::Callback *result = 0 ;
+  
+  if(ZEND_NUM_ARGS() != 0) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  result = (octra::Callback *)new octra::Callback();
+  
+  SWIG_SetPointerZval(ZEND_THIS, (void *)result, SWIGTYPE_p_octra__Callback, 1);
+  
+fail:
+  return;
+}
+
+
+
+
+PHP_METHOD(Callback,__set) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[2];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    arg->newobject = zval_get_long(&args[1]);
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(Callback,__get) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if (!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_NULL();
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    if(arg->newobject) {
+      RETVAL_LONG(1);
+    }
+    else {
+      RETVAL_LONG(0);
+    }
+  }
+  
+  else {
+    RETVAL_NULL();
+  }
+fail:
+  return;
+}
+
+
+PHP_METHOD(Callback,__isset) {
+  swig_object_wrapper *arg = SWIG_Z_FETCH_OBJ_P(ZEND_THIS);
+  zval args[1];
+  zend_string *arg2 = 0;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  if(!arg) {
+    zend_throw_exception(zend_ce_type_error, "this pointer is NULL", 0);
+    return;
+  }
+  arg2 = Z_STR(args[0]);
+  
+  if (!arg2) {
+    RETVAL_FALSE;
+  }
+  
+  else if (strcmp(ZSTR_VAL(arg2),"thisown") == 0) {
+    RETVAL_TRUE;
+  }
+  
+  else {
+    RETVAL_FALSE;
+  }
+fail:
+  return;
+}
+
+
+
+
+static PHP_METHOD(octra,call_with_callback) {
+  PHP_FN(call_with_callback)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(call_with_callback) {
+  double arg1 ;
+  octra::Callback *arg2 = 0 ;
+  zval args[2];
+  double result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg1 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg2, SWIGTYPE_p_octra__Callback, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_octra__Callback for argument 2 of call_with_callback");
+    return;
+  }
+  
+  result = (double)octra::call_with_callback(arg1,arg2);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(octra,map_dvector_with_callback) {
+  PHP_FN(map_dvector_with_callback)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(map_dvector_with_callback) {
+  std::vector< double > *arg1 = 0 ;
+  octra::Callback *arg2 = 0 ;
+  zval args[2];
+  std::vector< double > result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of map_dvector_with_callback");
+    return;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[1], (void **) &arg2, SWIGTYPE_p_octra__Callback, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_octra__Callback for argument 2 of map_dvector_with_callback");
+    return;
+  }
+  
+  result = octra::map_dvector_with_callback((std::vector< double > const &)*arg1,arg2);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
 static PHP_METHOD(octra,make_dvector) {
   PHP_FN(make_dvector)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
@@ -3739,6 +3963,10 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_magic_arginfo_isset, 0, 1, MAY_BE_BOOL)
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_call_with_callback, 0, 2, MAY_BE_DOUBLE)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,Callback,MAY_BE_NULL,NULL)
+ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_hello, 0, 0, MAY_BE_VOID)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_make_dpair, 0, 2, DPair, 0)
@@ -3750,11 +3978,20 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_make_dvector, 0, 3, DVe
  ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
  ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_map_dvector_with_callback, 0, 2, DVector, 0)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg2,Callback,MAY_BE_NULL,NULL)
+ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_sum_dpair, 0, 1, MAY_BE_DOUBLE)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DPair,0,NULL)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_sum_dvector, 0, 1, MAY_BE_DOUBLE)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_Callback, 0, 0, 0)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_Callback_call, 0, 1, MAY_BE_DOUBLE)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_DPair, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DPair,MAY_BE_DOUBLE,NULL)
@@ -3903,12 +4140,23 @@ static const zend_function_entry class_SizeVector_functions[] = {
  ZEND_FE_END
 };
 
+static const zend_function_entry class_Callback_functions[] = {
+ PHP_ME(Callback,call,swig_arginfo_Callback_call,ZEND_ACC_PUBLIC)
+ PHP_ME(Callback,__construct,swig_arginfo_new_Callback,ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+ PHP_ME(Callback,__set,swig_magic_arginfo_set,ZEND_ACC_PUBLIC)
+ PHP_ME(Callback,__get,swig_magic_arginfo_get,ZEND_ACC_PUBLIC)
+ PHP_ME(Callback,__isset,swig_magic_arginfo_isset,ZEND_ACC_PUBLIC)
+ ZEND_FE_END
+};
+
 
 
 /* entry subsection */
 /* Every non-class user visible function must have an entry here */
 static const zend_function_entry module_octra_functions[] = {
  PHP_FE(hello,swig_arginfo_hello)
+ PHP_FE(call_with_callback,swig_arginfo_call_with_callback)
+ PHP_FE(map_dvector_with_callback,swig_arginfo_map_dvector_with_callback)
  PHP_FE(make_dvector,swig_arginfo_make_dvector)
  PHP_FE(sum_dvector,swig_arginfo_sum_dvector)
  PHP_FE(make_dpair,swig_arginfo_make_dpair)
@@ -3918,6 +4166,8 @@ static const zend_function_entry module_octra_functions[] = {
 
 static const zend_function_entry class_octra_functions[] = {
  PHP_ME(octra,hello,swig_arginfo_hello,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,call_with_callback,swig_arginfo_call_with_callback,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,map_dvector_with_callback,swig_arginfo_map_dvector_with_callback,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  PHP_ME(octra,make_dvector,swig_arginfo_make_dvector,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  PHP_ME(octra,sum_dvector,swig_arginfo_sum_dvector,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  PHP_ME(octra,make_dpair,swig_arginfo_make_dpair,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
@@ -4430,6 +4680,19 @@ SWIG_php_minit {
 
   INIT_CLASS_ENTRY(internal_ce, "octra", class_octra_functions);
   SWIG_Php_ce_octra = zend_register_internal_class(&internal_ce);
+
+  INIT_CLASS_ENTRY(internal_ce, "Callback", class_Callback_functions);
+  SWIG_Php_ce_Callback = zend_register_internal_class(&internal_ce);
+#ifdef ZEND_ACC_NO_DYNAMIC_PROPERTIES
+  SWIG_Php_ce_Callback->ce_flags |= ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+  zend_do_implement_interface(SWIG_Php_ce_Callback, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_Php_ce_Callback->create_object = SWIG_Php_create_object_Callback;
+  Callback_object_handlers = Swig_Php_base_object_handlers;
+  Callback_object_handlers.free_obj = SWIG_Php_free_obj_Callback;
+#ifdef SWIGTYPE_p_octra__Callback
+  SWIG_TypeClientData(SWIGTYPE_p_octra__Callback,SWIG_Php_ce_Callback);
+#endif
 
 
   /* Register classes to represent non-class pointer types */

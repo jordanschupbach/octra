@@ -43,6 +43,15 @@ val create_std_xxvector_xx_ldbrace_xx_lparendouble_xx_rparen_xx_rdbrace_from_ptr
 
 
 val _hello : c_obj -> c_obj
+val _delete_Callback : c_obj -> c_obj
+val new_Callback : c_obj -> c_obj
+val _new_Callback : c_obj -> c_obj
+
+val create_octra_xxCallback_from_ptr : c_obj -> c_obj
+
+
+val _call_with_callback : c_obj -> c_obj
+val _map_dvector_with_callback : c_obj -> c_obj
 val _make_dvector : c_obj -> c_obj
 val _sum_dvector : c_obj -> c_obj
 val _make_dpair : c_obj -> c_obj

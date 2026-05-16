@@ -249,6 +249,7 @@
 #error NAPI_VERSION 6 is the minimum supported target (Node.js >=14, >=12.17, >=10.20)
 #endif
 #include <napi.h>
+#include "octra_js_callbacks.inl"
 
 #include <limits.h>
 #include <stdlib.h>
@@ -933,26 +934,27 @@ public:
 #define SWIGTYPE_p_first_type swig_types[2]
 #define SWIGTYPE_p_int swig_types[3]
 #define SWIGTYPE_p_long_long swig_types[4]
-#define SWIGTYPE_p_second_type swig_types[5]
-#define SWIGTYPE_p_short swig_types[6]
-#define SWIGTYPE_p_signed_char swig_types[7]
-#define SWIGTYPE_p_size_type swig_types[8]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[9]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[10]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[11]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[12]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[13]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[14]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[15]
-#define SWIGTYPE_p_unsigned_char swig_types[16]
-#define SWIGTYPE_p_unsigned_int swig_types[17]
-#define SWIGTYPE_p_unsigned_long_long swig_types[18]
-#define SWIGTYPE_p_unsigned_short swig_types[19]
-#define SWIGTYPE_p_value_type swig_types[20]
+#define SWIGTYPE_p_octra__Callback swig_types[5]
+#define SWIGTYPE_p_second_type swig_types[6]
+#define SWIGTYPE_p_short swig_types[7]
+#define SWIGTYPE_p_signed_char swig_types[8]
+#define SWIGTYPE_p_size_type swig_types[9]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[10]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[11]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[12]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[13]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[14]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[15]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[16]
+#define SWIGTYPE_p_unsigned_char swig_types[17]
+#define SWIGTYPE_p_unsigned_int swig_types[18]
+#define SWIGTYPE_p_unsigned_long_long swig_types[19]
+#define SWIGTYPE_p_unsigned_short swig_types[20]
+#define SWIGTYPE_p_value_type swig_types[21]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[22];
-SWIGINTERN swig_module_info swig_module = {swig_types, 21, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[23];
+SWIGINTERN swig_module_info swig_module = {swig_types, 22, 0, 0, 0, 0};
 
 
 #ifdef __cplusplus
@@ -1282,6 +1284,10 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__set(std::vector< std::string > *sel
 // js_global_declaration
 Napi::Value _wrap_hello(const Napi::CallbackInfo &info);
 // js_global_declaration
+Napi::Value _wrap_call_with_callback(const Napi::CallbackInfo &info);
+// js_global_declaration
+Napi::Value _wrap_map_dvector_with_callback(const Napi::CallbackInfo &info);
+// js_global_declaration
 Napi::Value _wrap_make_dvector(const Napi::CallbackInfo &info);
 // js_global_declaration
 Napi::Value _wrap_sum_dvector(const Napi::CallbackInfo &info);
@@ -1569,6 +1575,31 @@ public:
     Napi::Env,
     std::map<std::string, _exports_SVector_templ::PropertyDescriptor> &,
     std::map<std::string, _exports_SVector_templ::PropertyDescriptor> &
+    );
+  static Napi::Function GetClass(Napi::Env);
+};
+// jsnapi_class_prologue_template
+template <typename SWIG_OBJ_WRAP>
+class _exports_Callback_templ : public SWIG_NAPI_ObjectWrap_templ<SWIG_OBJ_WRAP> {
+public:
+  _exports_Callback_templ(const Napi::CallbackInfo &);
+_exports_Callback_templ(bool, const Napi::CallbackInfo &);
+virtual ~_exports_Callback_templ();
+// jsnapi_class_method_declaration
+Napi::Value _wrap_Callback_call(const Napi::CallbackInfo &);
+// jsnapi_class_method_declaration
+Napi::Value _wrap_new_Callback(const Napi::CallbackInfo &);
+// jsnapi_class_epilogue_template
+};
+// jsnapi_class_instance
+class _exports_Callback_inst : public _exports_Callback_templ<_exports_Callback_inst> {
+public:
+  using _exports_Callback_templ::_exports_Callback_templ;
+  virtual ~_exports_Callback_inst() = default;
+  static void GetMembers(
+    Napi::Env,
+    std::map<std::string, _exports_Callback_templ::PropertyDescriptor> &,
+    std::map<std::string, _exports_Callback_templ::PropertyDescriptor> &
     );
   static Napi::Function GetClass(Napi::Env);
 };
@@ -5755,6 +5786,123 @@ _exports_SVector_templ<SWIG_OBJ_WRAP>::~_exports_SVector_templ() {
 }
 
 
+// js_dtoroverride
+template <typename SWIG_OBJ_WRAP>
+_exports_Callback_templ<SWIG_OBJ_WRAP>::~_exports_Callback_templ() {
+  this->SWIG_Finalize();
+  auto arg1 = reinterpret_cast<octra::Callback *>(this->self);
+  if (this->owned && arg1) {
+    delete arg1;
+    this->self = SWIG_NULLPTR;
+  }
+}
+
+
+// js_function
+template <typename SWIG_OBJ_WRAP>
+Napi::Value _exports_Callback_templ<SWIG_OBJ_WRAP>::_wrap_Callback_call(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  octra::Callback *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_Callback_call.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info.This(), &argp1,SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Callback_call" "', argument " "1"" of type '" "octra::Callback *""'"); 
+    }
+    arg1 = reinterpret_cast< octra::Callback * >(argp1);ecode2 = SWIG_AsVal_double(info[0], &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Callback_call" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    
+    
+    
+    
+    result = (double)(arg1)->call(arg2);
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+template <typename SWIG_OBJ_WRAP>
+// js_ctor
+// This is the main constructor
+_exports_Callback_templ<SWIG_OBJ_WRAP>::_exports_Callback_templ(const Napi::CallbackInfo &info)
+:SWIG_NAPI_ObjectWrap_templ<SWIG_OBJ_WRAP>(true, info) {
+  Napi::Env env = info.Env();
+  
+  this->info = SWIGTYPE_p_octra__Callback;
+  if (info.Length() == 1 && info[0].IsExternal()) {
+    // This constructor has been called internally from C++/SWIG
+    // to wrap an already existing C++ object in JS
+    this->self = info[0].As<Napi::External<void>>().Data();
+    this->owned = false;
+    return;
+  }
+  this->owned = true;
+  
+  octra::Callback *result;
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    if(static_cast<int>(info.Length()) < 0 || static_cast<int>(info.Length()) > 0) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_new_Callback.");
+    }
+    result = (octra::Callback *)new octra::Callback();
+    
+    
+    this->self = result;
+    
+    return;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+fail:
+  
+  return;
+#endif
+}
+
+// This is the bypass constructor to be used from child classes
+template <typename SWIG_OBJ_WRAP>
+_exports_Callback_templ<SWIG_OBJ_WRAP>::_exports_Callback_templ(bool, const Napi::CallbackInfo &info)
+:SWIG_NAPI_ObjectWrap_templ<SWIG_OBJ_WRAP>(true, info) {
+  
+}
+
+
 /* -----------------------------------------------------------------------------
  * swigrun_body.swg
  *
@@ -7177,6 +7325,51 @@ fail:
 #endif
 }
 
+/* Class: Callback (_exports_Callback) */
+// jsnapi_getclass
+Napi::Function _exports_Callback_inst::GetClass(Napi::Env env) {
+  std::map<std::string, _exports_Callback_templ::PropertyDescriptor> members, staticMembers;
+  GetMembers(env, members, staticMembers);
+  
+  std::vector<_exports_Callback_inst::PropertyDescriptor> symbolTable;
+  for (auto it = members.begin(); it != members.end(); it++)
+  symbolTable.push_back(it->second);
+  for (auto it = staticMembers.begin(); it != staticMembers.end(); it++)
+  symbolTable.push_back(it->second);
+  
+  return Napi::ObjectWrap<_exports_Callback_inst>::DefineClass(env, "Callback", symbolTable);
+}
+
+void _exports_Callback_inst::GetMembers(
+  Napi::Env env,
+  std::map<std::string, _exports_Callback_templ::PropertyDescriptor> &members,
+  std::map<std::string, _exports_Callback_templ::PropertyDescriptor> &staticMembers
+  ) {
+  std::map<std::string, SWIG_NAPI_ObjectWrap_templ<SWIG_NAPI_ObjectWrap_inst>::PropertyDescriptor> baseMembers, baseStaticMembers;
+  SWIG_NAPI_ObjectWrap_inst::GetMembers(env, baseMembers, baseStaticMembers);
+  members.insert(baseMembers.begin(), baseMembers.end());
+  staticMembers.insert(staticMembers.begin(), staticMembers.end());
+  
+  /* register wrapper functions */
+  // jsnapi_register_member_function
+  members.erase("call");
+  members.insert({
+    "call",
+      _exports_Callback_templ::InstanceMethod("call",
+        &_exports_Callback_templ::_wrap_Callback_call,
+        static_cast<napi_property_attributes>(napi_writable | napi_configurable))
+    });
+  
+  /* add static class functions and variables */
+  
+  
+#ifndef NAPI_CPP_EXCEPTIONS
+  goto fail;
+fail:
+  return;
+#endif
+}
+
 /* Class: IPair (_exports_IPair) */
 // jsnapi_getclass
 Napi::Function _exports_IPair_inst::GetClass(Napi::Env env) {
@@ -7257,6 +7450,119 @@ Napi::Value _wrap_hello(const Napi::CallbackInfo &info) {
     
     
     jsresult = env.Undefined();
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_global_function
+Napi::Value _wrap_call_with_callback(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  double arg1 ;
+  octra::Callback *arg2 = 0 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_call_with_callback.");
+    }
+    
+    ecode1 = SWIG_AsVal_double(info[0], &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "call_with_callback" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);res2 = SWIG_ConvertPtr(info[1], &argp2,SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "call_with_callback" "', argument " "2"" of type '" "octra::Callback *""'"); 
+    }
+    arg2 = reinterpret_cast< octra::Callback * >(argp2);
+    
+    
+    
+    
+    result = (double)octra::call_with_callback(arg1,arg2);
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_global_function
+Napi::Value _wrap_map_dvector_with_callback(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  std::vector< double > *arg1 = 0 ;
+  octra::Callback *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_map_dvector_with_callback.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info[0], &argp1, SWIGTYPE_p_std__vectorT_double_t,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "map_dvector_with_callback" "', argument " "1"" of type '" "std::vector< double > const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "map_dvector_with_callback" "', argument " "1"" of type '" "std::vector< double > const &""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< double > * >(argp1);res2 = SWIG_ConvertPtr(info[1], &argp2,SWIGTYPE_p_octra__Callback, 0 |  0 );
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "map_dvector_with_callback" "', argument " "2"" of type '" "octra::Callback *""'"); 
+    }
+    arg2 = reinterpret_cast< octra::Callback * >(argp2);
+    
+    
+    
+    
+    result = octra::map_dvector_with_callback((std::vector< double > const &)*arg1,arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
     
     
     return jsresult;
@@ -7499,6 +7805,7 @@ SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "di
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_octra__Callback = {"_p_octra__Callback", "p_octra__Callback|octra::Callback *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_short = {"_p_short", "int16_t *|int_least16_t *|short *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_signed_char = {"_p_signed_char", "int8_t *|int_fast8_t *|int_least8_t *|signed char *", 0, 0, (void*)0, 0};
@@ -7525,6 +7832,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
+  &_swigt__p_octra__Callback,
   &_swigt__p_second_type,
   &_swigt__p_short,
   &_swigt__p_signed_char,
@@ -7548,6 +7856,7 @@ SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_differenc
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_octra__Callback[] = {  {&_swigt__p_octra__Callback, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_signed_char[] = {  {&_swigt__p_signed_char, 0, 0, 0},{0, 0, 0, 0}};
@@ -7571,6 +7880,7 @@ SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
+  _swigc__p_octra__Callback,
   _swigc__p_second_type,
   _swigc__p_short,
   _swigc__p_signed_char,
@@ -8132,6 +8442,7 @@ SWIG_PropagateClientData(void) {
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
   SWIG_InitializeModule(env);
+  OctraJS_RegisterCallbackBridge(env, exports);
 
 
   /* initialize the base SWIG object class */
@@ -8220,6 +8531,16 @@ if (SWIGTYPE_p_std__vectorT_std__string_t->clientdata == SWIG_NULLPTR) {
 Napi::FunctionReference *_exports_SVector_ctor_ref = new Napi::FunctionReference();
 *_exports_SVector_ctor_ref = Napi::Persistent(_exports_SVector_ctor);
 env.GetInstanceData<EnvInstanceData>()->ctor[6] = _exports_SVector_ctor_ref;
+/* Class: Callback (_exports_Callback) */
+// jsnapi_registerclass
+Napi::Function _exports_Callback_ctor = _exports_Callback_inst::GetClass(env);
+exports.Set("Callback", _exports_Callback_ctor);
+if (SWIGTYPE_p_octra__Callback->clientdata == SWIG_NULLPTR) {
+  SWIGTYPE_p_octra__Callback->clientdata = new size_t(7);
+}
+Napi::FunctionReference *_exports_Callback_ctor_ref = new Napi::FunctionReference();
+*_exports_Callback_ctor_ref = Napi::Persistent(_exports_Callback_ctor);
+env.GetInstanceData<EnvInstanceData>()->ctor[7] = _exports_Callback_ctor_ref;
 
 
   /* initialize the inheritance helpers */
@@ -8347,6 +8668,21 @@ do {
 } while (0);
 
 
+// Inheritance for _exports_Callback (Callback) <- SWIG_NAPI_ObjectWrap
+// jsnapi_setup_inheritance
+do {
+  Napi::Value protoBase, protoSub;
+  NAPI_CHECK_RESULT(_exports_Callback_ctor.Get("prototype"), protoSub);
+  NAPI_CHECK_RESULT(SWIG_NAPI_ObjectWrap_ctor.Get("prototype"), protoBase);
+  NAPI_CHECK_MAYBE(setProto.Call({
+    _exports_Callback_ctor, SWIG_NAPI_ObjectWrap_ctor
+  }));
+  NAPI_CHECK_MAYBE(setProto.Call({
+    protoSub, protoBase
+  }));
+} while (0);
+
+
 
   /* create and register namespace objects */
   // jsnapi_register_global_constant
@@ -8361,6 +8697,18 @@ do {
 // jsnapi_register_global_function
 do {
   Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("hello", _wrap_hello,
+    static_cast<napi_property_attributes>(napi_writable | napi_enumerable | napi_configurable));
+  NAPI_CHECK_MAYBE(exports.DefineProperty(pd));
+} while (0);
+// jsnapi_register_global_function
+do {
+  Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("call_with_callback", _wrap_call_with_callback,
+    static_cast<napi_property_attributes>(napi_writable | napi_enumerable | napi_configurable));
+  NAPI_CHECK_MAYBE(exports.DefineProperty(pd));
+} while (0);
+// jsnapi_register_global_function
+do {
+  Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("map_dvector_with_callback", _wrap_map_dvector_with_callback,
     static_cast<napi_property_attributes>(napi_writable | napi_enumerable | napi_configurable));
   NAPI_CHECK_MAYBE(exports.DefineProperty(pd));
 } while (0);

@@ -22,3 +22,5 @@ _build
 bindings_tests/rust/target
 bindings/rust/target
 rustoctra/target
+octrad/liboctrad.a
+**/.null-ls*

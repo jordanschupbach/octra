@@ -9,6 +9,7 @@
 
 #define SWIG_VERSION 0x040301
 #define SWIGD
+#define SWIG_DIRECTORS
 
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
@@ -263,6 +264,70 @@ SWIGEXPORT void SWIGRegisterStringCallback_octra(SWIG_DStringHelperCallback call
 #define  SWIG_NullReferenceError   -13
 
 
+/* -----------------------------------------------------------------------------
+ * director_common.swg
+ *
+ * This file contains support for director classes which is common between
+ * languages.
+ * ----------------------------------------------------------------------------- */
+
+/*
+  Use -DSWIG_DIRECTOR_STATIC if you prefer to avoid the use of the
+  'Swig' namespace. This could be useful for multi-modules projects.
+*/
+#ifdef SWIG_DIRECTOR_STATIC
+/* Force anonymous (static) namespace */
+#define Swig
+#endif
+/* -----------------------------------------------------------------------------
+ * director.swg
+ *
+ * This file contains support for director classes so that D proxy
+ * methods can be called from C++.
+ * ----------------------------------------------------------------------------- */
+
+#if defined(DEBUG_DIRECTOR_OWNED)
+#include <iostream>
+#endif
+#include <string>
+#include <exception>
+
+namespace Swig {
+
+  // Director base class – not used in D directors.
+  class Director {
+  };
+
+  // Base class for director exceptions.
+  class DirectorException : public std::exception {
+  protected:
+    std::string swig_msg;
+
+  public:
+    DirectorException(const std::string &msg) : swig_msg(msg) {
+    }
+
+    virtual ~DirectorException() throw() {
+    }
+
+    const char *what() const throw() {
+      return swig_msg.c_str();
+    }
+  };
+
+  // Exception which is thrown when attempting to call a pure virtual method
+  // from D code through the director layer.
+  class DirectorPureVirtualException : public DirectorException {
+  public:
+    DirectorPureVirtualException(const char *msg) : DirectorException(std::string("Attempted to invoke pure virtual method ") + msg) {
+    }
+
+    static void raise(const char *msg) {
+      throw DirectorPureVirtualException(msg);
+    }
+  };
+}
+
 
 #ifdef __cplusplus
 #include <utility>
@@ -416,6 +481,46 @@ SWIGINTERN void std_vector_Sl_double_Sg__setElement(std::vector< double > *self,
       }
 
 #include "octra/octra.hpp"
+
+
+
+/* ---------------------------------------------------
+ * C++ director class methods
+ * --------------------------------------------------- */
+
+#include "octrad_wrap.h"
+
+SwigDirector_Callback::SwigDirector_Callback() : octra::Callback(), Swig::Director() {
+  swig_init_callbacks();
+}
+
+SwigDirector_Callback::~SwigDirector_Callback() {
+  
+}
+
+
+double SwigDirector_Callback::call(double x) {
+  double c_result = SwigValueInit< double >() ;
+  double jresult = 0 ;
+  double jx  ;
+  
+  if (!swig_callback_call) {
+    return octra::Callback::call(x);
+  } else {
+    jx = x;
+    jresult = (double) swig_callback_call(d_object, jx);
+    c_result = (double)jresult;
+  }
+  return c_result;
+}
+
+void SwigDirector_Callback::swig_connect_director(void* dobj, SWIG_Callback0_t callback_call) {
+  d_object = dobj;swig_callback_call = callback_call;
+}
+
+void SwigDirector_Callback::swig_init_callbacks() {
+  swig_callback_call = 0;
+}
 
 
 #ifdef __cplusplus
@@ -771,6 +876,91 @@ SWIGEXPORT void D_delete_DVector(void * jarg1) {
 
 SWIGEXPORT void D_hello() {
   octra::hello();
+}
+
+
+SWIGEXPORT void D_delete_Callback(void * jarg1) {
+  octra::Callback *arg1 = (octra::Callback *) 0 ;
+  
+  arg1 = (octra::Callback *)jarg1;
+  delete arg1;
+}
+
+
+SWIGEXPORT double D_Callback_call(void * jarg1, double jarg2) {
+  double jresult ;
+  octra::Callback *arg1 = (octra::Callback *) 0 ;
+  double arg2 ;
+  double result;
+  
+  arg1 = (octra::Callback *)jarg1;
+  arg2 = (double)jarg2;
+  result = (double)(arg1)->call(arg2);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT double D_Callback_callSwigExplicitCallback(void * jarg1, double jarg2) {
+  double jresult ;
+  octra::Callback *arg1 = (octra::Callback *) 0 ;
+  double arg2 ;
+  double result;
+  
+  arg1 = (octra::Callback *)jarg1;
+  arg2 = (double)jarg2;
+  result = (double)(arg1)->octra::Callback::call(arg2);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_new_Callback() {
+  void * jresult ;
+  octra::Callback *result = 0 ;
+  
+  result = (octra::Callback *)new SwigDirector_Callback();
+  jresult = (void *)result;
+  return jresult;
+}
+
+
+SWIGEXPORT void D_Callback_director_connect(void *objarg, void *dobj, SwigDirector_Callback::SWIG_Callback0_t callback0) {
+  octra::Callback *obj = (octra::Callback *)objarg;
+  SwigDirector_Callback *director = static_cast<SwigDirector_Callback *>(obj);
+  director->swig_connect_director(dobj, callback0);
+}
+
+
+SWIGEXPORT double D_call_with_callback(double jarg1, void * jarg2) {
+  double jresult ;
+  double arg1 ;
+  octra::Callback *arg2 = (octra::Callback *) 0 ;
+  double result;
+  
+  arg1 = (double)jarg1;
+  arg2 = (octra::Callback *)jarg2;
+  result = (double)octra::call_with_callback(arg1,arg2);
+  jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void * D_map_dvector_with_callback(void * jarg1, void * jarg2) {
+  void * jresult ;
+  std::vector< double > *arg1 = 0 ;
+  octra::Callback *arg2 = (octra::Callback *) 0 ;
+  std::vector< double > result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_DSetPendingException(SWIG_DNullReferenceException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  arg2 = (octra::Callback *)jarg2;
+  result = octra::map_dvector_with_callback((std::vector< double > const &)*arg1,arg2);
+  jresult = new std::vector< double >(result); 
+  return jresult;
 }
 
 

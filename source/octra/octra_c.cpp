@@ -30,4 +30,21 @@ double octra_sum_dpair(octra_dpair values) {
   return octra::sum_dpair({ values.first, values.second });
 }
 
+double octra_call_double_cb(double x, octra_double_cb cb, void* userdata) {
+  return cb ? cb(x, userdata) : x;
+}
+
+void octra_map_dvector_cb(const double* values,
+                          size_t len,
+                          double* out,
+                          octra_double_cb cb,
+                          void* userdata) {
+  if (!values || !out) {
+    return;
+  }
+  for (size_t i = 0; i < len; i++) {
+    out[i] = cb ? cb(values[i], userdata) : values[i];
+  }
+}
+
 } // extern "C"
