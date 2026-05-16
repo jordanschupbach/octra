@@ -2852,6 +2852,68 @@ SWIGEXPORT void SWIGSTDCALL CSharp_hello() {
 }
 
 
+SWIGEXPORT void * SWIGSTDCALL CSharp_make_dvector(double jarg1, double jarg2, double jarg3) {
+  void * jresult ;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  std::vector< double > result;
+  
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  arg3 = (double)jarg3; 
+  result = octra::make_dvector(arg1,arg2,arg3);
+  jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_sum_dvector(void * jarg1) {
+  double jresult ;
+  std::vector< double > *arg1 = 0 ;
+  double result;
+  
+  arg1 = (std::vector< double > *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< double > const & is null", 0);
+    return 0;
+  } 
+  result = (double)octra::sum_dvector((std::vector< double > const &)*arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_make_dpair(double jarg1, double jarg2) {
+  void * jresult ;
+  double arg1 ;
+  double arg2 ;
+  std::pair< double,double > result;
+  
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  result = octra::make_dpair(arg1,arg2);
+  jresult = new std::pair< double,double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT double SWIGSTDCALL CSharp_sum_dpair(void * jarg1) {
+  double jresult ;
+  std::pair< double,double > *arg1 = 0 ;
+  double result;
+  
+  arg1 = (std::pair< double,double > *)jarg1;
+  if (!arg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::pair< double,double > const & is null", 0);
+    return 0;
+  } 
+  result = (double)octra::sum_dpair((std::pair< double,double > const &)*arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
 #ifdef __cplusplus
 }
 #endif

@@ -1281,6 +1281,14 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__set(std::vector< std::string > *sel
 
 // js_global_declaration
 Napi::Value _wrap_hello(const Napi::CallbackInfo &info);
+// js_global_declaration
+Napi::Value _wrap_make_dvector(const Napi::CallbackInfo &info);
+// js_global_declaration
+Napi::Value _wrap_sum_dvector(const Napi::CallbackInfo &info);
+// js_global_declaration
+Napi::Value _wrap_make_dpair(const Napi::CallbackInfo &info);
+// js_global_declaration
+Napi::Value _wrap_sum_dpair(const Napi::CallbackInfo &info);
 
 #define SWIG_NAPI_INIT octrajs_initialize
 
@@ -7265,6 +7273,225 @@ fail:
 }
 
 
+// js_global_function
+Napi::Value _wrap_make_dvector(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  std::vector< double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 3 || static_cast<int>(info.Length()) > 3) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_make_dvector.");
+    }
+    
+    ecode1 = SWIG_AsVal_double(info[0], &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "make_dvector" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);ecode2 = SWIG_AsVal_double(info[1], &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "make_dvector" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);ecode3 = SWIG_AsVal_double(info[2], &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "make_dvector" "', argument " "3"" of type '" "double""'");
+    } 
+    arg3 = static_cast< double >(val3);
+    
+    
+    
+    
+    result = octra::make_dvector(arg1,arg2,arg3);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::vector< double >(result)), SWIGTYPE_p_std__vectorT_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_global_function
+Napi::Value _wrap_sum_dvector(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  std::vector< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_sum_dvector.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info[0], &argp1, SWIGTYPE_p_std__vectorT_double_t,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sum_dvector" "', argument " "1"" of type '" "std::vector< double > const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sum_dvector" "', argument " "1"" of type '" "std::vector< double > const &""'"); 
+    }
+    arg1 = reinterpret_cast< std::vector< double > * >(argp1);
+    
+    
+    
+    
+    result = (double)octra::sum_dvector((std::vector< double > const &)*arg1);
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_global_function
+Napi::Value _wrap_make_dpair(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  double arg1 ;
+  double arg2 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  std::pair< double,double > result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 2 || static_cast<int>(info.Length()) > 2) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_make_dpair.");
+    }
+    
+    ecode1 = SWIG_AsVal_double(info[0], &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "make_dpair" "', argument " "1"" of type '" "double""'");
+    } 
+    arg1 = static_cast< double >(val1);ecode2 = SWIG_AsVal_double(info[1], &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "make_dpair" "', argument " "2"" of type '" "double""'");
+    } 
+    arg2 = static_cast< double >(val2);
+    
+    
+    
+    
+    result = octra::make_dpair(arg1,arg2);
+    
+    
+    
+    jsresult = SWIG_NewPointerObj((new std::pair< double,double >(result)), SWIGTYPE_p_std__pairT_double_double_t, SWIG_POINTER_OWN |  0 );
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
+// js_global_function
+Napi::Value _wrap_sum_dpair(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+  Napi::Value jsresult;
+  std::pair< double,double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  
+  
+#ifdef NAPI_CPP_EXCEPTIONS
+  try {
+#endif
+    
+    if(static_cast<int>(info.Length()) < 1 || static_cast<int>(info.Length()) > 1) {
+      SWIG_Error(SWIG_ERROR, "Illegal number of arguments for _wrap_sum_dpair.");
+    }
+    
+    res1 = SWIG_ConvertPtr(info[0], &argp1, SWIGTYPE_p_std__pairT_double_double_t,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sum_dpair" "', argument " "1"" of type '" "std::pair< double,double > const &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sum_dpair" "', argument " "1"" of type '" "std::pair< double,double > const &""'"); 
+    }
+    arg1 = reinterpret_cast< std::pair< double,double > * >(argp1);
+    
+    
+    
+    
+    result = (double)octra::sum_dpair((std::pair< double,double > const &)*arg1);
+    
+    
+    
+    jsresult = SWIG_From_double  SWIG_NAPI_FROM_CALL_ARGS(static_cast< double >(result));
+    
+    
+    return jsresult;
+#ifdef NAPI_CPP_EXCEPTIONS
+  } catch (...) {
+    std::rethrow_exception(std::current_exception());
+  }
+#else
+  goto fail;
+fail:
+  
+#endif
+  return Napi::Value();
+}
+
+
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
 SWIGINTERN swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
@@ -8134,6 +8361,30 @@ do {
 // jsnapi_register_global_function
 do {
   Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("hello", _wrap_hello,
+    static_cast<napi_property_attributes>(napi_writable | napi_enumerable | napi_configurable));
+  NAPI_CHECK_MAYBE(exports.DefineProperty(pd));
+} while (0);
+// jsnapi_register_global_function
+do {
+  Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("make_dvector", _wrap_make_dvector,
+    static_cast<napi_property_attributes>(napi_writable | napi_enumerable | napi_configurable));
+  NAPI_CHECK_MAYBE(exports.DefineProperty(pd));
+} while (0);
+// jsnapi_register_global_function
+do {
+  Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("sum_dvector", _wrap_sum_dvector,
+    static_cast<napi_property_attributes>(napi_writable | napi_enumerable | napi_configurable));
+  NAPI_CHECK_MAYBE(exports.DefineProperty(pd));
+} while (0);
+// jsnapi_register_global_function
+do {
+  Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("make_dpair", _wrap_make_dpair,
+    static_cast<napi_property_attributes>(napi_writable | napi_enumerable | napi_configurable));
+  NAPI_CHECK_MAYBE(exports.DefineProperty(pd));
+} while (0);
+// jsnapi_register_global_function
+do {
+  Napi::PropertyDescriptor pd = Napi::PropertyDescriptor::Function("sum_dpair", _wrap_sum_dpair,
     static_cast<napi_property_attributes>(napi_writable | napi_enumerable | napi_configurable));
   NAPI_CHECK_MAYBE(exports.DefineProperty(pd));
 } while (0);

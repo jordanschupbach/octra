@@ -2336,5 +2336,59 @@ setMethod('delete', '_p_std__vectorT_size_t_t', function(obj) {delete_std__vecto
 attr(`hello`, 'returnType') = 'void'
 class(`hello`) = c("SWIGFunction", class('hello'))
 
+# Start of make_dvector
+
+`make_dvector` = function(a, b, c, .copy = FALSE)
+{
+  ;.Call('R_swig_make_dvector', a, b, c, as.logical(.copy), PACKAGE='octrar');
+  
+}
+
+attr(`make_dvector`, 'returnType') = 'numeric'
+attr(`make_dvector`, "inputTypes") = c('numeric', 'numeric', 'numeric')
+class(`make_dvector`) = c("SWIGFunction", class('make_dvector'))
+
+# Start of sum_dvector
+
+`sum_dvector` = function(values, .copy = FALSE)
+{
+  values = as.numeric(values);
+  ;.Call('R_swig_sum_dvector', values, as.logical(.copy), PACKAGE='octrar');
+  
+}
+
+attr(`sum_dvector`, 'returnType') = 'numeric'
+attr(`sum_dvector`, "inputTypes") = c('_p_std__vectorT_double_t')
+class(`sum_dvector`) = c("SWIGFunction", class('sum_dvector'))
+
+# Start of make_dpair
+
+`make_dpair` = function(a, b, .copy = FALSE)
+{
+  ;ans = .Call('R_swig_make_dpair', a, b, as.logical(.copy), PACKAGE='octrar');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__pairT_double_double_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`make_dpair`, 'returnType') = '_p_std__pairT_double_double_t'
+attr(`make_dpair`, "inputTypes") = c('numeric', 'numeric')
+class(`make_dpair`) = c("SWIGFunction", class('make_dpair'))
+
+# Start of sum_dpair
+
+`sum_dpair` = function(values, .copy = FALSE)
+{
+  if (inherits(values, "ExternalReference")) values = slot(values,"ref"); 
+  ;.Call('R_swig_sum_dpair', values, as.logical(.copy), PACKAGE='octrar');
+  
+}
+
+attr(`sum_dpair`, 'returnType') = 'numeric'
+attr(`sum_dpair`, "inputTypes") = c('_p_std__pairT_double_double_t')
+class(`sum_dpair`) = c("SWIGFunction", class('sum_dpair'))
+
 
 

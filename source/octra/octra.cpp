@@ -6,4 +6,24 @@ void hello() {
   std::cout << "Hello octra" << std::endl;
 }
 
+std::vector<double> make_dvector(double a, double b, double c) {
+  return { a, b, c };
+}
+
+double sum_dvector(const std::vector<double>& values) {
+  double sum = 0.0;
+  for (double v : values) {
+    sum += v;
+  }
+  return sum;
+}
+
+std::pair<double, double> make_dpair(double a, double b) {
+  return { a, b };
+}
+
+double sum_dpair(const std::pair<double, double>& values) {
+  return values.first + values.second;
+}
+
 } // namespace octra

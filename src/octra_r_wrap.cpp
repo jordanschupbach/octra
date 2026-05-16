@@ -7017,6 +7017,134 @@ R_swig_hello ( )
 }
 
 
+SWIGEXPORT SEXP
+R_swig_make_dvector ( SEXP a, SEXP b, SEXP c, SEXP s_swig_copy)
+{
+  {
+    std::vector< double,std::allocator< double > > result;
+    double arg1 ;
+    double arg2 ;
+    double arg3 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< double >(REAL(a)[0]);
+    arg2 = static_cast< double >(REAL(b)[0]);
+    arg3 = static_cast< double >(REAL(c)[0]);
+    result = octra::make_dvector(arg1,arg2,arg3);
+    r_ans = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_sum_dvector ( SEXP values, SEXP s_swig_copy)
+{
+  {
+    double result;
+    std::vector< double,std::allocator< double > > *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+      res1 = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sum_dvector" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sum_dvector" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (double)octra::sum_dvector((std::vector< double,std::allocator< double > > const &)*arg1);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_make_dpair ( SEXP a, SEXP b, SEXP s_swig_copy)
+{
+  {
+    std::pair< double,double > result;
+    double arg1 ;
+    double arg2 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    arg1 = static_cast< double >(REAL(a)[0]);
+    arg2 = static_cast< double >(REAL(b)[0]);
+    result = octra::make_dpair(arg1,arg2);
+    r_ans = swig::from(static_cast< std::pair< double,double > >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_sum_dpair ( SEXP values, SEXP s_swig_copy)
+{
+  {
+    double result;
+    std::pair< double,double > *arg1 = 0 ;
+    int res1 = SWIG_OLDOBJ ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      std::pair< double,double > *ptr = (std::pair< double,double > *)0;
+      res1 = swig::asptr(values, &ptr);
+      if (!SWIG_IsOK(res1)) {
+        SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sum_dpair" "', argument " "1"" of type '" "std::pair< double,double > const &""'"); 
+      }
+      if (!ptr) {
+        SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sum_dpair" "', argument " "1"" of type '" "std::pair< double,double > const &""'"); 
+      }
+      arg1 = ptr;
+    }
+    result = (double)octra::sum_dpair((std::pair< double,double > const &)*arg1);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    if (SWIG_IsNewObj(res1)) delete arg1;
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    if (SWIG_IsNewObj(res1)) delete arg1;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
 #ifdef __cplusplus
 }
 #endif
@@ -7560,6 +7688,8 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SizeVector_pop_back", (DL_FUNC) &R_swig_SizeVector_pop_back, 1},
    {"R_swig_SizeVector_get_allocator", (DL_FUNC) &R_swig_SizeVector_get_allocator, 2},
    {"R_swig_IVector_empty", (DL_FUNC) &R_swig_IVector_empty, 2},
+   {"R_swig_make_dvector", (DL_FUNC) &R_swig_make_dvector, 4},
+   {"R_swig_make_dpair", (DL_FUNC) &R_swig_make_dpair, 3},
    {"R_swig_DVector_pop_back", (DL_FUNC) &R_swig_DVector_pop_back, 1},
    {"R_swig_SizeVector_capacity", (DL_FUNC) &R_swig_SizeVector_capacity, 2},
    {"R_swig_DVector_append", (DL_FUNC) &R_swig_DVector_append, 2},
@@ -7570,6 +7700,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVector_capacity", (DL_FUNC) &R_swig_DVector_capacity, 2},
    {"R_swig_DVector___len__", (DL_FUNC) &R_swig_DVector___len__, 2},
    {"R_swig_SizeVector___getitem__", (DL_FUNC) &R_swig_SizeVector___getitem__, 3},
+   {"R_swig_sum_dvector", (DL_FUNC) &R_swig_sum_dvector, 2},
    {"R_swig_IVector_clear", (DL_FUNC) &R_swig_IVector_clear, 1},
    {"R_swig_IVector_get_allocator", (DL_FUNC) &R_swig_IVector_get_allocator, 2},
    {"R_swig_IVector_capacity", (DL_FUNC) &R_swig_IVector_capacity, 2},
@@ -7647,6 +7778,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IPair_second_set", (DL_FUNC) &R_swig_IPair_second_set, 2},
    {"R_swig_DVector_resize__SWIG_1", (DL_FUNC) &R_swig_DVector_resize__SWIG_1, 3},
    {"R_swig_SizeVector___setitem__", (DL_FUNC) &R_swig_SizeVector___setitem__, 3},
+   {"R_swig_sum_dpair", (DL_FUNC) &R_swig_sum_dpair, 2},
    {"R_swig_IVector_append", (DL_FUNC) &R_swig_IVector_append, 2},
    {"R_swig_DVector___nonzero__", (DL_FUNC) &R_swig_DVector___nonzero__, 2},
    {"R_swig_IVector_size", (DL_FUNC) &R_swig_IVector_size, 2},

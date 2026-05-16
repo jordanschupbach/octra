@@ -622,3 +622,15 @@ _octra.SVector_swigregister(SVector)
 def hello():
     return _octra.hello()
 
+def make_dvector(a, b, c):
+    return _octra.make_dvector(a, b, c)
+
+def sum_dvector(values):
+    return _octra.sum_dvector(values)
+
+def make_dpair(a, b):
+    return _octra.make_dpair(a, b)
+
+def sum_dpair(values):
+    return _octra.sum_dpair(values)
+

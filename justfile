@@ -12,7 +12,10 @@ run-csharp: build-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -lc "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet run --project ./octradotnet"
 
 run-java: build-java
-  {{ NIX_DEVELOP }} .#java --command bash -lc "gradle run --no-configuration-cache --args='{{ TARGET }}'"
+   {{ NIX_DEVELOP }} .#java --command bash -lc "gradle run --no-configuration-cache --args='{{ TARGET }}'"
+
+run-go: build-go
+    {{ NIX_DEVELOP }} .#go --command bash -lc 'cd bindings/gooctra && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -loctra" go run ../../examples/go/{{ TARGET }}.go'
 
 run-python:
   {{ NIX_DEVELOP }} .#python --command bash -lc 'python examples/python/{{ TARGET }}.py'
@@ -20,11 +23,26 @@ run-python:
 run-php: build-php
   {{ NIX_DEVELOP }} .#php --command bash -lc 'php --php-ini .user.ini examples/php/octra_ex.php'
 
+run-perl: build-perl
+  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl examples/perl/octra_ex.pl'
+
+run-tcl: build-tcl
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/octratcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh examples/tcl/octra_ex.tcl'
+
+run-lua:
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'lua examples/lua/octra_ex.lua'
+
+run-ruby:
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'ruby examples/ruby/octra_ex.rb'
+
 run-r: prebuild-r
-  {{ NIX_DEVELOP }} .#r --command bash -lc 'Rscript examples/r/octra_ex.r'
+   {{ NIX_DEVELOP }} .#r --command bash -lc 'Rscript examples/r/octra_ex.r'
 
 run-javascript: build-javascript
-  {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node ./examples/javascript/octra_ex.js'
+   {{ NIX_DEVELOP }} .#javascript --command bash -lc 'node ./examples/javascript/octra_ex.js'
+
+run-ocaml:
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'just install-ocaml && mkdir -p build/ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && ocamlfind ocamlopt -package octraocaml -linkpkg examples/ocaml/octra_ex.ml -o build/ocaml/octra_ex && ./build/ocaml/octra_ex'
 
 run-cpp: examples
     @echo "Running target {{ TARGET }}"
@@ -51,18 +69,40 @@ prebuild-csharp:
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "sed -i 's/DllImport(\"octra\"/DllImport(\"octra_csharp\"/g' ./octradotnet/octraPINVOKE.cs"
 
 prebuild-r:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/octra_r_wrap.cpp ../prebindings/octrar/src/octrar.i && mv ../src/octrar.R ../R"
+   {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/octra_r_wrap.cpp ../prebindings/octrar/src/octrar.i && mv ../src/octrar.R ../R"
+
+prebuild-perl:
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p bindings/perloctra/lib && swig -perl5 -c++ -Iinclude -o bindings/perloctra/Octra_wrap.cxx -outdir bindings/perloctra/lib prebindings/perloctra/src/perloctra.i"
+
+# Ruby (SWIG)
+prebuild-ruby:
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc "mkdir -p bindings/octruby/ext/octruby bindings/octruby/lib/octruby && swig -ruby -c++ -Iinclude -o bindings/octruby/ext/octruby/octruby_wrap.cxx -outdir bindings/octruby/lib/octruby prebindings/octruby/src/octruby.i"
+
+# Tcl (SWIG)
+prebuild-tcl:
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/octratcl/swig && swig -tcl8 -c++ -Iinclude -o build/octratcl/swig/octra_tcl_wrap.cxx prebindings/octratcl/src/octratcl.i"
+
+# Lua (SWIG)
+prebuild-lua:
+  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/octralua-swig && swig -lua -c++ -Iinclude -outdir build/octralua-swig -o build/octralua-swig/octra_lua_wrap.cxx prebindings/octralua/src/octralua.i"
+
+# TODO:
+prebuild-go:
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -go -c++ -intgosize 64 -Iinclude -o bindings/gooctra/gooctra_wrap.cxx -outdir bindings/gooctra prebindings/gooctra/src/gooctra.i"
 
 # TODO:
 prebuild-php:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/octra_php_wrap.cpp ../prebindings/octraPHP/src/octraPHP.i"
+    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/octra_php_wrap.cpp ../prebindings/octraPHP/src/octraPHP.i"
 
 prebuild-java:
-  {{ NIX_DEVELOP }} .#java --command bash -lc "find joctra/src/main/java/js/octra/joctra -type f -name '*.java' ! -name 'App.java' ! -path 'joctra/src/main/java/js/octra/joctra/examples/*' -exec rm {} +"
-  {{ NIX_DEVELOP }} .#java --command bash -lc "rm -rf joctra-octra/build/cmake"
-  {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -c++ -java -o ../joctra-octra/octra_java_wrap.cpp -package js.octra.joctra -outdir ../joctra/src/main/java/js/octra/joctra ../prebindings/joctra/src/joctra.i"
-  {{ NIX_DEVELOP }} .#java --command bash -lc "sed -i 's/System.loadLibrary(\"octra\")/System.loadLibrary(\"octra_jni\")/g' joctra/src/main/java/js/octra/joctra/App.java joctra/src/main/java/js/octra/joctra/examples/StlEx.java"
-  {{ NIX_DEVELOP }} .#java --command bash -lc "perl -0777 -pi -e 's/public class octra \\{/public class octra {\\n  static { System.loadLibrary(\"octra_jni\"); }/s' joctra/src/main/java/js/octra/joctra/octra.java"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "find joctra/src/main/java/js/octra/joctra -type f -name '*.java' ! -name 'App.java' ! -path 'joctra/src/main/java/js/octra/joctra/examples/*' -exec rm {} +"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "rm -rf joctra-octra/build/cmake"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -c++ -java -o ../joctra-octra/octra_java_wrap.cpp -package js.octra.joctra -outdir ../joctra/src/main/java/js/octra/joctra ../prebindings/joctra/src/joctra.i"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "sed -i 's/System.loadLibrary(\"octra\")/System.loadLibrary(\"octra_jni\")/g' joctra/src/main/java/js/octra/joctra/App.java joctra/src/main/java/js/octra/joctra/examples/StlEx.java"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "perl -0777 -pi -e 's/public class octra \\{/public class octra {\\n  static { System.loadLibrary(\"octra_jni\"); }/s' joctra/src/main/java/js/octra/joctra/octra.java"
+
+prebuild-ocaml:
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${OCTRA_PREFIX:-}\" || (echo 'OCTRA_PREFIX is not set' >&2; exit 1) && mkdir -p bindings/octraocaml/src && swig -ocaml -c++ -Iinclude -o bindings/octraocaml/src/octra_ocaml_wrap.cxx -outdir bindings/octraocaml/src prebindings/octraocaml/src/octraocaml.i"
 
 # }}} prebuild commands
 
@@ -113,6 +153,34 @@ build-dotnet:
     {{ NIX_DEVELOP }} . --command bash -lc "cmake --build build/octradotnet"
     # nix develop ./bindings/octraDotNet/ --command bash -c "just --justfile ./bindings/octraDotNet/justfile build"
 
+build-go: prebuild-go build-cpp
+    # For Go bindings, we need to run go build on the generated files
+    # Note: This assumes the SWIG-generated files are already in place from prebuild-go
+    {{ NIX_DEVELOP }} .#go --command bash -lc 'cd bindings/gooctra && CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -loctra" go build'
+
+build-perl: prebuild-perl build-cpp
+  {{ NIX_DEVELOP }} .#perl --command bash -lc 'cd bindings/perloctra && rm -rf blib Makefile Makefile.old pm_to_blib MYMETA.* && perl Makefile.PL INSTALL_BASE="$(pwd)/../../build/perl" && make -j{{ JOBS }} && make install'
+
+build-ruby: prebuild-ruby
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'cd bindings/octruby/ext/octruby && ruby extconf.rb && make -j{{ JOBS }}'
+
+build-tcl: prebuild-tcl
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake -S prebindings/octratcl -B build/octratcl -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cmake --build build/octratcl -j{{ JOBS }} --verbose'
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'cp -v bindings/octratcl/pkgIndex.tcl build/octratcl/'
+
+build-lua: prebuild-lua
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake -S prebindings/octralua -B build/octralua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --build build/octralua -j{{ JOBS }} --verbose'
+
+build-ocaml: prebuild-ocaml
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'test -n "${OCTRA_PREFIX:-}" || (echo "OCTRA_PREFIX is not set" >&2; exit 1) && cd bindings/octraocaml && dune build'
+
+install-ocaml: build-ocaml
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'test -n "${OCTRA_PREFIX:-}" || (echo "OCTRA_PREFIX is not set" >&2; exit 1) && mkdir -p build/ocaml/prefix && cd bindings/octraocaml && dune install --prefix "$(pwd)/../../build/ocaml/prefix"'
+
+
+
 
 # }}} build commands
 
@@ -130,6 +198,9 @@ repl-r: prebuild-r
 repl-php: build-php
   {{ NIX_DEVELOP }} .#php --command bash -lc 'php -a --php-ini .user.ini'
 
+repl-perl: build-perl
+  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl -de 1'
+
 repl-csharp: build-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -lc "LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH if command -v dotnet-repl >/dev/null 2>&1; then dotnet-repl; elif command -v csi >/dev/null 2>&1; then csi; else echo 'No C# REPL found (expected dotnet-repl or csi)' >&2; exit 1; fi"
 
@@ -138,6 +209,18 @@ repl-java:
 
 repl-cpp:
   {{ NIX_DEVELOP }} .#cpp --command bash -lc 'cling $(pkg-config --cflags octra) $(pkg-config --libs-only-L octra) -loctra -std=c++17'
+
+repl-tcl: build-tcl
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/octratcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh'
+
+repl-lua:
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'lua'
+
+repl-ruby:
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'irb -r octruby'
+
+repl-ocaml:
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'utop'
 
 # }}} repl commands
 
@@ -156,7 +239,7 @@ test-r: prebuild-r
   {{ NIX_DEVELOP }} .#r --command bash -lc 'R -q -e "testthat::test_local(\".\")"'
 
 test-csharp: build-csharp
-  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH=build/dotnet/release:$LD_LIBRARY_PATH dotnet test ./octradotnet.tests'
+  {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/octra-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet test ./octradotnet.tests'
 
 test-java: build-java
   {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH=joctra-octra/build/cmake:$LD_LIBRARY_PATH && gradle test'
@@ -164,10 +247,29 @@ test-java: build-java
 test-php: build-php
   {{ NIX_DEVELOP }} .#php --command bash -lc 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini bindings_tests/php/test_octra.php'
 
+test-lua:
+  {{ NIX_DEVELOP }} .#lua --command bash -lc 'lua bindings_tests/lua/test_octra.lua'
+
+test-perl: build-perl
+  {{ NIX_DEVELOP }} .#perl --command bash -lc 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && prove -l bindings_tests/perl'
+
+test-tcl: build-tcl
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc 'export TCLLIBPATH="$(pwd)/build/octratcl${TCLLIBPATH:+ $TCLLIBPATH}" && tclsh bindings_tests/tcl/test_octra.tcl'
+
+test-ruby:
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc 'ruby -I bindings_tests/ruby -e "require \"test_octra\""'
+
+
+test-go: build-go
+    {{ NIX_DEVELOP }} .#go --command bash -lc 'cd bindings/gooctra && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -loctra" go test ./...'
+
 
 test-javascript: build-javascript
     @echo "Running Javascript Tests"
     {{ NIX_DEVELOP }} .#javascript --command bash -lc "npm run test"
+
+test-ocaml:
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc 'just install-ocaml && export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH" && cd bindings_tests/ocaml && dune runtest'
 
 
 test-cpp:
@@ -325,6 +427,8 @@ update-java-deps:
 update-csharp-deps:
   nix/update-nuget-deps.sh
 
-all-test: test-cpp test-python test-r test-javascript test-csharp test-java test-php
+all-test: test-cpp test-python test-r test-javascript test-csharp test-java test-php test-go test-perl test-ocaml
+
+test-all: all-test
 
 # }}} all commands

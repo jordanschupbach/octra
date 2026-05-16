@@ -74,6 +74,10 @@ PHP_METHOD(SizeVector,__set);
 PHP_METHOD(SizeVector,__get);
 PHP_METHOD(SizeVector,__isset);
 static PHP_FUNCTION(hello);
+static PHP_FUNCTION(make_dvector);
+static PHP_FUNCTION(sum_dvector);
+static PHP_FUNCTION(make_dpair);
+static PHP_FUNCTION(sum_dpair);
 PHP_MINIT_FUNCTION(octra);
 
 #endif /* PHP_OCTRA_H */

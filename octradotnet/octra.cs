@@ -14,4 +14,26 @@ public class octra {
     octraPINVOKE.hello();
   }
 
+  public static DVector make_dvector(double a, double b, double c) {
+    DVector ret = new DVector(octraPINVOKE.make_dvector(a, b, c), true);
+    return ret;
+  }
+
+  public static double sum_dvector(DVector values) {
+    double ret = octraPINVOKE.sum_dvector(DVector.getCPtr(values));
+    if (octraPINVOKE.SWIGPendingException.Pending) throw octraPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static DPair make_dpair(double a, double b) {
+    DPair ret = new DPair(octraPINVOKE.make_dpair(a, b), true);
+    return ret;
+  }
+
+  public static double sum_dpair(DPair values) {
+    double ret = octraPINVOKE.sum_dpair(DPair.getCPtr(values));
+    if (octraPINVOKE.SWIGPendingException.Pending) throw octraPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }

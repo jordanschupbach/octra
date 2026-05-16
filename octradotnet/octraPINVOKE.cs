@@ -610,4 +610,16 @@ class octraPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_hello")]
   public static extern void hello();
+
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_make_dvector")]
+  public static extern global::System.IntPtr make_dvector(double jarg1, double jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_sum_dvector")]
+  public static extern double sum_dvector(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_make_dpair")]
+  public static extern global::System.IntPtr make_dpair(double jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("octra_csharp", EntryPoint="CSharp_sum_dpair")]
+  public static extern double sum_dpair(global::System.Runtime.InteropServices.HandleRef jarg1);
 }

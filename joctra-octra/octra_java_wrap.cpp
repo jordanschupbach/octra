@@ -2163,6 +2163,78 @@ SWIGEXPORT void JNICALL Java_js_octra_joctra_octraJNI_hello(JNIEnv *jenv, jclass
 }
 
 
+SWIGEXPORT jlong JNICALL Java_js_octra_joctra_octraJNI_make_1dvector(JNIEnv *jenv, jclass jcls, jdouble jarg1, jdouble jarg2, jdouble jarg3) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  std::vector< double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  arg3 = (double)jarg3; 
+  result = octra::make_dvector(arg1,arg2,arg3);
+  *(std::vector< double > **)&jresult = new std::vector< double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_octra_joctra_octraJNI_sum_1dvector(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  std::vector< double > *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< double > const & is null");
+    return 0;
+  } 
+  result = (double)octra::sum_dvector((std::vector< double > const &)*arg1);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_js_octra_joctra_octraJNI_make_1dpair(JNIEnv *jenv, jclass jcls, jdouble jarg1, jdouble jarg2) {
+  jlong jresult = 0 ;
+  double arg1 ;
+  double arg2 ;
+  std::pair< double,double > result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (double)jarg1; 
+  arg2 = (double)jarg2; 
+  result = octra::make_dpair(arg1,arg2);
+  *(std::pair< double,double > **)&jresult = new std::pair< double,double >(result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jdouble JNICALL Java_js_octra_joctra_octraJNI_sum_1dpair(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jdouble jresult = 0 ;
+  std::pair< double,double > *arg1 = 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::pair< double,double > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::pair< double,double > const & is null");
+    return 0;
+  } 
+  result = (double)octra::sum_dpair((std::pair< double,double > const &)*arg1);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
 #ifdef __cplusplus
 }
 #endif

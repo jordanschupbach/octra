@@ -14,4 +14,20 @@ public class octra {
     octraJNI.hello();
   }
 
+  public static DVector make_dvector(double a, double b, double c) {
+    return new DVector(octraJNI.make_dvector(a, b, c), true);
+  }
+
+  public static double sum_dvector(DVector values) {
+    return octraJNI.sum_dvector(DVector.getCPtr(values), values);
+  }
+
+  public static DPair make_dpair(double a, double b) {
+    return new DPair(octraJNI.make_dpair(a, b), true);
+  }
+
+  public static double sum_dpair(DPair values) {
+    return octraJNI.sum_dpair(DPair.getCPtr(values), values);
+  }
+
 }

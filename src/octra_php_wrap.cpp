@@ -3562,6 +3562,144 @@ fail:
 }
 
 
+static PHP_METHOD(octra,make_dvector) {
+  PHP_FN(make_dvector)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(make_dvector) {
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  zval args[3];
+  std::vector< double > result;
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg1 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg3 = (double) zval_get_double(&args[2]);
+  /*@SWIG@*/;
+  
+  result = octra::make_dvector(arg1,arg2,arg3);
+  {
+    std::vector< double > * resultobj = new std::vector< double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__vectorT_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(octra,sum_dvector) {
+  PHP_FN(sum_dvector)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(sum_dvector) {
+  std::vector< double > *arg1 = 0 ;
+  zval args[1];
+  double result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_std__vectorT_double_t, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__vectorT_double_t for argument 1 of sum_dvector");
+    return;
+  }
+  
+  result = (double)octra::sum_dvector((std::vector< double > const &)*arg1);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(octra,make_dpair) {
+  PHP_FN(make_dpair)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(make_dpair) {
+  double arg1 ;
+  double arg2 ;
+  zval args[2];
+  std::pair< double,double > result;
+  
+  if(ZEND_NUM_ARGS() != 2 || zend_get_parameters_array_ex(2, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg1 = (double) zval_get_double(&args[0]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,48,CONVERT_FLOAT_IN@*/
+  arg2 = (double) zval_get_double(&args[1]);
+  /*@SWIG@*/;
+  
+  result = octra::make_dpair(arg1,arg2);
+  {
+    std::pair< double,double > * resultobj = new std::pair< double,double >(result);
+    
+    
+    
+    
+    SWIG_SetPointerZval(return_value, (void *)resultobj, SWIGTYPE_p_std__pairT_double_double_t, 1);
+  }
+fail:
+  return;
+}
+
+
+static PHP_METHOD(octra,sum_dpair) {
+  PHP_FN(sum_dpair)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(sum_dpair) {
+  std::pair< double,double > *arg1 = 0 ;
+  zval args[1];
+  double result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_std__pairT_double_double_t, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_std__pairT_double_double_t for argument 1 of sum_dpair");
+    return;
+  }
+  
+  result = (double)octra::sum_dpair((std::pair< double,double > const &)*arg1);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
 /* class object handlers for pointer wrappers */
 static zend_object_handlers swig_ptr_object_handlers;
 
@@ -3602,6 +3740,21 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_magic_arginfo_isset, 0, 1, MAY_BE_B
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_hello, 0, 0, MAY_BE_VOID)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_make_dpair, 0, 2, DPair, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_make_dvector, 0, 3, DVector, 0)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_DOUBLE,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_DOUBLE,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_sum_dpair, 0, 1, MAY_BE_DOUBLE)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DPair,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_sum_dvector, 0, 1, MAY_BE_DOUBLE)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(swig_arginfo_new_DPair, 0, 0, 1)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DPair,MAY_BE_DOUBLE,NULL)
@@ -3756,11 +3909,19 @@ static const zend_function_entry class_SizeVector_functions[] = {
 /* Every non-class user visible function must have an entry here */
 static const zend_function_entry module_octra_functions[] = {
  PHP_FE(hello,swig_arginfo_hello)
+ PHP_FE(make_dvector,swig_arginfo_make_dvector)
+ PHP_FE(sum_dvector,swig_arginfo_sum_dvector)
+ PHP_FE(make_dpair,swig_arginfo_make_dpair)
+ PHP_FE(sum_dpair,swig_arginfo_sum_dpair)
  ZEND_FE_END
 };
 
 static const zend_function_entry class_octra_functions[] = {
  PHP_ME(octra,hello,swig_arginfo_hello,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,make_dvector,swig_arginfo_make_dvector,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,sum_dvector,swig_arginfo_sum_dvector,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,make_dpair,swig_arginfo_make_dpair,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,sum_dpair,swig_arginfo_sum_dpair,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  ZEND_FE_END
 };
 

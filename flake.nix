@@ -17,6 +17,10 @@
         pkgs = nixpkgs.legacyPackages.${system};
         octra = import ./octra.nix { pkgs = pkgs; };
         phpPackage = php-from-source.packages.${system}; # Get the custom PHP package
+        lua =
+          if pkgs ? lua5_4 then pkgs.lua5_4
+          else if pkgs ? lua54 then pkgs.lua54
+          else pkgs.lua;
 
         # {{{ Bindings
 
@@ -73,6 +77,11 @@
             pkgs.R
           ];
         };
+
+        octratcl = import ./octratcl.nix { pkgs = pkgs; };
+        octruby = import ./octruby.nix { pkgs = pkgs; };
+        octralua = import ./octralua.nix { pkgs = pkgs; };
+        octraocaml = import ./octraocaml.nix { pkgs = pkgs; };
 
 
         # }}} Bindings
@@ -203,6 +212,69 @@
             installPhase = "mkdir -p $out";
           };
 
+          tcl = pkgs.stdenv.mkDerivation {
+            name = "octra-tcl-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              pkgs.tcl
+              pkgs.tk
+            ];
+            buildInputs = [
+              octratcl
+            ];
+            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            doCheck = true;
+            checkPhase = ''
+              tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
+              export TCLLIBPATH="${octratcl}/lib/$tclVersionDir"
+              tclsh bindings_tests/tcl/test_octra.tcl
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          lua = pkgs.stdenv.mkDerivation {
+            name = "octra-lua-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              lua
+            ];
+            buildInputs = [
+              octralua
+            ];
+            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            doCheck = true;
+            checkPhase = ''
+              luaVersion="$(${lua}/bin/lua -e 'io.write((_VERSION or ""):match("%d+%.%d+") or "")')"
+              if [ -z "$luaVersion" ]; then
+                echo "Could not determine Lua version from _VERSION" >&2
+                ${lua}/bin/lua -e 'print("_VERSION=" .. tostring(_VERSION))' >&2
+                exit 1
+              fi
+              export LUA_PATH="${octralua}/share/lua/$luaVersion/?.lua;${octralua}/share/lua/?.lua;./?.lua;;"
+              export LUA_CPATH="${octralua}/lib/lua/$luaVersion/?.so;${octralua}/lib/lua/?.so;${octralua}/lib64/lua/$luaVersion/?.so;${octralua}/lib64/lua/?.so;;"
+              ${lua}/bin/lua bindings_tests/lua/test_octra.lua
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          ruby = pkgs.stdenv.mkDerivation {
+            name = "octra-ruby-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              pkgs.ruby
+            ];
+            buildInputs = [
+              octruby
+            ];
+            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            doCheck = true;
+            checkPhase = ''
+              export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
+              ruby -I bindings_tests/ruby -e 'require "test_octra"'
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
           csharp =
             let
               nativeOctra = pkgs.stdenv.mkDerivation {
@@ -245,7 +317,7 @@
         };
 
         packages = {
-          inherit octra pyoctra octrajs octrar;
+          inherit octra pyoctra octrajs octrar octratcl octruby octralua octraocaml;
 
           rename-octra = pkgs.writeShellApplication {
             name = "rename-octra";
@@ -397,11 +469,112 @@
         };
 
         devShells.php = pkgs.mkShell { 
+           packages = [
+             phpPackage
+             pkgs.cmake
+             pkgs.just
+           ];
+         };
+
+        devShells.go = pkgs.mkShell { 
+           packages = [
+             pkgs.go
+             pkgs.cmake
+             pkgs.just
+           ];
+         };
+
+        devShells.perl = pkgs.mkShell {
           packages = [
-            phpPackage
-            pkgs.cmake
+            pkgs.perl
+            pkgs.perlPackages.ExtUtilsMakeMaker
+            pkgs.perlPackages.TestMore
+            pkgs.gnumake
+            pkgs.stdenv.cc
             pkgs.just
           ];
+        };
+
+        devShells.tcl = pkgs.mkShell {
+          packages = [
+            octra
+            octratcl
+            pkgs.tcl
+            pkgs.tk
+            pkgs.swig
+            pkgs.cmake
+            pkgs.pkg-config
+            pkgs.just
+          ];
+
+          shellHook = ''
+            tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
+            export TCLLIBPATH="${octratcl}/lib/$tclVersionDir''${TCLLIBPATH:+ $TCLLIBPATH}"
+          '';
+        };
+
+        devShells.ruby = pkgs.mkShell {
+          packages = [
+            octra
+            octruby
+            pkgs.ruby
+            pkgs.swig
+            pkgs.pkg-config
+            pkgs.libxml2
+            pkgs.just
+          ];
+
+          shellHook = ''
+            export OCTRA_PREFIX="${octra}"
+            export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
+          '';
+        };
+
+        devShells.lua = pkgs.mkShell {
+          packages = [
+            octra
+            octralua
+            lua
+            pkgs.swig
+            pkgs.cmake
+            pkgs.pkg-config
+            pkgs.just
+          ];
+
+          shellHook = ''
+            luaVersion="$(${lua}/bin/lua -e 'io.write((_VERSION or ""):match("%d+%.%d+") or "")')"
+            if [ -z "$luaVersion" ]; then
+              echo "Could not determine Lua version from _VERSION" >&2
+              ${lua}/bin/lua -e 'print("_VERSION=" .. tostring(_VERSION))' >&2
+              exit 1
+            fi
+            export LUA_PATH="${octralua}/share/lua/$luaVersion/?.lua;${octralua}/share/lua/?.lua;./?.lua;;"
+            export LUA_CPATH="${octralua}/lib/lua/$luaVersion/?.so;${octralua}/lib/lua/?.so;${octralua}/lib64/lua/$luaVersion/?.so;${octralua}/lib64/lua/?.so;;"
+          '';
+        };
+
+        devShells.ocaml = pkgs.mkShell {
+          packages = [
+            octra
+            pkgs.swig
+            pkgs.pkg-config
+            pkgs.stdenv.cc
+            pkgs.gnumake
+            pkgs.ocamlPackages.ocaml
+            pkgs.ocamlPackages.dune_3
+            pkgs.ocamlPackages.findlib
+            pkgs.ocamlPackages.utop
+            pkgs.ocamlPackages.alcotest
+            pkgs.just
+          ];
+
+          shellHook = ''
+            export OCTRA_PREFIX="${octra}"
+            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            export LD_LIBRARY_PATH="${octra}/lib/octra-0.0.1''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            export CAML_LD_LIBRARY_PATH="${octra}/lib/octra-0.0.1''${CAML_LD_LIBRARY_PATH:+:}$CAML_LD_LIBRARY_PATH"
+            export XDG_CACHE_HOME="$(pwd)/build/xdg-cache"
+          '';
         };
       }
     );

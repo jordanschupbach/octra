@@ -151,4 +151,12 @@ export  class SVector {
 
 export function hello(): void;
 
+export function make_dvector(a: number, b: number, c: number): any;
+
+export function sum_dvector(values: any): number;
+
+export function make_dpair(a: number, b: number): any;
+
+export function sum_dpair(values: any): number;
+
 

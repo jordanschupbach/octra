@@ -100,6 +100,14 @@ just js
 just js-repl
 ```
 
+#### Lua
+
+```bash
+just run-lua
+just repl-lua
+just test-lua
+```
+
 ## Bindings
 
 Binding support is (to be) provided for the following languages:
@@ -112,15 +120,15 @@ Binding support is (to be) provided for the following languages:
 | Guile      | Goctra        | ✖          |
 | Java       | Joctra        | ✖          |
 | Javascript | OctraJS       | ✅          |
-| Lua        | Loctra        | ✖          |
-| OCaml      | OctraML       | ✖          |
+| Lua        | Loctra        | ✅          |
+| OCaml      | OctraML       | ✅          |
 | Octave     | MOctra        | ✖          |
 | PHP        | OctraPHP      | ✖          |
-| Perl       | Poctra        | ✖          |
+| Perl       | Poctra        | ✅          |
 | Python     | PyOctra       | ✅          |
 | R          | OctraR        | ✅          |
-| Ruby       | RbOctra       | ✖          |
-| Tcl/TK     | OctraTK       | ✖          |
+| Ruby       | RbOctra       | ✅          |
+| Tcl/TK     | OctraTK       | ✅          |
 
 They are linked to this repo through git submodules, so you can update source
 code to submodules by running build for the respective language.

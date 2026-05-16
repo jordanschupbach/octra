@@ -15312,6 +15312,138 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_make_dvector(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "make_dvector", 3, 3, swig_obj)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "make_dvector" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "make_dvector" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "make_dvector" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  result = octra::make_dvector(arg1,arg2,arg3);
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_sum_dvector(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sum_dvector" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sum_dvector" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  result = (double)octra::sum_dvector((std::vector< double,std::allocator< double > > const &)*arg1);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_make_dpair(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  std::pair< double,double > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "make_dpair", 2, 2, swig_obj)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "make_dpair" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "make_dpair" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  result = octra::make_dpair(arg1,arg2);
+  resultobj = swig::from(static_cast< std::pair< double,double > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_sum_dpair(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::pair< double,double > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    std::pair< double,double > *ptr = (std::pair< double,double > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "sum_dpair" "', argument " "1"" of type '" "std::pair< double,double > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "sum_dpair" "', argument " "1"" of type '" "std::pair< double,double > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  result = (double)octra::sum_dpair((std::pair< double,double > const &)*arg1);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -15499,6 +15631,10 @@ static PyMethodDef SwigMethods[] = {
 	 { "SVector_swigregister", SVector_swigregister, METH_O, NULL},
 	 { "SVector_swiginit", SVector_swiginit, METH_VARARGS, NULL},
 	 { "hello", _wrap_hello, METH_NOARGS, NULL},
+	 { "make_dvector", _wrap_make_dvector, METH_VARARGS, NULL},
+	 { "sum_dvector", _wrap_sum_dvector, METH_O, NULL},
+	 { "make_dpair", _wrap_make_dpair, METH_VARARGS, NULL},
+	 { "sum_dpair", _wrap_sum_dpair, METH_O, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 

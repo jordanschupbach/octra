@@ -15,3 +15,5 @@ octradotnet.tests/obj
 dist
 src/pyoctra.egg-info
 result
+_build
+.merlin

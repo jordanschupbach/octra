@@ -1,0 +1,1 @@
+The swig bindings for the perl language dont exist. I'd like them to. Can you add them? I'd like it to have its own nix environment that the library is installed to and run repls/tests from there. Can you add the necessary files and configuration to make this happen?
