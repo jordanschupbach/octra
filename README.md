@@ -108,6 +108,14 @@ just repl-lua
 just test-lua
 ```
 
+#### Rust
+
+```bash
+just run-rust
+just repl-rust
+just test-rust
+```
+
 ## Bindings
 
 Binding support is (to be) provided for the following languages:
@@ -128,6 +136,7 @@ Binding support is (to be) provided for the following languages:
 | Python     | PyOctra       | ✅          |
 | R          | OctraR        | ✅          |
 | Ruby       | RbOctra       | ✅          |
+| Rust       | RustOctra     | ✅          |
 | Tcl/TK     | OctraTK       | ✅          |
 
 They are linked to this repo through git submodules, so you can update source

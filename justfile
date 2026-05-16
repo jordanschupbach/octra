@@ -17,6 +17,9 @@ run-java: build-java
 run-go: build-go
     {{ NIX_DEVELOP }} .#go --command bash -lc 'cd bindings/gooctra && LD_LIBRARY_PATH="$(pwd)/../../build:$LD_LIBRARY_PATH" CGO_CPPFLAGS="-I$(pwd)/../../include" CGO_LDFLAGS="-L$(pwd)/../../build -loctra" go run ../../examples/go/{{ TARGET }}.go'
 
+run-rust: build-rust
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path bindings/rustoctra/Cargo.toml --example octra_ex'
+
 run-d:
   {{ NIX_DEVELOP }} .#d --command bash -lc 'cd examples/d && dub run --compiler=ldc2 --build=release'
 
@@ -126,6 +129,13 @@ prebuild-ocaml:
 
 # }}} prebuild commands
 
+# {{{ rust (bindgen) commands
+
+prebuild-rust:
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'inc="$(pkg-config --variable=includedir octra)" && bindgen "$inc/octra/octra_c.h" --allowlist-function "octra_.*" --allowlist-type "octra_.*" --no-layout-tests --rustfmt-bindings -o bindings/rustoctra/src/bindings.rs'
+
+# }}} rust (bindgen) commands
+
 # {{{ build commands
 
 build-php: prebuild-php
@@ -196,6 +206,9 @@ build-lua: prebuild-lua
   {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake -S prebindings/octralua -B build/octralua -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
   {{ NIX_DEVELOP }} .#lua --command bash -lc 'cmake --build build/octralua -j{{ JOBS }} --verbose'
 
+build-rust:
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'cargo build --manifest-path bindings/rustoctra/Cargo.toml'
+
 build-guile: prebuild-guile
   {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake -S prebindings/octraguile -B build/octraguile -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(pkg-config --variable=prefix octra)"'
   {{ NIX_DEVELOP }} .#guile --command bash -lc 'cmake --build build/octraguile -j{{ JOBS }} --verbose'
@@ -256,6 +269,9 @@ repl-ocaml:
 repl-guile:
   {{ NIX_DEVELOP }} .#guile --command bash -lc 'guile'
 
+repl-rust:
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cd bindings/rustoctra && evcxr'
+
 repl-octave:
   {{ NIX_DEVELOP }} .#octave --command bash -lc 'octraoctave_prefix="$(nix eval --raw .#octraoctave)" && octave -qf --path "$octraoctave_prefix/share/octave/site/m"'
 
@@ -283,6 +299,9 @@ test-csharp: build-csharp
 
 test-java: build-java
   {{ NIX_DEVELOP }} .#java --command bash -lc 'export LD_LIBRARY_PATH=joctra-octra/build/cmake:$LD_LIBRARY_PATH && gradle test'
+
+test-rust:
+  {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo test --manifest-path bindings_tests/rust/Cargo.toml'
 
 test-php: build-php
   {{ NIX_DEVELOP }} .#php --command bash -lc 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini bindings_tests/php/test_octra.php'

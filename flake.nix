@@ -361,6 +361,28 @@
             installPhase = "mkdir -p $out";
           };
 
+          rust = pkgs.stdenv.mkDerivation {
+            name = "octra-rust-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [
+              pkgs.cargo
+              pkgs.rustc
+              pkgs.pkg-config
+            ];
+            buildInputs = [
+              octra
+            ];
+            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            doCheck = true;
+            checkPhase = ''
+              export HOME="$TMPDIR"
+              export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+              export LD_LIBRARY_PATH="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir octra)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+              cargo test --manifest-path bindings_tests/rust/Cargo.toml
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
           csharp =
             let
               nativeOctra = pkgs.stdenv.mkDerivation {
@@ -569,6 +591,28 @@
              pkgs.just
            ];
          };
+
+        devShells.rust = pkgs.mkShell {
+          packages = [
+            octra
+            pkgs.rustc
+            pkgs.cargo
+            pkgs.rustfmt
+            pkgs.clippy
+            pkgs.rust-bindgen
+            pkgs.clang
+            pkgs.llvmPackages.libclang
+            pkgs.pkg-config
+            pkgs.evcxr
+            pkgs.just
+          ];
+
+          shellHook = ''
+            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            export LIBCLANG_PATH="${pkgs.llvmPackages.libclang.lib}/lib"
+          '';
+        };
 
         devShells.d = pkgs.mkShell {
           packages = [

@@ -19,3 +19,5 @@ src/pyoctra.egg-info
 result
 _build
 .merlin
+bindings_tests/rust/target
+bindings/rust/target
