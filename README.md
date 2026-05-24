@@ -139,7 +139,8 @@ Binding support is (to be) provided for the following languages:
 | Rust       | RustOctra     | ✅          |
 | Tcl/TK     | OctraTK       | ✅          |
 
-Each binding lives at the repo root (e.g. `rustoctra/`, `gooctra/`, `octruby/`),
-with generator inputs under `prebindings/`. The C/C++ core remains the single
+Each binding lives under `src/` (e.g. `src/rustoctra/`, `src/gooctra/`, `src/octruby/`),
+with SWIG generator inputs kept alongside each binding (typically `src/<binding>/swig/`).
+The C/C++ core remains the single
 source of truth; bindings are (re)generated via the `just prebuild-*` /
 `just build-*` workflows.

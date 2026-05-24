@@ -25,7 +25,7 @@ def find_cpp_sources(directory):
     
     return sources
 
-sources = find_cpp_sources('source') + ['src/octra_python_wrap.cpp']
+sources = find_cpp_sources('src') + ['src/octra_python_wrap.cpp']
 
 
 def get_pkgconfig_include_dirs(package):

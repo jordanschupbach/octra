@@ -1,4 +1,6 @@
+*.dll
 *.o
+*.a
 .direnv
 .cache
 *.so
@@ -24,3 +26,14 @@ bindings/rust/target
 rustoctra/target
 octrad/liboctrad.a
 **/.null-ls*
+
+src/rustoctra/target
+src/octradotnet/bin
+src/octradotnet/obj
+
+src/octradotnet.tests/bin
+src/octradotnet.tests/obj
+tests/rust/target
+target
+src/octruby/ext/octruby/Makefile
+src/octruby/ext/octruby/mkmf.log

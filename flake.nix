@@ -136,7 +136,7 @@
             phases = [ "unpackPhase" "checkPhase" "installPhase" ];
             doCheck = true;
             checkPhase = ''
-              pytest -q bindings_tests/python
+              pytest -q tests/python
             '';
             installPhase = "mkdir -p $out";
           };
@@ -207,9 +207,9 @@
             phases = [ "unpackPhase" "configurePhase" "buildPhase" "installPhase" ];
             configurePhase = "runHook preConfigure";
             buildPhase = ''
-              cmake -S joctra-octra -B joctra-octra/build/cmake -DCMAKE_BUILD_TYPE=Release
-              cmake --build joctra-octra/build/cmake -j $NIX_BUILD_CORES
-              export LD_LIBRARY_PATH="$PWD/joctra-octra/build/cmake:''${LD_LIBRARY_PATH:-}"
+              cmake -S src/joctra-octra -B src/joctra-octra/build/cmake -DCMAKE_BUILD_TYPE=Release
+              cmake --build src/joctra-octra/build/cmake -j $NIX_BUILD_CORES
+              export LD_LIBRARY_PATH="$PWD/src/joctra-octra/build/cmake:''${LD_LIBRARY_PATH:-}"
               gradle test --no-configuration-cache
             '';
             installPhase = "mkdir -p $out";
@@ -230,7 +230,7 @@
             checkPhase = ''
               tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
               export TCLLIBPATH="${octratcl}/lib/$tclVersionDir"
-              tclsh bindings_tests/tcl/test_octra.tcl
+              tclsh tests/tcl/test_octra.tcl
             '';
             installPhase = "mkdir -p $out";
           };
@@ -255,7 +255,7 @@
               fi
               export LUA_PATH="${octralua}/share/lua/$luaVersion/?.lua;${octralua}/share/lua/?.lua;./?.lua;;"
               export LUA_CPATH="${octralua}/lib/lua/$luaVersion/?.so;${octralua}/lib/lua/?.so;${octralua}/lib64/lua/$luaVersion/?.so;${octralua}/lib64/lua/?.so;;"
-              ${lua}/bin/lua bindings_tests/lua/test_octra.lua
+              ${lua}/bin/lua tests/lua/test_octra.lua
             '';
             installPhase = "mkdir -p $out";
           };
@@ -273,7 +273,7 @@
             doCheck = true;
             checkPhase = ''
               export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
-              ruby -I bindings_tests/ruby -e 'require "test_octra"'
+              ruby -I tests/ruby -e 'require "test_octra"'
             '';
             installPhase = "mkdir -p $out";
           };
@@ -297,7 +297,7 @@
 
               export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
               export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
-              ${pkgs.guile}/bin/guile -s bindings_tests/guile/test_octra.scm
+              ${pkgs.guile}/bin/guile -s tests/guile/test_octra.scm
             '';
             installPhase = "mkdir -p $out";
           };
@@ -315,7 +315,7 @@
             doCheck = true;
             checkPhase = ''
               export OCTAVE_PATH="${octraoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
-              ${pkgs.octave}/bin/octave -qf --eval 'test("bindings_tests/octave/test_octra.m")'
+              ${pkgs.octave}/bin/octave -qf --eval 'test("tests/octave/test_octra.m")'
             '';
             installPhase = "mkdir -p $out";
           };
@@ -356,29 +356,42 @@
               cp -R "${octrad}/share/dub/packages/octrad-0.0.1" "$octradDubPackages/"
               chmod -R u+w "$octradDubPackages/octrad-0.0.1" || true
               dub add-path "$octradDubPackages" >/dev/null
-              dub test --root bindings_tests/d --compiler=ldc2 --build=release
+              dub test --root tests/d --compiler=ldc2 --build=release
             '';
             installPhase = "mkdir -p $out";
           };
 
-          rust = pkgs.stdenv.mkDerivation {
-            name = "octra-rust-check";
+          rust = pkgs.rustPlatform.buildRustPackage {
+            pname = "octra-rust-check";
+            version = "0.0.1";
             src = pkgs.lib.cleanSource ./.;
+            cargoLock = {
+              lockFile = ./tests/rust/Cargo.lock;
+            };
             nativeBuildInputs = [
-              pkgs.cargo
-              pkgs.rustc
               pkgs.pkg-config
             ];
             buildInputs = [
               octra
             ];
-            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
             doCheck = true;
-            checkPhase = ''
+            buildPhase = ''
+              runHook preBuild
               export HOME="$TMPDIR"
+              export CARGO_NET_OFFLINE=true
               export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
               export LD_LIBRARY_PATH="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir octra)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
-              cargo test --manifest-path bindings_tests/rust/Cargo.toml
+              cargo build --manifest-path tests/rust/Cargo.toml --offline --locked --release
+              runHook postBuild
+            '';
+            checkPhase = ''
+              runHook preCheck
+              export HOME="$TMPDIR"
+              export CARGO_NET_OFFLINE=true
+              export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+              export LD_LIBRARY_PATH="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir octra)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+              cargo test --manifest-path tests/rust/Cargo.toml --offline --locked --release
+              runHook postCheck
             '';
             installPhase = "mkdir -p $out";
           };
@@ -398,7 +411,7 @@
                 ];
                 phases = [ "unpackPhase" "buildPhase" "installPhase" ];
                 buildPhase = ''
-                  cmake -S octradotnet -B build -DCMAKE_BUILD_TYPE=Release
+                  cmake -S src/octradotnet -B build -DCMAKE_BUILD_TYPE=Release
                   cmake --build build -j $NIX_BUILD_CORES
                 '';
                 installPhase = ''
@@ -416,7 +429,7 @@
               };
               dotnet-sdk = pkgs.dotnet-sdk_10;
               nugetDeps = ./nix/nuget-deps.json;
-              testProjectFile = "octradotnet.tests/octradotnet.tests.csproj";
+              testProjectFile = "src/octradotnet.tests/octradotnet.tests.csproj";
               runtimeDeps = [ nativeOctra ];
               doCheck = true;
               dontDotnetInstall = true;

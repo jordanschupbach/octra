@@ -13,12 +13,12 @@
     "generate": "node setup.js",
     "build": "npm run generate && node-gyp configure build",
     "pretest": "npm run build",
-    "test": "jest test/javascript",
+    "test": "jest tests/javascript",
     "start": "node src/index"
   },
   "jest": {
     "modulePathIgnorePatterns": [
-      "<rootDir>/prebindings/"
+      "<rootDir>/src/octrajs/"
     ]
   },
   "author": "",

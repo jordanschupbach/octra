@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 // NOTE: if using repl, uncomment the following line to load the octradotnet.dll
 // and then recomment it back when compiling as a standalone program
-// #r "octradotnet/bin/Debug/net10.0/octradotnet.dll"
+// #r "src/octradotnet/bin/Debug/net10.0/octradotnet.dll"
 
 class stl_ex {
   static void Main() {

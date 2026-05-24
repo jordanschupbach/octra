@@ -11,7 +11,7 @@ function getSourcesFromFile(filePath) {
     lines.forEach(line => {
         const trimmedLine = line.trim();
         if (trimmedLine && !trimmedLine.startsWith('#')) {
-            sources.push(`'source/${trimmedLine}.cpp'`);
+            sources.push(`'src/${trimmedLine}.cpp'`);
         }
     });
     return sources.join(', ');

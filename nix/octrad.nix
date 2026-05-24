@@ -24,11 +24,11 @@ pkgs.stdenv.mkDerivation rec {
   buildPhase = ''
     runHook preBuild
 
-    mkdir -p octrad/source
+    mkdir -p src/octrad/source
     swig -c++ -d -Iinclude \
-      -o octrad/source/octrad_wrap.cpp \
-      -outdir octrad/source \
-      prebindings/octrad/src/octrad.i
+      -o src/octrad/source/octrad_wrap.cpp \
+      -outdir src/octrad/source \
+      src/octrad/swig/octrad.i
 
     export HOME="$TMPDIR"
     export DUB_HOME="$TMPDIR/dub"
@@ -49,12 +49,26 @@ pkgs.stdenv.mkDerivation rec {
 
     c++ -shared -fPIC \
       $OCTRA_CFLAGS \
-      -o octrad/source/liboctra_wrap.so \
-      octrad/source/octrad_wrap.cpp \
+      -o src/octrad/source/liboctra_wrap.so \
+      src/octrad/source/octrad_wrap.cpp \
       $OCTRA_LDFLAGS \
       -Wl,-rpath,"$OCTRA_LIBDIR"
 
-    (cd octrad && dub build --compiler=ldc2 --build=release)
+    if [ ! -f src/octrad/dub.json ]; then
+      cat > src/octrad/dub.json <<'EOF'
+{
+  "name": "octrad",
+  "description": "D (SWIG) bindings for the octra library.",
+  "license": "Unlicense",
+  "version": "0.0.1",
+  "targetType": "library",
+  "sourcePaths": ["source"],
+  "importPaths": ["source"]
+}
+EOF
+    fi
+
+    (cd src/octrad && dub build --compiler=ldc2 --build=release)
 
     runHook postBuild
   '';
@@ -64,13 +78,13 @@ pkgs.stdenv.mkDerivation rec {
 
     pkgDir="$out/share/dub/packages/octrad-${version}"
     mkdir -p "$pkgDir"
-    cp -R octrad/dub.json octrad/source "$pkgDir/"
+    cp -R src/octrad/dub.json src/octrad/source "$pkgDir/"
 
     # Also ship the built artifact for convenience (name differs by compiler/platform).
     mkdir -p "$out/lib"
-    cp -v octrad/source/liboctra_wrap.so "$out/lib/"
+    cp -v src/octrad/source/liboctra_wrap.so "$out/lib/"
     for ext in a so dylib lib; do
-      if ! find octrad -maxdepth 2 -type f -name "*.$ext" -exec cp -v {} "$out/lib/" \; 2>/dev/null; then
+      if ! find src/octrad -maxdepth 2 -type f -name "*.$ext" -exec cp -v {} "$out/lib/" \; 2>/dev/null; then
         :
       fi
     done

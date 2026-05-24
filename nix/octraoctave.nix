@@ -22,7 +22,7 @@ pkgs.stdenv.mkDerivation rec {
   ];
 
   configurePhase = ''
-    cmake -S prebindings/octraoctave -B build/octraoctave \
+    cmake -S src/octraoctave -B build/octraoctave \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_PREFIX_PATH="${octra}"
   '';

@@ -26,7 +26,7 @@ pkgs.stdenv.mkDerivation rec {
   ];
 
   configurePhase = ''
-    cmake -S prebindings/octralua -B build/octralua \
+    cmake -S src/octralua -B build/octralua \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_PREFIX_PATH="${octra}"
   '';

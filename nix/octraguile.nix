@@ -22,7 +22,7 @@ pkgs.stdenv.mkDerivation rec {
   ];
 
   configurePhase = ''
-    cmake -S prebindings/octraguile -B build/octraguile \
+    cmake -S src/octraguile -B build/octraguile \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_PREFIX_PATH="${octra}"
   '';

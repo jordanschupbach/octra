@@ -93,9 +93,9 @@ nix develop --accept-flake-config .#java --command bash -lc "\
   KS=\"$CERT_DIR/keystore\"; \
   KSPWD=\"\$(python -c 'import secrets; print(secrets.token_hex(16))')\"; \
   echo y | keytool -importcert -file \"$CERT_DIR/ca.cer\" -alias octra -keystore \"\$KS\" -storepass \"\$KSPWD\" >/dev/null; \
-  cmake -S joctra-octra -B joctra-octra/build/cmake -DCMAKE_BUILD_TYPE=Release; \
-  cmake --build joctra-octra/build/cmake -j \"\${NIX_BUILD_CORES:-4}\"; \
-  export LD_LIBRARY_PATH=\"$REPO_ROOT/joctra-octra/build/cmake:\${LD_LIBRARY_PATH:-}\"; \
+  cmake -S src/joctra-octra -B src/joctra-octra/build/cmake -DCMAKE_BUILD_TYPE=Release; \
+  cmake --build src/joctra-octra/build/cmake -j \"\${NIX_BUILD_CORES:-4}\"; \
+  export LD_LIBRARY_PATH=\"$REPO_ROOT/src/joctra-octra/build/cmake:\${LD_LIBRARY_PATH:-}\"; \
   gradle --no-daemon --console plain --no-configuration-cache \
     -Dhttp.proxyHost=\"$MITM_CACHE_HOST\" -Dhttp.proxyPort=\"$MITM_CACHE_PORT\" \
     -Dhttps.proxyHost=\"$MITM_CACHE_HOST\" -Dhttps.proxyPort=\"$MITM_CACHE_PORT\" \
