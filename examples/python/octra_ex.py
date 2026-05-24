@@ -18,7 +18,13 @@ class TimesTwo(octra.Callback):
         return x * 2.0
 
 
-cb = TimesTwo()
+class TimesThree(octra.Callback):
+    def call(self, x):
+        return x * 3.0
+
+
+# cb = TimesTwo()
+cb = TimesThree()
 print("call_with_callback(3.0) =", octra.call_with_callback(3.0, cb))
 v = octra.make_dvector(1.0, 2.0, 3.0)
 v2 = octra.map_dvector_with_callback(v, cb)

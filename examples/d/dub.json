@@ -3,6 +3,6 @@
   "description": "Example usage of the octrad bindings.",
   "license": "Unlicense",
   "dependencies": {
-    "octrad": "*"
+    "octrad": { "path": "../../octrad" }
   }
 }

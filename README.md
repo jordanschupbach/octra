@@ -122,16 +122,16 @@ Binding support is (to be) provided for the following languages:
 
 | Language   | Name          | Implemented |
 | ---------- | --------------| ----------- |
-| C#         | OctraDotNet   | ✖          |
+| C#         | OctraDotNet   | ✅          |
 | D          | DOctra        | ✅          |
-| Go         | Gooctra       | ✖          |
+| Go         | Gooctra       | ✅          |
 | Guile      | OctraGuile    | ✅          |
-| Java       | Joctra        | ✖          |
+| Java       | Joctra        | ✅          |
 | Javascript | OctraJS       | ✅          |
 | Lua        | Loctra        | ✅          |
 | OCaml      | OctraML       | ✅          |
 | Octave     | MOctra        | ✅          |
-| PHP        | OctraPHP      | ✖          |
+| PHP        | OctraPHP      | ✅          |
 | Perl       | Poctra        | ✅          |
 | Python     | PyOctra       | ✅          |
 | R          | OctraR        | ✅          |

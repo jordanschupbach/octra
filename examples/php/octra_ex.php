@@ -1,7 +1,6 @@
 <?php
 
 
-
 $n = 100;
 $v = new DVector($n);
 for($i = 0; $i < 10; $i += 1) {

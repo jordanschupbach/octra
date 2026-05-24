@@ -6,7 +6,11 @@ NIX_DEVELOP := "nix develop --accept-flake-config"
 
 # {{{ run commands
 
+
+
 run: run-cpp
+
+run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php run-perl run-tcl run-lua run-ruby run-r run-guile run-javascript run-ocaml run-octave
 
 run-csharp: build-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -lc 'LD_LIBRARY_PATH="$(pwd)/build/dotnet/release/_deps/octra-build:$(pwd)/build/dotnet/release${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" dotnet run --project ./octradotnet'
@@ -20,8 +24,15 @@ run-go: build-go
 run-rust: build-rust
   {{ NIX_DEVELOP }} .#rust --command bash -lc 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir octra)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path rustoctra/Cargo.toml --example octra_ex'
 
-run-d:
-  {{ NIX_DEVELOP }} .#d --command bash -lc 'cd examples/d && dub run --compiler=ldc2 --build=release'
+run-d: build-d
+  bash -lc 'set -euo pipefail; \
+    compiler=""; \
+    if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
+    if command -v nix >/dev/null 2>&1; then \
+      {{ NIX_DEVELOP }} .#d --command bash -lc "rm -rf build/dub-packages/octrad-0.0.1 && cd examples/d && dub run $compiler --build=release"; \
+    else \
+      rm -rf build/dub-packages/octrad-0.0.1 && cd examples/d && dub run $compiler --build=release; \
+    fi'
 
 run-python:
   {{ NIX_DEVELOP }} .#python --command bash -lc 'python examples/python/{{ TARGET }}.py'
@@ -103,7 +114,13 @@ prebuild-lua:
 
 # D (SWIG)
 prebuild-d:
-  {{ NIX_DEVELOP }} .#d --command bash -lc "mkdir -p octrad/source && swig -c++ -d -Iinclude -o octrad/source/octrad_wrap.cpp -oh octrad/source/octrad_wrap.h -outdir octrad/source prebindings/octrad/src/octrad.i"
+  bash -lc 'set -euo pipefail; \
+    cmd="mkdir -p octrad/source && swig -c++ -d -Iinclude -o octrad/source/octrad_wrap.cpp -oh octrad/source/octrad_wrap.h -outdir octrad/source prebindings/octrad/src/octrad.i"; \
+    if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
+      {{ NIX_DEVELOP }} .#d --command bash -lc "$cmd"; \
+    else \
+      bash -lc "$cmd"; \
+    fi'
 
 # Guile (SWIG)
 prebuild-guile:
@@ -192,7 +209,14 @@ build-go: prebuild-go build-cpp
   {{ NIX_DEVELOP }} .#go --command bash -lc 'cd gooctra && CGO_CPPFLAGS="-I$(pwd)/../include" CGO_LDFLAGS="-L$(pwd)/../build -loctra" go build'
 
 build-d: prebuild-d
-  {{ NIX_DEVELOP }} .#d --command bash -lc 'cd octrad && dub build --compiler=ldc2 --build=release'
+  bash -lc 'set -euo pipefail; \
+    compiler=""; \
+    if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
+    if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
+      {{ NIX_DEVELOP }} .#d --command bash -lc "cd octrad && dub build $compiler --build=release --force"; \
+    else \
+      cd octrad && dub build $compiler --build=release --force; \
+    fi'
 
 build-perl: prebuild-perl build-cpp
   {{ NIX_DEVELOP }} .#perl --command bash -lc 'cd perloctra && rm -rf blib Makefile Makefile.old pm_to_blib MYMETA.* && perl Makefile.PL INSTALL_BASE="$(pwd)/../build/perl" && make -j{{ JOBS }} && make install'
@@ -279,7 +303,14 @@ repl-octave:
   {{ NIX_DEVELOP }} .#octave --command bash -lc 'octraoctave_prefix="$(nix eval --raw .#octraoctave)" && octave -qf --path "$octraoctave_prefix/share/octave/site/m"'
 
 repl-d:
-  {{ NIX_DEVELOP }} .#d --command bash -lc 'cd examples/d && dub run --compiler=ldc2 --build=release'
+  bash -lc 'set -euo pipefail; \
+    compiler=""; \
+    if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
+    if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
+      {{ NIX_DEVELOP }} .#d --command bash -lc "cd examples/d && dub run $compiler --build=release"; \
+    else \
+      cd examples/d && dub run $compiler --build=release; \
+    fi'
 
 # }}} repl commands
 
@@ -328,7 +359,14 @@ test-octave:
   {{ NIX_DEVELOP }} .#octave --command bash -lc 'octraoctave_prefix="$(nix eval --raw .#octraoctave)" && octave -qf --path "$octraoctave_prefix/share/octave/site/m" --eval '"'"'test("bindings_tests/octave/test_octra.m")'"'"''
 
 test-d: prebuild-d
-  {{ NIX_DEVELOP }} .#d --command bash -lc 'dub test --root bindings_tests/d --compiler=ldc2 --build=release'
+  bash -lc 'set -euo pipefail; \
+    compiler=""; \
+    if command -v ldc2 >/dev/null 2>&1; then compiler="--compiler=ldc2"; elif command -v dmd >/dev/null 2>&1; then compiler="--compiler=dmd"; fi; \
+    if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
+      {{ NIX_DEVELOP }} .#d --command bash -lc "dub test --root bindings_tests/d $compiler --build=release"; \
+    else \
+      dub test --root bindings_tests/d $compiler --build=release; \
+    fi'
 
 
 test-go: build-go
