@@ -457,8 +457,11 @@
         devShells.default = pkgs.mkShell { 
           packages = [
 
+
             octra
             pkgs.just
+            pkgs.emacs
+            pkgs.direnv
             pkgs.lcov
             pkgs.clang 
             # pkgs.cmake 
@@ -485,6 +488,8 @@
 
             octra
             pkgs.just
+            pkgs.emacs
+            pkgs.direnv
             pkgs.jq 
             pkgs.lcov
             pkgs.gtest
@@ -592,7 +597,10 @@
         devShells.php = pkgs.mkShell { 
            packages = [
              phpPackage
+             pkgs.libxml2
+             pkgs.pkg-config
              pkgs.cmake
+             pkgs.stdenv.cc
              pkgs.just
            ];
          };
@@ -600,6 +608,8 @@
         devShells.go = pkgs.mkShell { 
            packages = [
              pkgs.go
+             pkgs.stdenv.cc
+             pkgs.pkg-config
              pkgs.cmake
              pkgs.just
            ];
@@ -791,6 +801,76 @@
               effectiveVersion="3.0"
             fi
 
+            export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+            export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+          '';
+        };
+
+        devShells.docs-pages = pkgs.mkShell {
+          packages = [
+            # Doc export tooling
+            pkgs.emacs
+            pkgs.direnv
+            pkgs.just
+            pkgs.jq
+
+            # Core library + pkg-config visibility
+            octra
+            pkgs.pkg-config
+            pkgs.cmake
+            pkgs.gnumake
+            pkgs.stdenv.cc
+            pkgs.swig
+
+            # Language runtimes + bindings for runnable examples
+            pyoctra
+            pkgs.python3
+
+            octrajs
+            pkgs.nodejs
+
+            octrar
+            pkgs.R
+
+            octruby
+            pkgs.ruby
+
+            pkgs.perl
+
+            phpPackage
+
+            octralua
+            lua
+
+            octratcl
+            pkgs.tcl
+
+            octraoctave
+            pkgs.octave
+
+            octraguile
+            pkgs.guile
+
+            # For building/running OCaml + Go examples during export
+            pkgs.ocamlPackages.ocaml
+            pkgs.ocamlPackages.dune_3
+            pkgs.ocamlPackages.findlib
+            pkgs.ocamlPackages.alcotest
+            pkgs.go
+          ];
+
+          shellHook = ''
+            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+
+            # Octave: make the installed .m files discoverable.
+            export OCTRA_PREFIX="${octra}"
+            export OCTAVE_PATH="${octraoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
+
+            # Guile: make the installed module + extension discoverable.
+            effectiveVersion="$(pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
+            if [ -z "$effectiveVersion" ]; then
+              effectiveVersion="3.0"
+            fi
             export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
             export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
           '';

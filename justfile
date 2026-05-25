@@ -496,8 +496,23 @@ clean:
 
 # {{{ docs commands
 
+prebuild-docs-pages:
+    @echo "Exporting Org pages -> Markdown"
+    @bash -lc 'set -euo pipefail; \
+      export_cmd='\''set -euo pipefail; shopt -s nullglob; for f in docs/org/pages/*.org; do base="$(basename "$f" .org)"; out="docs/pages/${base}.md"; emacs --batch -Q -l docs/org-to-md.el -- "$f" "$out"; done'\''; \
+      if command -v nix >/dev/null 2>&1; then \
+        if nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd" >/dev/null 2>&1; then \
+          nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
+        else \
+          bash -lc "$export_cmd"; \
+        fi; \
+      else \
+        bash -lc "$export_cmd"; \
+      fi'
+
 docs: build
     @echo "Building docs"
+    just prebuild-docs-pages
     {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S docs -B build/debug/docs"
     {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/docs --target GenerateDocs"
 
