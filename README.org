@@ -82,7 +82,8 @@ just test-rust
 These blocks replicate the per-language examples under =examples/=.
 
 ** C/C++ (=examples/cpp/source/octra_ex.cpp=)
-#+BEGIN_SRC cpp
+
+#+BEGIN_SRC cpp :results output :exports both :flags "$(pkg-config --cflags --libs octra)"
 #include <octra/octra.hpp>
 
 int main(void) {
@@ -91,8 +92,11 @@ int main(void) {
 }
 #+END_SRC
 
+#+RESULTS:
+: Hello octra
+
 ** C# (=examples/csharp/stl_ex.cs=)
-#+BEGIN_SRC csharp
+#+BEGIN_SRC csharp :results output :exports both
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -162,7 +166,7 @@ void main() {
 #+END_SRC
 
 ** Go (=examples/go/octra_ex.go=)
-#+BEGIN_SRC go
+#+BEGIN_SRC go :results output :exports both
 package main
 
 import (
@@ -188,8 +192,13 @@ func main() {
 }
 #+END_SRC
 
+#+RESULTS:
+
+
+
+
 ** Guile/Scheme (=examples/guile/octra_ex.scm=)
-#+BEGIN_SRC scheme
+#+BEGIN_SRC scheme :results output :exports both
 (use-modules (octra))
 
 (display "Hello from Guile + Octra\n")
@@ -203,7 +212,7 @@ func main() {
 #+END_SRC
 
 ** Java (=examples/java/octra.java=)
-#+BEGIN_SRC java
+#+BEGIN_SRC java :results output :exports both
 package js.octra.joctra.examples;
 
 // NOTE: seems close to working, i can import classes and load the library, but
@@ -240,8 +249,10 @@ public class StlEx {
 }
 #+END_SRC
 
+#+RESULTS:
+
 ** JavaScript (=examples/javascript/octra_ex.js=)
-#+BEGIN_SRC javascript
+#+BEGIN_SRC js :results output :exports both
 // Local dev: build first (`just build-javascript`), then run this example.
 const octra = require("../../index.js");
 
@@ -261,8 +272,10 @@ const out = octra.map_array_with_function([1.0, 2.0, 3.0], (x) => x * 2.0);
 console.log("map_array_with_function([1,2,3]) =", out);
 #+END_SRC
 
+#+RESULTS:
+
 ** Lua (=examples/lua/octra_ex.lua=)
-#+BEGIN_SRC lua
+#+BEGIN_SRC lua :results output :exports both
 local octra = require("octra")
 octra.hello()
 
@@ -278,8 +291,15 @@ local v2 = octra.map_dvector_with_callback(octra.make_dvector(1.0, 2.0, 3.0), cb
 print("sum_dvector(map_dvector_with_callback(1,2,3)):", octra.sum_dvector(v2))
 #+END_SRC
 
+#+RESULTS:
+: Hello octra
+: sum_dvector:	6.0
+: sum_dpair:	4.0
+: call_with_callback(3.0):	3.0
+: sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
+
 ** OCaml (=examples/ocaml/octra_ex.ml=)
-#+BEGIN_SRC ocaml
+#+BEGIN_SRC ocaml :results output :exports both
 let () =
   let open Swig in
   ignore (Octra._hello C_void);
@@ -301,7 +321,7 @@ let () =
 #+END_SRC
 
 ** Octave (=examples/octave/octra_ex.m=)
-#+BEGIN_SRC octave
+#+BEGIN_SRC octave :results output :exports both
 1;
 
 octra;
@@ -319,8 +339,14 @@ p = DPair (10.0, 25.5);
 printf ("pair sum: %f\n", p.first + p.second);
 #+END_SRC
 
+#+RESULTS:
+: Hello octra
+: vector size: 3
+: vector[0]=1.000000 vector[1]=2.000000
+: pair sum: 35.500000
+
 ** Perl (=examples/perl/octra_ex.pl=)
-#+BEGIN_SRC perl
+#+BEGIN_SRC perl :results output :exports both
 use strict;
 use warnings;
 
@@ -348,8 +374,10 @@ my $v2 = Octra::map_dvector_with_callback($v, $cb);
 print "sum_dvector(map_dvector_with_callback(1,2,3)) = ", Octra::sum_dvector($v2), "\n";
 #+END_SRC
 
+#+RESULTS:
+
 ** PHP (=examples/php/octra_ex.php=)
-#+BEGIN_SRC php
+#+BEGIN_SRC php :results output :exports both
 <?php
 
 
@@ -377,7 +405,7 @@ hello()
 #+END_SRC
 
 ** Python (=examples/python/octra_ex.py=)
-#+BEGIN_SRC python
+#+BEGIN_SRC python :results output :exports both
 from pyoctra import octra
 
 # dir(octra)
@@ -411,8 +439,13 @@ v2 = octra.map_dvector_with_callback(v, cb)
 print("sum_dvector(map_dvector_with_callback(1,2,3)) =", octra.sum_dvector(v2))
 #+END_SRC
 
+#+RESULTS:
+: Hello octra
+: call_with_callback(3.0) = 9.0
+: sum_dvector(map_dvector_with_callback(1,2,3)) = 18.0
+
 ** R (=examples/r/octra_ex.r=)
-#+BEGIN_SRC R
+#+BEGIN_SRC R :results output :exports both
 library(octrar)
 
 octrar::hello()
@@ -434,8 +467,16 @@ p$first
 p$second
 #+END_SRC
 
+#+RESULTS:
+: Hello octra
+: NULL
+: [1] 1.1
+: [1] 2.2
+: [1] 1
+: [1] 2
+
 ** Ruby (=examples/ruby/octra_ex.rb=)
-#+BEGIN_SRC ruby
+#+BEGIN_SRC ruby :results output :exports both
 require "octruby"
 
 Octra.hello
@@ -459,8 +500,10 @@ v2 = Octra.map_dvector_with_callback(v, cb)
 puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Octra.sum_dvector(v2)}"
 #+END_SRC
 
+#+RESULTS:
+
 ** Tcl (=examples/tcl/octra_ex.tcl=)
-#+BEGIN_SRC tcl
+#+BEGIN_SRC tcl :results output :exports both
 package require Octra 0.0.1
 
 octra::hello
