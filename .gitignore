@@ -37,3 +37,9 @@ tests/rust/target
 target
 src/octruby/ext/octruby/Makefile
 src/octruby/ext/octruby/mkmf.log
+
+# editor/OS noise
+*~
+\#*\#
+.\#*
+.DS_Store

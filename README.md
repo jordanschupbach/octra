@@ -6,11 +6,7 @@
   <img src="./assets/octra.png" alt="Logo" style="width: 30%;">
 </p>
 
-<p align="center">
-<blockquote style="text-align: center;">
-  One C to rule them all, one C to find them, one C to bring them all and in the darkness...
-</blockquote>
-</p>
+> One C to rule them all, one C to find them, one C to bring them all and in the darkness...
 
 ---
 
@@ -115,8 +111,6 @@ just run-rust
 just repl-rust
 just test-rust
 ```
-
-## Bindings
 
 Binding support is (to be) provided for the following languages:
 

@@ -17,7 +17,17 @@ include(../cmake/CPM.cmake)
 
 CPMAddPackage(NAME octra SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
-find_package(GTest REQUIRED)
+find_package(GTest QUIET)
+if(NOT GTest_FOUND)
+  CPMAddPackage(
+    NAME googletest
+    GITHUB_REPOSITORY google/googletest
+    VERSION 1.17.0
+    OPTIONS
+      "INSTALL_GTEST OFF"
+      "gtest_force_shared_crt ON"
+  )
+endif()
 
 
 # if(TEST_INSTALLED_VERSION)
