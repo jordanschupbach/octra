@@ -22,4 +22,3 @@ print(f"p: ({p.first}, {p.second})")
 p2 = octra.DPair(10, 20)
 p2
 print(f"p2: ({p2.first}, {p2.second})")
-

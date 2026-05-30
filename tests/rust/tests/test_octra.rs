@@ -20,6 +20,10 @@ fn can_pass_callback_into_c() {
     let y = rustoctra::call_with_callback(3.0, Some(times_two), std::ptr::null_mut());
     assert_eq!(y, 6.0);
 
-    let out = rustoctra::map_dvector_with_callback(&[1.0, 2.0, 3.0], Some(times_two), std::ptr::null_mut());
+    let out = rustoctra::map_dvector_with_callback(
+        &[1.0, 2.0, 3.0],
+        Some(times_two),
+        std::ptr::null_mut(),
+    );
     assert_eq!(out, vec![2.0, 4.0, 6.0]);
 }

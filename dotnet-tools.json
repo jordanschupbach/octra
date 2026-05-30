@@ -4,9 +4,7 @@
   "tools": {
     "dotnet-csi": {
       "version": "1.2.1",
-      "commands": [
-        "dotnet-csi"
-      ],
+      "commands": ["dotnet-csi"],
       "rollForward": false
     }
   }

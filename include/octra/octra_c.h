@@ -31,11 +31,12 @@ double octra_call_double_cb(double x, octra_double_cb cb, void* userdata);
  * Maps `values[0..len)` through `cb` into `out` (must point to at least `len`
  * elements).
  */
-void octra_map_dvector_cb(const double* values,
-                          size_t len,
-                          double* out,
-                          octra_double_cb cb,
-                          void* userdata);
+void octra_map_dvector_cb(
+    const double*   values,
+    size_t          len,
+    double*         out,
+    octra_double_cb cb,
+    void*           userdata);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -10,16 +10,16 @@ OUT_JSON="$REPO_ROOT/nix/joctra-gradle-deps.json"
 INIT_DEPS="$REPO_ROOT/nix/joctra-init-deps.gradle"
 
 if [[ ! -f "$INIT_DEPS" ]]; then
-  echo "Missing $INIT_DEPS" >&2
-  exit 1
+	echo "Missing $INIT_DEPS" >&2
+	exit 1
 fi
 
 # Discover nixpkgs source to get compress-deps-json.py
 NIXPKGS_SRC="$(nix eval --impure --raw --expr 'toString <nixpkgs>')"
 COMPRESS_PY="$NIXPKGS_SRC/pkgs/development/tools/build-managers/gradle/compress-deps-json.py"
 if [[ ! -f "$COMPRESS_PY" ]]; then
-  echo "Missing $COMPRESS_PY" >&2
-  exit 1
+	echo "Missing $COMPRESS_PY" >&2
+	exit 1
 fi
 
 TMP="$(mktemp -d)"
@@ -38,39 +38,42 @@ MITM_CACHE_HOST=127.0.0.1
 
 MITM_PID=
 for attempt in {1..5}; do
-  MITM_CACHE_PORT="$(python -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",0)); print(s.getsockname()[1]); s.close()')"
-  MITM_CACHE_ADDRESS="$MITM_CACHE_HOST:$MITM_CACHE_PORT"
+	MITM_CACHE_PORT="$(python -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",0)); print(s.getsockname()[1]); s.close()')"
+	MITM_CACHE_ADDRESS="$MITM_CACHE_HOST:$MITM_CACHE_PORT"
 
-  mitm-cache -l"$MITM_CACHE_ADDRESS" record \
-    --reject '\.(md5|sha(1|256|512:?):?)$' \
-    --forget-redirects-from '.*' \
-    --record-text '/maven-metadata\.xml$' \
-    >/dev/null 2>/dev/null &
-  MITM_PID=$!
+	mitm-cache -l"$MITM_CACHE_ADDRESS" record \
+		--reject '\.(md5|sha(1|256|512:?):?)$' \
+		--forget-redirects-from '.*' \
+		--record-text '/maven-metadata\.xml$' \
+		>/dev/null 2>/dev/null &
+	MITM_PID=$!
 
-  sleep 0.1
-  if kill -0 "$MITM_PID" 2>/dev/null; then
-    break
-  fi
-  MITM_PID=
+	sleep 0.1
+	if kill -0 "$MITM_PID" 2>/dev/null; then
+		break
+	fi
+	MITM_PID=
 done
 
 if [[ -z "${MITM_PID:-}" ]]; then
-  echo "mitm-cache failed to start" >&2
-  exit 1
+	echo "mitm-cache failed to start" >&2
+	exit 1
 fi
 
 # Wait for server (mitm-cache is an HTTP proxy; a plain curl to host:port is enough)
 for i in {0..40}; do
-  kill -0 "$MITM_PID" 2>/dev/null || { echo "mitm-cache exited early" >&2; exit 1; }
-  if curl -s -o /dev/null "$MITM_CACHE_ADDRESS" >/dev/null 2>&1; then
-    break
-  fi
-  sleep 0.25
-  if [[ $i -eq 40 ]]; then
-    echo "mitm-cache failed to start" >&2
-    exit 1
-  fi
+	kill -0 "$MITM_PID" 2>/dev/null || {
+		echo "mitm-cache exited early" >&2
+		exit 1
+	}
+	if curl -s -o /dev/null "$MITM_CACHE_ADDRESS" >/dev/null 2>&1; then
+		break
+	fi
+	sleep 0.25
+	if [[ $i -eq 40 ]]; then
+		echo "mitm-cache failed to start" >&2
+		exit 1
+	fi
 done
 
 # These are consumed by nixpkgs' gradle wrapper to configure proxy + JVM trust store flags.
@@ -109,8 +112,8 @@ wait "$MITM_PID" 2>/dev/null || true
 
 RAW_JSON="$MITM_CACHE_DIR/out.json"
 if [[ ! -f "$RAW_JSON" ]]; then
-  echo "mitm-cache did not produce $RAW_JSON" >&2
-  exit 1
+	echo "mitm-cache did not produce $RAW_JSON" >&2
+	exit 1
 fi
 
 python "$COMPRESS_PY" "$RAW_JSON" "$OUT_JSON"

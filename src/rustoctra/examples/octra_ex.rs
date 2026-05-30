@@ -17,6 +17,10 @@ fn main() {
         "call_with_callback(3.0) -> {}",
         rustoctra::call_with_callback(3.0, Some(times_two), std::ptr::null_mut())
     );
-    let out = rustoctra::map_dvector_with_callback(&[1.0, 2.0, 3.0], Some(times_two), std::ptr::null_mut());
+    let out = rustoctra::map_dvector_with_callback(
+        &[1.0, 2.0, 3.0],
+        Some(times_two),
+        std::ptr::null_mut(),
+    );
     println!("map_dvector_with_callback([1,2,3]) -> {:?}", out);
 }

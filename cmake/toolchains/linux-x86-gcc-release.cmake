@@ -5,7 +5,6 @@ set(CMAKE_SYSTEM_NAME "Linux")
 set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_COMPILER "g++")
 
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Set warnings

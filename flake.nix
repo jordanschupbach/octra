@@ -10,7 +10,13 @@
     url = "path:./nix/flakes/php";
   };
   outputs =
-    { self, nixpkgs, flake-utils, php-from-source, ... }:
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      php-from-source,
+      ...
+    }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
@@ -18,54 +24,67 @@
         octra = import ./nix/octra.nix { pkgs = pkgs; };
         phpPackage = php-from-source.packages.${system}; # Get the custom PHP package
         lua =
-          if pkgs ? lua5_4 then pkgs.lua5_4
-          else if pkgs ? lua54 then pkgs.lua54
-          else pkgs.lua;
+          if pkgs ? lua5_4 then
+            pkgs.lua5_4
+          else if pkgs ? lua54 then
+            pkgs.lua54
+          else
+            pkgs.lua;
 
         # {{{ Bindings
 
         # Swig javascript next evolution
-        swig-jse  = pkgs.stdenv.mkDerivation {
+        swig-jse = pkgs.stdenv.mkDerivation {
 
-              name = "swig-jse";
+          name = "swig-jse";
 
-              src = pkgs.fetchFromGitHub {
-                owner = "mmomtchev";
-                repo = "swig";
-                rev = "aa2e126a14c6456ab0e4b3b7bfd56c11c5a8dc02";
-                sha256 = "sha256-E/sfMQQb8DFT8kxQwlqy8/hFI/JXvJDbGp7MvwseJhs=";
-              };
+          src = pkgs.fetchFromGitHub {
+            owner = "mmomtchev";
+            repo = "swig";
+            rev = "aa2e126a14c6456ab0e4b3b7bfd56c11c5a8dc02";
+            sha256 = "sha256-E/sfMQQb8DFT8kxQwlqy8/hFI/JXvJDbGp7MvwseJhs=";
+          };
 
-              buildInputs = [
-                pkgs.autoconf
-                pkgs.automake
-                pkgs.bison
-                pkgs.libtool
-                pkgs.pcre2
-              ];
+          buildInputs = [
+            pkgs.autoconf
+            pkgs.automake
+            pkgs.bison
+            pkgs.libtool
+            pkgs.pcre2
+          ];
 
-              buildPhase = ''
-                ./autogen.sh
-                ./configure --prefix=$out
-                make
-              '';
+          buildPhase = ''
+            ./autogen.sh
+            ./configure --prefix=$out
+            make
+          '';
 
-              installPhase = ''
-                make install
-              '';
+          installPhase = ''
+            make install
+          '';
 
-            };
-
+        };
 
         pythonPkgs = pkgs.python3.pkgs;
         pyoctra = import ./nix/pyoctra.nix {
-          inherit (pkgs) lib stdenv fetchPypi python libxml2 pkg-config;
+          inherit (pkgs)
+            lib
+            stdenv
+            fetchPypi
+            python
+            libxml2
+            pkg-config
+            ;
           inherit (pythonPkgs) buildPythonPackage setuptools;
         };
 
-
         octrajs = import ./nix/octrajs.nix {
-          inherit (pkgs) lib buildNpmPackage libxml2 pkg-config;
+          inherit (pkgs)
+            lib
+            buildNpmPackage
+            libxml2
+            pkg-config
+            ;
         };
 
         octrar = pkgs.rPackages.buildRPackage {
@@ -85,7 +104,6 @@
         octraguile = import ./nix/octraguile.nix { pkgs = pkgs; };
         octraoctave = import ./nix/octraoctave.nix { pkgs = pkgs; };
         octrad = import ./nix/octrad.nix { pkgs = pkgs; };
-
 
         # }}} Bindings
 
@@ -112,7 +130,12 @@
               pkgs.clang
               pkgs.gtest
             ];
-            phases = [ "unpackPhase" "buildPhase" "checkPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "buildPhase"
+              "checkPhase"
+              "installPhase"
+            ];
             buildPhase = ''
               cmake -S tests -B build/tests -DCMAKE_BUILD_TYPE=Release
               cmake --build build/tests -j $NIX_BUILD_CORES
@@ -133,7 +156,11 @@
                 ps.pytest
               ]))
             ];
-            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
             doCheck = true;
             checkPhase = ''
               pytest -q tests/python
@@ -148,7 +175,11 @@
               pkgs.R
               pkgs.rPackages.testthat
             ];
-            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
             doCheck = true;
             checkPhase = ''
               if [ ! -d tests/testthat ]; then
@@ -204,7 +235,12 @@
             # Provide a deterministic HTTP replay cache for Gradle via mitm-cache.
             mitmCache = joctraGradleDeps;
 
-            phases = [ "unpackPhase" "configurePhase" "buildPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "configurePhase"
+              "buildPhase"
+              "installPhase"
+            ];
             configurePhase = "runHook preConfigure";
             buildPhase = ''
               cmake -S src/joctra-octra -B src/joctra-octra/build/cmake -DCMAKE_BUILD_TYPE=Release
@@ -225,7 +261,11 @@
             buildInputs = [
               octratcl
             ];
-            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
             doCheck = true;
             checkPhase = ''
               tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
@@ -244,7 +284,11 @@
             buildInputs = [
               octralua
             ];
-            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
             doCheck = true;
             checkPhase = ''
               luaVersion="$(${lua}/bin/lua -e 'io.write((_VERSION or ""):match("%d+%.%d+") or "")')"
@@ -269,7 +313,11 @@
             buildInputs = [
               octruby
             ];
-            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
             doCheck = true;
             checkPhase = ''
               export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
@@ -287,7 +335,11 @@
             buildInputs = [
               octraguile
             ];
-            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
             doCheck = true;
             checkPhase = ''
               effectiveVersion="$(${pkgs.pkg-config}/bin/pkg-config --variable=effective-version guile-3.0 2>/dev/null || true)"
@@ -311,7 +363,11 @@
             buildInputs = [
               octraoctave
             ];
-            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
             doCheck = true;
             checkPhase = ''
               export OCTAVE_PATH="${octraoctave}/share/octave/site/m''${OCTAVE_PATH:+:}$OCTAVE_PATH"
@@ -333,7 +389,11 @@
               octra
               octrad
             ];
-            phases = [ "unpackPhase" "checkPhase" "installPhase" ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
             doCheck = true;
             checkPhase = ''
               export HOME="$TMPDIR"
@@ -409,7 +469,11 @@
                 buildInputs = [
                   pkgs.libxml2
                 ];
-                phases = [ "unpackPhase" "buildPhase" "installPhase" ];
+                phases = [
+                  "unpackPhase"
+                  "buildPhase"
+                  "installPhase"
+                ];
                 buildPhase = ''
                   cmake -S src/octradotnet -B build -DCMAKE_BUILD_TYPE=Release
                   cmake --build build -j $NIX_BUILD_CORES
@@ -438,7 +502,19 @@
         };
 
         packages = {
-          inherit octra pyoctra octrajs octrar octratcl octruby octralua octraocaml octraguile octraoctave octrad;
+          inherit
+            octra
+            pyoctra
+            octrajs
+            octrar
+            octratcl
+            octruby
+            octralua
+            octraocaml
+            octraguile
+            octraoctave
+            octrad
+            ;
 
           rename-octra = pkgs.writeShellApplication {
             name = "rename-octra";
@@ -454,28 +530,28 @@
           };
         };
 
-        devShells.default = pkgs.mkShell { 
+        devShells.default = pkgs.mkShell {
           packages = [
 
-            pkgs.libxml2 
+            pkgs.libxml2
 
             octra
             pkgs.lcov
-            pkgs.clang 
-            pkgs.doctest 
+            pkgs.clang
+            pkgs.doctest
             pkgs.pkg-config
 
-            (pkgs.python3.withPackages (python-pkgs:
-              with python-pkgs; [
+            (pkgs.python3.withPackages (
+              python-pkgs: with python-pkgs; [
                 python-lsp-server
-              ]))
-
+              ]
+            ))
 
             # Doc export tooling
             pkgs.emacs
             pkgs.direnv
             pkgs.just
-            pkgs.jq 
+            pkgs.jq
 
             #
             swig-jse
@@ -540,12 +616,77 @@
             export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
           '';
 
-
-
         };
 
+        devShells.format =
+          let
+            lib = pkgs.lib;
+            maybePkg = name: if builtins.hasAttr name pkgs then [ pkgs.${name} ] else [ ];
+            maybeNodePkg =
+              name:
+              if builtins.hasAttr "nodePackages" pkgs && builtins.hasAttr name pkgs.nodePackages then
+                [ pkgs.nodePackages.${name} ]
+              else
+                [ ];
+            pythonFormatPkgs = pkgs.python3.withPackages (ps: [
+              ps.ruff
+            ]);
+          in
+          pkgs.mkShell {
+            packages = [
+              pkgs.just
+              pkgs.git
+              pkgs.python3
+
+              # C/C++
+              (if builtins.hasAttr "clang-tools" pkgs then pkgs.clang-tools else pkgs.clang)
+
+              # CMake
+              pythonFormatPkgs
+              pkgs.cmake-format
+
+              # Nix + shell
+              (if builtins.hasAttr "nixfmt-rfc-style" pkgs then pkgs.nixfmt-rfc-style else pkgs.nixfmt)
+              pkgs.shfmt
+
+              # JS/TS/JSON/MD/YAML
+              pkgs.nodejs
+
+              # Rust
+              pkgs.cargo
+              pkgs.rustfmt
+
+              # Go
+              pkgs.go
+
+              # OCaml
+              pkgs.ocamlPackages.ocamlformat
+
+              # R
+              pkgs.R
+              pkgs.rPackages.styler
+
+              # Guile (Scheme)
+              pkgs.guile
+
+              # Lua
+              # PHP
+            ]
+            ++ maybeNodePkg "prettier"
+            ++ maybePkg "stylua"
+            ++ maybePkg "perltidy"
+            ++ maybePkg "google-java-format"
+            ++ maybePkg "ktlint"
+            ++ maybePkg "dotnet-sdk_10"
+            ++ maybePkg "dotnet-format"
+            ++ maybePkg "rufo"
+            ++ maybePkg "php-cs-fixer"
+            ++ maybePkg "tclfmt"
+            ++ maybePkg "dfmt";
+          };
+
         # NOTE: :( this ... seems to fail a lot
-        devShells.cpp = pkgs.mkShell { 
+        devShells.cpp = pkgs.mkShell {
 
           packages = [
 
@@ -553,21 +694,22 @@
             pkgs.just
             pkgs.emacs
             pkgs.direnv
-            pkgs.jq 
+            pkgs.jq
             pkgs.lcov
             pkgs.gtest
-            (pkgs.python3.withPackages (python-pkgs:
-              with python-pkgs; [
+            (pkgs.python3.withPackages (
+              python-pkgs: with python-pkgs; [
                 jinja2
                 pygments
-              ]))
-            pkgs.clang 
-            pkgs.libxml2 
+              ]
+            ))
+            pkgs.clang
+            pkgs.libxml2
             pkgs.pkg-config
-            pkgs.cling 
+            pkgs.cling
             pkgs.doxygen
             pkgs.graphviz
-            pkgs.doctest 
+            pkgs.doctest
             pkgs.cmake
 
             # pkgs.nodejs
@@ -577,7 +719,7 @@
           ];
         };
 
-        devShells.java = pkgs.mkShell { 
+        devShells.java = pkgs.mkShell {
           packages = [
             gradleWrapped
             pkgs.jdk
@@ -586,20 +728,19 @@
           ];
 
           shellHook = ''
-              export CMAKE_PATH=${pkgs.cmake}/bin/cmake
+            export CMAKE_PATH=${pkgs.cmake}/bin/cmake
           '';
-
 
         };
 
-        devShells.python = pkgs.mkShell { 
+        devShells.python = pkgs.mkShell {
           packages = [
             # pkgs.cmake
             pkgs.pkg-config
             pkgs.libxml2
             pkgs.just
-            (pkgs.python3.withPackages (python-pkgs:
-              with python-pkgs; [
+            (pkgs.python3.withPackages (
+              python-pkgs: with python-pkgs; [
                 pyoctra
                 ipython
                 pip
@@ -607,11 +748,12 @@
                 numpy
                 matplotlib
                 python-lsp-server
-              ]))
+              ]
+            ))
           ];
         };
 
-        devShells.jsbuild = pkgs.mkShell { 
+        devShells.jsbuild = pkgs.mkShell {
           packages = [
             pkgs.libxml2
             pkgs.pkg-config
@@ -623,7 +765,7 @@
           ];
         };
 
-        devShells.javascript = pkgs.mkShell { 
+        devShells.javascript = pkgs.mkShell {
           packages = [
             octrajs
             pkgs.libxml2
@@ -636,7 +778,7 @@
           ];
         };
 
-        devShells.r = pkgs.mkShell { 
+        devShells.r = pkgs.mkShell {
           packages = [
             octrar
             pkgs.R
@@ -647,7 +789,7 @@
           ];
         };
 
-        devShells.csharp = pkgs.mkShell { 
+        devShells.csharp = pkgs.mkShell {
           packages = [
             pkgs.cmake
             pkgs.dotnet-sdk_10
@@ -657,26 +799,26 @@
           ];
         };
 
-        devShells.php = pkgs.mkShell { 
-           packages = [
-             phpPackage
-             pkgs.libxml2
-             pkgs.pkg-config
-             pkgs.cmake
-             pkgs.stdenv.cc
-             pkgs.just
-           ];
-         };
+        devShells.php = pkgs.mkShell {
+          packages = [
+            phpPackage
+            pkgs.libxml2
+            pkgs.pkg-config
+            pkgs.cmake
+            pkgs.stdenv.cc
+            pkgs.just
+          ];
+        };
 
-        devShells.go = pkgs.mkShell { 
-           packages = [
-             pkgs.go
-             pkgs.stdenv.cc
-             pkgs.pkg-config
-             pkgs.cmake
-             pkgs.just
-           ];
-         };
+        devShells.go = pkgs.mkShell {
+          packages = [
+            pkgs.go
+            pkgs.stdenv.cc
+            pkgs.pkg-config
+            pkgs.cmake
+            pkgs.just
+          ];
+        };
 
         devShells.rust = pkgs.mkShell {
           packages = [

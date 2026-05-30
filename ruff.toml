@@ -1,0 +1,16 @@
+exclude = [
+  ".cache",
+  ".direnv",
+  ".gradle",
+  ".git",
+  ".pytest_cache",
+  "build",
+  "dist",
+  "node_modules",
+  "result",
+  "target",
+]
+
+[format]
+line-ending = "lf"
+

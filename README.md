@@ -114,24 +114,24 @@ just test-rust
 
 Binding support is (to be) provided for the following languages:
 
-| Language   | Name          | Implemented |
-| ---------- | --------------| ----------- |
-| C#         | OctraDotNet   | ✅          |
-| D          | DOctra        | ✅          |
-| Go         | Gooctra       | ✅          |
-| Guile      | OctraGuile    | ✅          |
-| Java       | Joctra        | ✅          |
-| Javascript | OctraJS       | ✅          |
-| Lua        | Loctra        | ✅          |
-| OCaml      | OctraML       | ✅          |
-| Octave     | MOctra        | ✅          |
-| PHP        | OctraPHP      | ✅          |
-| Perl       | Poctra        | ✅          |
-| Python     | PyOctra       | ✅          |
-| R          | OctraR        | ✅          |
-| Ruby       | RbOctra       | ✅          |
-| Rust       | RustOctra     | ✅          |
-| Tcl/TK     | OctraTK       | ✅          |
+| Language   | Name        | Implemented |
+| ---------- | ----------- | ----------- |
+| C#         | OctraDotNet | ✅          |
+| D          | DOctra      | ✅          |
+| Go         | Gooctra     | ✅          |
+| Guile      | OctraGuile  | ✅          |
+| Java       | Joctra      | ✅          |
+| Javascript | OctraJS     | ✅          |
+| Lua        | Loctra      | ✅          |
+| OCaml      | OctraML     | ✅          |
+| Octave     | MOctra      | ✅          |
+| PHP        | OctraPHP    | ✅          |
+| Perl       | Poctra      | ✅          |
+| Python     | PyOctra     | ✅          |
+| R          | OctraR      | ✅          |
+| Ruby       | RbOctra     | ✅          |
+| Rust       | RustOctra   | ✅          |
+| Tcl/TK     | OctraTK     | ✅          |
 
 Each binding lives under `src/` (e.g. `src/rustoctra/`, `src/gooctra/`, `src/octruby/`),
 with SWIG generator inputs kept alongside each binding (typically `src/<binding>/swig/`).

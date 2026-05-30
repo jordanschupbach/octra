@@ -1,6 +1,6 @@
 # Agent Notes (Template Repo)
 
-This repository is a *template* for multi-language libraries.
+This repository is a _template_ for multi-language libraries.
 
 The single source of truth is the C/C++ core library. Bindings for other
 languages are generated (mostly automatically) via SWIG, and each language
@@ -8,6 +8,7 @@ should feel like a "real" native library in that ecosystem: standard layout,
 standard packaging, standard test runner, and standard developer workflow.
 
 If you are working on this repo, optimize for:
+
 - repeatable local dev (`just …`, nix dev shells),
 - standard packaging per language (PyPI/CRAN/npm/NuGet/Maven/etc),
 - keeping the C/C++ API stable and well-tested (bindings follow),
@@ -44,11 +45,12 @@ If you are working on this repo, optimize for:
 ## The "Binding Contract"
 
 When adding or modifying a binding:
+
 - Provide `just prebuild-<lang>` that runs SWIG with the right flags and writes
   generated artifacts to the expected locations.
 - Provide `just build-<lang>` that builds the binding/package using idiomatic
   tools for that ecosystem.
-- Provide `just test-<lang>` that runs *real* tests for that language.
+- Provide `just test-<lang>` that runs _real_ tests for that language.
 - Provide `just run-<lang>` and/or `just repl-<lang>` when it makes sense.
 - Add at least one minimal test in `bindings_tests/<lang>/` that exercises:
   - loading/importing the module/package,
@@ -56,6 +58,7 @@ When adding or modifying a binding:
   - creating/disposing at least one non-trivial object (if applicable).
 
 Also update (as applicable):
+
 - `README.md` bindings table (Implemented ✅/✖),
 - `flake.nix` to add a dev shell for the language (`.#<lang>`),
 - `.gitignore` for language build artifacts,
@@ -63,31 +66,31 @@ Also update (as applicable):
 
 ## Adding a New Language (Checklist)
 
-1) Decide the ecosystem-level artifact and name:
+1. Decide the ecosystem-level artifact and name:
    - package name (PyPI/npm/CRAN/etc),
    - module/namespace naming conventions,
    - how the native library is loaded (shared library name, search path).
 
-2) Create `prebindings/<binding>/src/<binding>.i`:
+2. Create `prebindings/<binding>/src/<binding>.i`:
    - keep it small; include the common headers you want to expose,
    - use SWIG typemaps/directives sparingly and document any non-obvious ones,
    - avoid binding STL types unless you must; prefer C-friendly APIs.
 
-3) Wire up the build:
+3. Wire up the build:
    - add the SWIG generation step to `just prebuild-<lang>`,
    - add the language build step to `just build-<lang>`,
    - ensure it works in `nix develop .#<lang>` (add a shell if missing).
 
-4) Package it:
+4. Package it:
    - add the minimal packaging metadata expected by that ecosystem,
    - ensure artifacts include/ship the compiled extension correctly.
 
-5) Tests:
+5. Tests:
    - add binding tests under `bindings_tests/<lang>/`,
    - ensure `just test-<lang>` runs in a clean environment (venv, local build,
      etc), not relying on global user state.
 
-6) Document:
+6. Document:
    - add a small `examples/<lang>/` example (optional but preferred),
    - update `README.md` and any per-language README/docs.
 
@@ -116,8 +119,8 @@ Also update (as applicable):
 ## Scope Note: "As Many Languages As Possible"
 
 This template aims to support many languages, but quality matters:
+
 - Only mark a language as "Implemented ✅" when it has:
   - a working build in a dev shell,
   - a package skeleton aligned with that ecosystem,
   - at least one automated test.
-

@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(octra 
-  VERSION 
-  0.0.1 
-  LANGUAGES CXX)
+project(
+  octra
+  VERSION 0.0.1
+  LANGUAGES CXX
+)
 
 if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(
@@ -19,19 +20,18 @@ include(cmake/PackageProject.cmake)
 
 # CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
 
-
 # TODO: find somewhere proper for these two lines
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
+set(CMAKE_EXPORT_COMPILE_COMMANDS
+    ON
+    CACHE INTERNAL ""
+)
 if(CMAKE_EXPORT_COMPILE_COMMANDS)
-  set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES
-      ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+  set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 endif()
-
-
 
 # Gather source files
 file(GLOB_RECURSE c_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
@@ -39,11 +39,8 @@ file(GLOB_RECURSE c_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/o
 file(GLOB_RECURSE cxx_headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
 file(GLOB_RECURSE cxx_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/octra/*.cpp")
 
-# message(DEBUG "c_headers: ${c_headers}")
-# message(DEBUG "c_sources: ${c_sources}")
-# message(DEBUG "cxx_headers: ${cxx_headers}")
-# message(DEBUG "cxx_sources: ${cxx_sources}")
-
+# message(DEBUG "c_headers: ${c_headers}") message(DEBUG "c_sources: ${c_sources}") message(DEBUG
+# "cxx_headers: ${cxx_headers}") message(DEBUG "cxx_sources: ${cxx_sources}")
 
 # Add C shared library (TODO: add static library)
 add_library(${PROJECT_NAME} SHARED ${c_headers} ${c_sources} ${cxx_headers} ${cxx_sources})
@@ -72,8 +69,8 @@ packageProject(
 set(PKG_CONFIG_VERSION "${PROJECT_VERSION}")
 set(PKG_CONFIG_LIBS "-l${PROJECT_NAME}")
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/octra.pc.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/octra.pc"
-  @ONLY
+  "${CMAKE_CURRENT_SOURCE_DIR}/octra.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/octra.pc" @ONLY
 )
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/octra.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/octra.pc"
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
+)

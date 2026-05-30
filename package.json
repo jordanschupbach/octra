@@ -26,6 +26,6 @@
   "repository": {
     "type": "git"
   },
-  "bugs": { },
+  "bugs": {},
   "description": "JavaScript (N-API) bindings for the octra C++ library."
 }

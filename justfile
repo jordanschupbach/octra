@@ -13,6 +13,11 @@ run: run-cpp
 
 test: test-cpp
 
+format:
+  {{ NIX_DEVELOP }} .#format --command bash -lc './scripts/format.sh'
+
+fmt: format
+
 run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php run-perl run-tcl run-lua run-ruby run-r run-guile run-javascript run-ocaml run-octave
 
 run-csharp: build-csharp

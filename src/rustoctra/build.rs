@@ -10,4 +10,3 @@ fn main() {
     // pkg-config will emit the correct link flags.
     pkg_config::probe_library("octra").expect("pkg-config could not find `octra`");
 }
-

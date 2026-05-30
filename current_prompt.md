@@ -13,4 +13,3 @@ manager (e.g. PyPI for Python, CRAN for R, npm for JavaScript, etc). The
 project should still be designed to be cloned and renamed via `./rename_octra
 <new_project_name>`, so avoid hard-coding the project name in new places unless
 it is expected to be renamed by that script.
-

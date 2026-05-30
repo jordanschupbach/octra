@@ -23,7 +23,7 @@ std::vector<double> map_dvector_with_callback(const std::vector<double>& values,
 }
 
 std::vector<double> make_dvector(double a, double b, double c) {
-  return { a, b, c };
+  return {a, b, c};
 }
 
 double sum_dvector(const std::vector<double>& values) {
@@ -35,7 +35,7 @@ double sum_dvector(const std::vector<double>& values) {
 }
 
 std::pair<double, double> make_dpair(double a, double b) {
-  return { a, b };
+  return {a, b};
 }
 
 double sum_dpair(const std::pair<double, double>& values) {

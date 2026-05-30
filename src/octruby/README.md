@@ -8,4 +8,3 @@ Ruby bindings for the `octra` C/C++ library generated via SWIG.
 - Build/install locally: `just build-ruby`
 - Run a REPL: `just repl-ruby`
 - Run tests: `just test-ruby`
-

@@ -1,0 +1,12 @@
+**/.git/**
+**/.direnv/**
+**/.gradle/**
+**/.cache/**
+**/.pytest_cache/**
+**/node_modules/**
+**/build/**
+**/dist/**
+**/target/**
+**/result/**
+**/*.min.js
+**/*.lock

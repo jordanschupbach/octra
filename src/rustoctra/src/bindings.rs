@@ -16,7 +16,8 @@ pub struct octra_dpair {
     pub second: c_double,
 }
 
-pub type octra_double_cb = ::std::option::Option<unsafe extern "C" fn(x: c_double, userdata: *mut c_void) -> c_double>;
+pub type octra_double_cb =
+    ::std::option::Option<unsafe extern "C" fn(x: c_double, userdata: *mut c_void) -> c_double>;
 
 extern "C" {
     pub fn octra_hello();
@@ -24,7 +25,11 @@ extern "C" {
     pub fn octra_sum_dvector(values: *const c_double, len: size_t) -> c_double;
     pub fn octra_make_dpair(a: c_double, b: c_double) -> octra_dpair;
     pub fn octra_sum_dpair(values: octra_dpair) -> c_double;
-    pub fn octra_call_double_cb(x: c_double, cb: octra_double_cb, userdata: *mut c_void) -> c_double;
+    pub fn octra_call_double_cb(
+        x: c_double,
+        cb: octra_double_cb,
+        userdata: *mut c_void,
+    ) -> c_double;
     pub fn octra_map_dvector_cb(
         values: *const c_double,
         len: size_t,

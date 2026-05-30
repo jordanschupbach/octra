@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(octraoctave
+project(
+  octraoctave
   VERSION 0.0.1
   LANGUAGES CXX
 )
@@ -31,13 +32,8 @@ endforeach()
 
 add_custom_command(
   OUTPUT "${GENERATED_WRAPPER}"
-  COMMAND
-    "${SWIG_EXECUTABLE}"
-      -octave
-      -c++
-      ${OCTRA_SWIG_INCLUDE_FLAGS}
-      -o "${GENERATED_WRAPPER}"
-      "${SWIG_INTERFACE_FILE}"
+  COMMAND "${SWIG_EXECUTABLE}" -octave -c++ ${OCTRA_SWIG_INCLUDE_FLAGS} -o "${GENERATED_WRAPPER}"
+          "${SWIG_INTERFACE_FILE}"
   DEPENDS "${SWIG_INTERFACE_FILE}"
   VERBATIM
 )
@@ -45,21 +41,13 @@ add_custom_command(
 add_custom_command(
   OUTPUT "${GENERATED_OCTFILE}"
   COMMAND
-    "${MKOCTFILE_EXECUTABLE}"
-      -v
-      -std=c++17
-      ${OCTRA_CXX_INCLUDE_FLAGS}
-      -L$<TARGET_FILE_DIR:octra::octra>
-      -Wl,-rpath,$<TARGET_FILE_DIR:octra::octra>
-      -loctra
-      -o "${GENERATED_OCTFILE}"
-      "${GENERATED_WRAPPER}"
+    "${MKOCTFILE_EXECUTABLE}" -v -std=c++17 ${OCTRA_CXX_INCLUDE_FLAGS}
+    -L$<TARGET_FILE_DIR:octra::octra> -Wl,-rpath,$<TARGET_FILE_DIR:octra::octra> -loctra -o
+    "${GENERATED_OCTFILE}" "${GENERATED_WRAPPER}"
   DEPENDS "${GENERATED_WRAPPER}"
   VERBATIM
 )
 
 add_custom_target(octra_octave ALL DEPENDS "${GENERATED_OCTFILE}")
 
-install(FILES "${GENERATED_OCTFILE}"
-  DESTINATION "${CMAKE_INSTALL_DATADIR}/octave/site/m"
-)
+install(FILES "${GENERATED_OCTFILE}" DESTINATION "${CMAKE_INSTALL_DATADIR}/octave/site/m")

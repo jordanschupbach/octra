@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+
 #include <octra/octra.hpp>
 
 TEST(octra, hello_is_callable) {

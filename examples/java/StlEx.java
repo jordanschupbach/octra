@@ -1,15 +1,15 @@
-package js.octra.joctra.examples;
-
-// NOTE: seems close to working, i can import classes and load the library, but
-// names are mangled? System.loadLibrary("octra"); 
-// import js.octra.joctra.octraJNI;
 import js.octra.joctra.DVector;
 import js.octra.joctra.IVector;
 import js.octra.joctra.DPair;
 import js.octra.joctra.IPair;
 
 public class StlEx {
-  static { System.loadLibrary("octra"); }
+  static { System.loadLibrary("octra_jni"); }
+
+  public static void main(String[] args) {
+    run();
+  }
+
   public static void run() {
     System.out.println("Stl Example:");
     var v = new DVector(10, 0.0);

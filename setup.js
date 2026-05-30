@@ -1,34 +1,37 @@
-const fs = require('fs');
-const { execSync } = require('child_process');
+const fs = require("fs");
+const { execSync } = require("child_process");
 
 // Path to the binding.gyp file
-const gypFilePath = 'binding.gyp';
+const gypFilePath = "binding.gyp";
 
 function getSourcesFromFile(filePath) {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    const lines = fileContent.split('\n');
-    const sources = [];
-    lines.forEach(line => {
-        const trimmedLine = line.trim();
-        if (trimmedLine && !trimmedLine.startsWith('#')) {
-            sources.push(`'src/${trimmedLine}.cpp'`);
-        }
-    });
-    return sources.join(', ');
+  const fileContent = fs.readFileSync(filePath, "utf8");
+  const lines = fileContent.split("\n");
+  const sources = [];
+  lines.forEach((line) => {
+    const trimmedLine = line.trim();
+    if (trimmedLine && !trimmedLine.startsWith("#")) {
+      sources.push(`'src/${trimmedLine}.cpp'`);
+    }
+  });
+  return sources.join(", ");
 }
 
-const sourcesFilenames = getSourcesFromFile('lib_sources.txt');
-console.log('Sources Filenames:', sourcesFilenames);
-
+const sourcesFilenames = getSourcesFromFile("lib_sources.txt");
+console.log("Sources Filenames:", sourcesFilenames);
 
 // Remove binding.gyp if it exists
 if (fs.existsSync(gypFilePath)) {
-    fs.unlinkSync(gypFilePath);
-    console.log('Removed existing binding.gyp file.');
+  fs.unlinkSync(gypFilePath);
+  console.log("Removed existing binding.gyp file.");
 }
 
 // Get the include directory for libxml2 (NOTE: assumes pkg-config is installed (for nixos).. maybe should have list of assumed locs for all os's or detect?)
-const includeDir = execSync('pkg-config --cflags-only-I libxml-2.0 | sed "s/-I//g"').toString().trim();
+const includeDir = execSync(
+  'pkg-config --cflags-only-I libxml-2.0 | sed "s/-I//g"',
+)
+  .toString()
+  .trim();
 // const libDir = execSync('pkg-config --libs-only-L libxml-2.0 | sed "s/-L//g"').toString().trim();
 
 // Prepare the content for node.gyp
@@ -65,5 +68,5 @@ const gypContent = `
 }`;
 
 // Write to node.gyp
-fs.writeFileSync('binding.gyp', gypContent);
-console.log('binding.gyp file generated successfully.');
+fs.writeFileSync("binding.gyp", gypContent);
+console.log("binding.gyp file generated successfully.");

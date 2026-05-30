@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(octraguile
+project(
+  octraguile
   VERSION 0.0.1
   LANGUAGES CXX
 )
@@ -30,35 +31,25 @@ endforeach()
 
 add_custom_command(
   OUTPUT "${GENERATED_WRAPPER}"
-  COMMAND
-    "${SWIG_EXECUTABLE}"
-      -guile
-      -c++
-      ${OCTRA_SWIG_INCLUDE_FLAGS}
-      -o "${GENERATED_WRAPPER}"
-      "${SWIG_INTERFACE_FILE}"
+  COMMAND "${SWIG_EXECUTABLE}" -guile -c++ ${OCTRA_SWIG_INCLUDE_FLAGS} -o "${GENERATED_WRAPPER}"
+          "${SWIG_INTERFACE_FILE}"
   DEPENDS "${SWIG_INTERFACE_FILE}"
   VERBATIM
 )
 
 add_library(octra MODULE "${GENERATED_WRAPPER}")
-set_target_properties(octra PROPERTIES
-  CXX_STANDARD 23
-  CXX_STANDARD_REQUIRED ON
-  POSITION_INDEPENDENT_CODE ON
-  PREFIX ""
-  OUTPUT_NAME "octra"
+set_target_properties(
+  octra
+  PROPERTIES CXX_STANDARD 23
+             CXX_STANDARD_REQUIRED ON
+             POSITION_INDEPENDENT_CODE ON
+             PREFIX ""
+             OUTPUT_NAME "octra"
 )
 
-target_include_directories(octra PRIVATE
-  ${OCTRA_INSTALLED_INCLUDE_DIRS}
-  ${GUILE_INCLUDE_DIRS}
-)
+target_include_directories(octra PRIVATE ${OCTRA_INSTALLED_INCLUDE_DIRS} ${GUILE_INCLUDE_DIRS})
 
-target_link_libraries(octra PRIVATE
-  octra::octra
-  ${GUILE_LIBRARIES}
-)
+target_link_libraries(octra PRIVATE octra::octra ${GUILE_LIBRARIES})
 
 target_compile_options(octra PRIVATE ${GUILE_CFLAGS_OTHER})
 
@@ -72,9 +63,9 @@ if(NOT GUILE_EFFECTIVE_VERSION)
 endif()
 
 install(TARGETS octra
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/guile/${GUILE_EFFECTIVE_VERSION}/extensions"
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/guile/${GUILE_EFFECTIVE_VERSION}/extensions"
 )
 
 install(FILES "${GUILE_LOADER_FILE}"
-  DESTINATION "${CMAKE_INSTALL_DATADIR}/guile/site/${GUILE_EFFECTIVE_VERSION}"
+        DESTINATION "${CMAKE_INSTALL_DATADIR}/guile/site/${GUILE_EFFECTIVE_VERSION}"
 )

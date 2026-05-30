@@ -1,9 +1,9 @@
 // TODO: transition to es6 modules
-exports.octrajs = require('../build/Release/octrajs');
+exports.octrajs = require("../build/Release/octrajs");
 
 // Some simple usage:
-const octrajs = require('../build/Release/octrajs');
-octrajs
+const octrajs = require("../build/Release/octrajs");
+octrajs;
 
 // octrajs.hello_world();
 // octrajs.hello("jordan");

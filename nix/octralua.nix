@@ -1,11 +1,16 @@
-{ pkgs ? import <nixpkgs> { } }:
+{
+  pkgs ? import <nixpkgs> { },
+}:
 
 let
   octra = import ./octra.nix { pkgs = pkgs; };
   lua =
-    if pkgs ? lua5_4 then pkgs.lua5_4
-    else if pkgs ? lua54 then pkgs.lua54
-    else pkgs.lua;
+    if pkgs ? lua5_4 then
+      pkgs.lua5_4
+    else if pkgs ? lua54 then
+      pkgs.lua54
+    else
+      pkgs.lua;
 in
 pkgs.stdenv.mkDerivation rec {
   pname = "octralua";
