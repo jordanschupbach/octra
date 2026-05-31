@@ -3,7 +3,7 @@
 }:
 
 let
-  octra = import ./octra.nix { pkgs = pkgs; };
+  octra = import ./octra.nix { inherit pkgs; };
   ocamlPkgs = pkgs.ocamlPackages;
 in
 pkgs.stdenv.mkDerivation rec {

@@ -9,7 +9,10 @@
 package js.octra.joctra;
 
 public class octra {
-  static { System.loadLibrary("octra_jni"); }
+  static {
+    System.loadLibrary("octra_jni");
+  }
+
   public static void hello() {
     octraJNI.hello();
   }
@@ -19,7 +22,10 @@ public class octra {
   }
 
   public static DVector map_dvector_with_callback(DVector values, Callback cb) {
-    return new DVector(octraJNI.map_dvector_with_callback(DVector.getCPtr(values), values, Callback.getCPtr(cb), cb), true);
+    return new DVector(
+        octraJNI.map_dvector_with_callback(
+            DVector.getCPtr(values), values, Callback.getCPtr(cb), cb),
+        true);
   }
 
   public static DVector make_dvector(double a, double b, double c) {
@@ -37,5 +43,4 @@ public class octra {
   public static double sum_dpair(DPair values) {
     return octraJNI.sum_dpair(DPair.getCPtr(values), values);
   }
-
 }

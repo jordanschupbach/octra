@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   nix-flake-check:
-    name: Nix flake check
+    name: Nix flake check (incl. lint/format)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

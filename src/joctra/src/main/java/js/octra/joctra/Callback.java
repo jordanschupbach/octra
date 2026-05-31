@@ -55,5 +55,4 @@ public class Callback {
   public Callback() {
     this(octraJNI.new_Callback(), true);
   }
-
 }

@@ -8,8 +8,6 @@
   libxml2,
   pkg-config,
 }:
-let
-in
 buildPythonPackage rec {
   pname = "pyoctra";
   version = "0.0.1";

@@ -3,14 +3,8 @@
 }:
 
 let
-  octra = import ./octra.nix { pkgs = pkgs; };
-  lua =
-    if pkgs ? lua5_4 then
-      pkgs.lua5_4
-    else if pkgs ? lua54 then
-      pkgs.lua54
-    else
-      pkgs.lua;
+  octra = import ./octra.nix { inherit pkgs; };
+  lua = pkgs.lua5_4 or (pkgs.lua54 or pkgs.lua);
 in
 pkgs.stdenv.mkDerivation rec {
   pname = "octralua";

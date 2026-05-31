@@ -9,4 +9,3 @@ public final class ExampleRunner {
     octra.hello();
   }
 }
-

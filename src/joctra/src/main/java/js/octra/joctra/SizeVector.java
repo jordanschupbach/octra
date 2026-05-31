@@ -162,5 +162,4 @@ public class SizeVector extends java.util.AbstractList<Long> implements java.uti
   private void doRemoveRange(int fromIndex, int toIndex) {
     octraJNI.SizeVector_doRemoveRange(swigCPtr, this, fromIndex, toIndex);
   }
-
 }

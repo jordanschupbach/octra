@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
-
-#include <octra/octra.hpp>
 #include <octra/octra_c.h>
 
 #include <array>
+#include <octra/octra.hpp>
 #include <vector>
 
 namespace {
@@ -41,7 +40,7 @@ TEST(octra_cpp, map_dvector_with_callback_null_is_identity) {
 }
 
 TEST(octra_cpp, map_dvector_with_callback_invokes_callback) {
-  TimesTwoCallback cb;
+  TimesTwoCallback          cb;
   const std::vector<double> in{1.0, 2.0, 3.0};
   const auto                out = octra::map_dvector_with_callback(in, &cb);
   ASSERT_EQ(out.size(), in.size());

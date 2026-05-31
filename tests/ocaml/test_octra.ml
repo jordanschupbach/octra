@@ -15,10 +15,11 @@ let test_std_pair_and_vector () =
   Alcotest.(check (float 1e-12)) "sum_dvector" 7.5 v_sum
 
 let () =
-  Alcotest.run
-    "octra-ocaml"
-    [ ( "basic",
-        [ Alcotest.test_case "import+hello" `Quick test_import_and_hello
-        ; Alcotest.test_case "std pair+vector" `Quick test_std_pair_and_vector
-        ] )
+  Alcotest.run "octra-ocaml"
+    [
+      ( "basic",
+        [
+          Alcotest.test_case "import+hello" `Quick test_import_and_hello;
+          Alcotest.test_case "std pair+vector" `Quick test_std_pair_and_vector;
+        ] );
     ]

@@ -75,5 +75,4 @@ public class IPair {
   public int getSecond() {
     return octraJNI.IPair_second_get(swigCPtr, this);
   }
-
 }

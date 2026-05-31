@@ -1,13 +1,13 @@
 {
   description = "OCTRA";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-  inputs.systems.url = "github:nix-systems/default";
-  inputs.flake-utils = {
-    url = "github:numtide/flake-utils";
-    inputs.systems.follows = "systems";
-  };
-  inputs.php-from-source = {
-    url = "path:./nix/flakes/php";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    systems.url = "github:nix-systems/default";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
+    php-from-source.url = "path:./nix/flakes/php";
   };
   outputs =
     {
@@ -21,15 +21,13 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        octra = import ./nix/octra.nix { pkgs = pkgs; };
+        inherit (pkgs) lib;
+        has = builtins.hasAttr;
+        nodePackages = if has "nodePackages" pkgs then pkgs.nodePackages else { };
+        opt = cond: xs: lib.optionals cond xs;
+        octra = import ./nix/octra.nix { inherit pkgs; };
         phpPackage = php-from-source.packages.${system}; # Get the custom PHP package
-        lua =
-          if pkgs ? lua5_4 then
-            pkgs.lua5_4
-          else if pkgs ? lua54 then
-            pkgs.lua54
-          else
-            pkgs.lua;
+        lua = pkgs.lua5_4 or (pkgs.lua54 or pkgs.lua);
 
         # {{{ Bindings
 
@@ -118,9 +116,99 @@
           data = ./nix/joctra-gradle-deps.json;
         };
 
+        formatCheckTools = [
+          pkgs.bash
+          (pkgs.python3.withPackages (ps: [ ps.ruff ]))
+          (if has "clang-tools" pkgs then pkgs.clang-tools else pkgs.clang)
+          pkgs.cmake-format
+          pkgs.nixfmt
+          pkgs.shfmt
+          pkgs.cargo
+          pkgs.rustfmt
+          pkgs.go
+          pkgs.ocamlPackages.ocamlformat
+          pkgs.R
+          pkgs.rPackages.styler
+          pkgs.guile
+        ]
+        ++ opt (has "prettier" nodePackages) [ nodePackages.prettier ]
+        ++ opt (has "stylua" pkgs) [ pkgs.stylua ]
+        ++ opt (has "google-java-format" pkgs) [ pkgs.google-java-format ]
+        ++ opt (has "ktlint" pkgs) [ pkgs.ktlint ]
+        ++ opt (has "dotnet-sdk_10" pkgs) [ pkgs.dotnet-sdk_10 ]
+        ++ opt (has "php-cs-fixer" pkgs) [ pkgs.php-cs-fixer ]
+        ++ opt (has "tclfmt" pkgs) [ pkgs.tclfmt ]
+        ++ opt (has "dfmt" pkgs) [ pkgs.dfmt ]
+        ++ opt (has "rufo" pkgs) [ pkgs.rufo ];
+
+        lintTools = [
+          pkgs.bash
+          pkgs.cmake
+          pkgs.gnumake
+          pkgs.stdenv.cc
+          pkgs.pkg-config
+          pkgs.libxml2
+          pkgs.shellcheck
+          pkgs.statix
+          pkgs.deadnix
+          pkgs.cppcheck
+          (if has "clang-tools" pkgs then pkgs.clang-tools else pkgs.clang)
+          (pkgs.python3.withPackages (ps: [ ps.ruff ]))
+          pkgs.go
+          pkgs.golangci-lint
+          pkgs.cargo
+          pkgs.clippy
+          pkgs.yamllint
+          pkgs.actionlint
+          phpPackage
+          pkgs.R
+          pkgs.rPackages.lintr
+          pkgs.ruby
+          pkgs.rubocop
+          pkgs.perl
+          pkgs.perlPackages.PerlCritic
+        ]
+        ++ opt (has "eslint" nodePackages) [ nodePackages.eslint ]
+        ++ opt (has "typescript" nodePackages) [ nodePackages.typescript ]
+        ++ opt (has "markdownlint-cli2" nodePackages) [ nodePackages.markdownlint-cli2 ]
+        ++ opt (has "luacheck" pkgs) [ pkgs.luacheck ]
+        ++ opt (has "dscanner" pkgs) [ pkgs.dscanner ];
+
       in
       {
         checks = {
+          format = pkgs.stdenvNoCC.mkDerivation {
+            name = "octra-format-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = formatCheckTools;
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              bash ./scripts/format_check.sh
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          lint = pkgs.stdenvNoCC.mkDerivation {
+            name = "octra-lint";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = lintTools;
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              bash ./scripts/lint.sh
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
           cpp = pkgs.stdenv.mkDerivation {
             name = "octra-cpp-check";
             src = pkgs.lib.cleanSource ./.;
@@ -620,14 +708,8 @@
 
         devShells.format =
           let
-            lib = pkgs.lib;
-            maybePkg = name: if builtins.hasAttr name pkgs then [ pkgs.${name} ] else [ ];
-            maybeNodePkg =
-              name:
-              if builtins.hasAttr "nodePackages" pkgs && builtins.hasAttr name pkgs.nodePackages then
-                [ pkgs.nodePackages.${name} ]
-              else
-                [ ];
+            maybePkg = name: if has name pkgs then [ pkgs.${name} ] else [ ];
+            maybeNodePkg = name: if has name nodePackages then [ nodePackages.${name} ] else [ ];
             pythonFormatPkgs = pkgs.python3.withPackages (ps: [
               ps.ruff
             ]);
@@ -646,7 +728,7 @@
               pkgs.cmake-format
 
               # Nix + shell
-              (if builtins.hasAttr "nixfmt-rfc-style" pkgs then pkgs.nixfmt-rfc-style else pkgs.nixfmt)
+              pkgs.nixfmt
               pkgs.shfmt
 
               # JS/TS/JSON/MD/YAML
@@ -684,6 +766,15 @@
             ++ maybePkg "tclfmt"
             ++ maybePkg "dfmt";
           };
+
+        devShells.quality = pkgs.mkShell {
+          packages = [
+            pkgs.just
+            pkgs.git
+          ]
+          ++ formatCheckTools
+          ++ lintTools;
+        };
 
         # NOTE: :( this ... seems to fail a lot
         devShells.cpp = pkgs.mkShell {

@@ -75,5 +75,4 @@ public class SPair {
   public String getSecond() {
     return octraJNI.SPair_second_get(swigCPtr, this);
   }
-
 }

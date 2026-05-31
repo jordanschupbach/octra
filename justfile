@@ -16,6 +16,14 @@ test: test-cpp
 format:
   {{ NIX_DEVELOP }} .#format --command bash -lc './scripts/format.sh'
 
+format-check:
+  {{ NIX_DEVELOP }} .#quality --command bash -lc './scripts/format_check.sh'
+
+lint:
+  {{ NIX_DEVELOP }} .#quality --command bash -lc './scripts/lint.sh'
+
+quality: format-check lint
+
 fmt: format
 
 run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php run-perl run-tcl run-lua run-ruby run-r run-guile run-javascript run-ocaml run-octave

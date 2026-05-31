@@ -11,10 +11,25 @@ prune_expr=(
 	-path './.cache' -o
 	-path './.pytest_cache' -o
 	-path './node_modules' -o
+	-path './node_modules/*' -o
+	-path './*/node_modules' -o
+	-path './*/node_modules/*' -o
 	-path './build' -o
+	-path './build/*' -o
+	-path './*/build' -o
+	-path './*/build/*' -o
 	-path './dist' -o
+	-path './dist/*' -o
+	-path './*/dist' -o
+	-path './*/dist/*' -o
 	-path './target' -o
-	-path './result'
+	-path './target/*' -o
+	-path './*/target' -o
+	-path './*/target/*' -o
+	-path './result' -o
+	-path './result/*' -o
+	-path './*/result' -o
+	-path './*/result/*'
 )
 
 require_cmd() {
@@ -110,6 +125,10 @@ format_d() {
 		return 0
 	fi
 	require_cmd dfmt
+	if ! dfmt --help 2>/dev/null | grep -q -- '-i'; then
+		echo "Skipping D formatting: dfmt does not support -i on this system" >&2
+		return 0
+	fi
 	run_find_xargs -type f -name '*.d' -print0 | xargs -0 dfmt -i
 }
 
@@ -118,7 +137,7 @@ format_ocaml() {
 		return 0
 	fi
 	require_cmd ocamlformat
-	run_find_xargs -type f \( -name '*.ml' -o -name '*.mli' \) -print0 | xargs -0 ocamlformat -i
+	run_find_xargs -type f \( -name '*.ml' -o -name '*.mli' \) -print0 | xargs -0 ocamlformat --enable-outside-detected-project -i
 }
 
 format_java() {
@@ -130,11 +149,11 @@ format_java() {
 }
 
 format_kotlin() {
-	if ! has_files '*.kt' && ! has_files '*.kts'; then
+	if ! has_files '*.kt'; then
 		return 0
 	fi
 	require_cmd ktlint
-	run_find_xargs -type f \( -name '*.kt' -o -name '*.kts' \) -print0 | xargs -0 ktlint -F
+	run_find_xargs -type f -name '*.kt' -print0 | xargs -0 ktlint -F
 }
 
 format_csharp() {
@@ -152,7 +171,7 @@ format_r() {
 		return 0
 	fi
 	require_cmd Rscript
-	Rscript -e 'if (!requireNamespace("styler", quietly=TRUE)) quit(status=1); styler::style_dir(".", recursive=TRUE, include=regex(".*\\.(r|R)$"))'
+	Rscript -e 'if (!requireNamespace("styler", quietly=TRUE)) quit(status=1); styler::style_dir(".", recursive=TRUE, filetype=c(\".R\", \".r\"))'
 }
 
 format_ruby() {
@@ -184,7 +203,10 @@ format_php() {
 	if ! has_files '*.php'; then
 		return 0
 	fi
-	require_cmd php-cs-fixer
+	if ! command -v php-cs-fixer >/dev/null 2>&1; then
+		echo "Skipping PHP formatting: php-cs-fixer not available" >&2
+		return 0
+	fi
 	php-cs-fixer fix --quiet
 }
 
@@ -192,7 +214,10 @@ format_tcl() {
 	if ! has_files '*.tcl'; then
 		return 0
 	fi
-	require_cmd tclfmt
+	if ! command -v tclfmt >/dev/null 2>&1; then
+		echo "Skipping Tcl formatting: tclfmt not available" >&2
+		return 0
+	fi
 	run_find_xargs -type f -name '*.tcl' -print0 | xargs -0 tclfmt -w
 }
 
@@ -202,6 +227,10 @@ format_scheme_guile() {
 	fi
 	require_cmd guile
 	require_cmd guild
+	if ! guild help fmt >/dev/null 2>&1; then
+		echo "Skipping Scheme (Guile) formatting: 'guild fmt' not available" >&2
+		return 0
+	fi
 	run_find_xargs -type f -name '*.scm' -print0 | xargs -0 guild fmt -w
 }
 

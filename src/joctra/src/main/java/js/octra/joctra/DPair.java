@@ -75,5 +75,4 @@ public class DPair {
   public double getSecond() {
     return octraJNI.DPair_second_get(swigCPtr, this);
   }
-
 }

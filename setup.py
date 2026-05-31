@@ -1,7 +1,8 @@
-from setuptools import setup, find_packages, Extension
-import subprocess
 import logging
 import os
+import subprocess
+
+from setuptools import Extension, setup
 
 # TODO:
 # def find_cpp_sources(directory):

@@ -162,5 +162,4 @@ public class DVector extends java.util.AbstractList<Double> implements java.util
   private void doRemoveRange(int fromIndex, int toIndex) {
     octraJNI.DVector_doRemoveRange(swigCPtr, this, fromIndex, toIndex);
   }
-
 }
