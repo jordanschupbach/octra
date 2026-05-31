@@ -10,14 +10,17 @@
 #define SWIG_Octruby_WRAP_H_
 
 namespace Swig {
-class Director;
+  class Director;
 }
 
+
 class SwigDirector_Callback : public octra::Callback, public Swig::Director {
- public:
-  SwigDirector_Callback(VALUE self);
-  virtual ~SwigDirector_Callback();
-  virtual double call(double x);
+
+public:
+    SwigDirector_Callback(VALUE self);
+    virtual ~SwigDirector_Callback();
+    virtual double call(double x);
 };
+
 
 #endif
