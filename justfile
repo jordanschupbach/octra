@@ -88,42 +88,45 @@ run-benchmark:
 
 # {{{ prebuild commands
 
+prebuild-swig: prebuild-python prebuild-javascript prebuild-csharp prebuild-r prebuild-perl prebuild-ruby prebuild-tcl prebuild-lua prebuild-d prebuild-guile prebuild-octave prebuild-go prebuild-php prebuild-java prebuild-ocaml
+  @echo "SWIG wrappers regenerated (with Doxygen comments enabled)"
+
 prebuild-python:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -python -o ../src/octra_python_wrap.cpp -oh ../src/octra_python_wrap.h ../src/pyoctra/swig/pyoctra.i && mv ../src/octra.py ../src/pyoctra/octra.py"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -python -o ../src/octra_python_wrap.cpp -oh ../src/octra_python_wrap.h ../src/pyoctra/swig/pyoctra.i && mv ../src/octra.py ../src/pyoctra/octra.py"
 
 prebuild-javascript:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/octra_js_wrap.cpp -oh ../src/octra_js_wrap.h ../src/octrajs/src/octrajs.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -javascript -typescript -napi -c++ -o ../src/octra_js_wrap.cpp -oh ../src/octra_js_wrap.h ../src/octrajs/src/octrajs.i"
   # Inject deterministic JS->C callback bridge helpers (SWIG Node backend doesn't support directors here).
   perl -0777 -pi -e 's/#include <napi.h>\n/#include <napi.h>\n#include \"octra_js_callbacks.inl\"\n/s' src/octra_js_wrap.cpp
   perl -0777 -pi -e 's/SWIG_InitializeModule\(env\);\n/SWIG_InitializeModule(env);\n  OctraJS_RegisterCallbackBridge(env, exports);\n/s' src/octra_js_wrap.cpp
 
 prebuild-csharp:
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./{{ BINDINGS_DIR }}/octradotnet -type f -name '*.cs' ! -name 'Program.cs' -exec rm {} +"
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -csharp -dllimport octra_csharp -o ../{{ BINDINGS_DIR }}/octradotnet/octra_csharp_wrap.cpp -oh ../{{ BINDINGS_DIR }}/octradotnet/octra_csharp_wrap.h ../src/octradotnet/swig/octradotnet.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -csharp -dllimport octra_csharp -o ../{{ BINDINGS_DIR }}/octradotnet/octra_csharp_wrap.cpp -oh ../{{ BINDINGS_DIR }}/octradotnet/octra_csharp_wrap.h ../src/octradotnet/swig/octradotnet.i"
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "sed -i 's/DllImport(\"octra\"/DllImport(\"octra_csharp\"/g' ./{{ BINDINGS_DIR }}/octradotnet/octraPINVOKE.cs"
 
 prebuild-r:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/octra_r_wrap.cpp -oh ../src/octra_r_wrap.h ../src/octrar/swig/octrar.i && mv ../src/octrar.R ../R"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -r -o ../src/octra_r_wrap.cpp -oh ../src/octra_r_wrap.h ../src/octrar/swig/octrar.i && mv ../src/octrar.R ../R"
 
 prebuild-perl:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/perloctra/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perloctra/Octra_wrap.cxx -oh {{ BINDINGS_DIR }}/perloctra/Octra_wrap.h -outdir {{ BINDINGS_DIR }}/perloctra/lib src/perloctra/swig/perloctra.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/perloctra/lib && swig -doxygen -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perloctra/Octra_wrap.cxx -oh {{ BINDINGS_DIR }}/perloctra/Octra_wrap.h -outdir {{ BINDINGS_DIR }}/perloctra/lib src/perloctra/swig/perloctra.i"
 
 # Ruby (SWIG)
 prebuild-ruby:
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/octruby/ext/octruby {{ BINDINGS_DIR }}/octruby/lib/octruby && swig -ruby -c++ -Iinclude -o {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.cxx -oh {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.h -outdir {{ BINDINGS_DIR }}/octruby/lib/octruby src/octruby/swig/octruby.i"
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/octruby/ext/octruby {{ BINDINGS_DIR }}/octruby/lib/octruby && swig -doxygen -ruby -c++ -Iinclude -o {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.cxx -oh {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.h -outdir {{ BINDINGS_DIR }}/octruby/lib/octruby src/octruby/swig/octruby.i"
 
 # Tcl (SWIG)
 prebuild-tcl:
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/octratcl/swig && swig -tcl8 -c++ -Iinclude -o build/octratcl/swig/octra_tcl_wrap.cxx -oh build/octratcl/swig/octra_tcl_wrap.h src/octratcl/swig/octratcl.i"
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/octratcl/swig && swig -doxygen -tcl8 -c++ -Iinclude -o build/octratcl/swig/octra_tcl_wrap.cxx -oh build/octratcl/swig/octra_tcl_wrap.h src/octratcl/swig/octratcl.i"
 
 # Lua (SWIG)
 prebuild-lua:
-  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/octralua-swig && swig -lua -c++ -Iinclude -outdir build/octralua-swig -o build/octralua-swig/octra_lua_wrap.cxx -oh build/octralua-swig/octra_lua_wrap.h src/octralua/swig/octralua.i"
+  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/octralua-swig && swig -doxygen -lua -c++ -Iinclude -outdir build/octralua-swig -o build/octralua-swig/octra_lua_wrap.cxx -oh build/octralua-swig/octra_lua_wrap.h src/octralua/swig/octralua.i"
 
 # D (SWIG)
 prebuild-d:
   bash -lc 'set -euo pipefail; \
-    cmd="mkdir -p {{ BINDINGS_DIR }}/octrad/source && swig -c++ -d -Iinclude -o {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.cpp -oh {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.h -outdir {{ BINDINGS_DIR }}/octrad/source src/octrad/swig/octrad.i"; \
+    cmd="mkdir -p {{ BINDINGS_DIR }}/octrad/source && swig -doxygen -c++ -d -Iinclude -o {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.cpp -oh {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.h -outdir {{ BINDINGS_DIR }}/octrad/source src/octrad/swig/octrad.i"; \
     if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
       {{ NIX_DEVELOP }} .#d --command bash -lc "$cmd"; \
     else \
@@ -132,28 +135,28 @@ prebuild-d:
 
 # Guile (SWIG)
 prebuild-guile:
-  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/octraguile-swig && swig -guile -c++ -Iinclude -o build/octraguile-swig/octra_guile_wrap.cxx -oh build/octraguile-swig/octra_guile_wrap.h src/octraguile/swig/octraguile.i"
+  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/octraguile-swig && swig -doxygen -guile -c++ -Iinclude -o build/octraguile-swig/octra_guile_wrap.cxx -oh build/octraguile-swig/octra_guile_wrap.h src/octraguile/swig/octraguile.i"
 
 prebuild-octave:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/octraoctave-swig && swig -octave -c++ -Iinclude -o build/octraoctave-swig/octra_octave_wrap.cxx -oh build/octraoctave-swig/octra_octave_wrap.h src/octraoctave/swig/octraoctave.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/octraoctave-swig && swig -doxygen -octave -c++ -Iinclude -o build/octraoctave-swig/octra_octave_wrap.cxx -oh build/octraoctave-swig/octra_octave_wrap.h src/octraoctave/swig/octraoctave.i"
 
 # TODO:
 prebuild-go:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -go -c++ -intgosize 64 -Iinclude -o {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.cxx -oh {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.h -outdir {{ BINDINGS_DIR }}/gooctra src/gooctra/swig/gooctra.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -doxygen -go -c++ -intgosize 64 -Iinclude -o {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.cxx -oh {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.h -outdir {{ BINDINGS_DIR }}/gooctra src/gooctra/swig/gooctra.i"
 
 # TODO:
 prebuild-php:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/octra_php_wrap.cpp -oh ../src/octra_php_wrap.h ../src/octraPHP/swig/octraPHP.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -php7 -o ../src/octra_php_wrap.cpp -oh ../src/octra_php_wrap.h ../src/octraPHP/swig/octraPHP.i"
 
 prebuild-java:
     {{ NIX_DEVELOP }} .#java --command bash -lc "find {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra -type f -name '*.java' ! -name 'App.java' ! -path '{{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/examples/*' -exec rm {} +"
     {{ NIX_DEVELOP }} .#java --command bash -lc "rm -rf {{ BINDINGS_DIR }}/joctra-octra/build/cmake"
-    {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -c++ -java -o ../{{ BINDINGS_DIR }}/joctra-octra/octra_java_wrap.cpp -oh ../{{ BINDINGS_DIR }}/joctra-octra/octra_java_wrap.h -package js.octra.joctra -outdir ../{{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra ../src/joctra-octra/swig/joctra.i"
+    {{ NIX_DEVELOP }} .#java --command bash -lc "cd ./include && swig -doxygen -c++ -java -o ../{{ BINDINGS_DIR }}/joctra-octra/octra_java_wrap.cpp -oh ../{{ BINDINGS_DIR }}/joctra-octra/octra_java_wrap.h -package js.octra.joctra -outdir ../{{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra ../src/joctra-octra/swig/joctra.i"
     {{ NIX_DEVELOP }} .#java --command bash -lc "sed -i 's/System.loadLibrary(\"octra\")/System.loadLibrary(\"octra_jni\")/g' {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/App.java {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/examples/StlEx.java"
     {{ NIX_DEVELOP }} .#java --command bash -lc "perl -0777 -pi -e 's/public class octra \\{/public class octra {\\n  static { System.loadLibrary(\"octra_jni\"); }/s' {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/octra.java"
 
 prebuild-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${OCTRA_PREFIX:-}\" || (echo 'OCTRA_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/octraocaml/src && swig -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/octraocaml/src src/octraocaml/swig/octraocaml.i"
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${OCTRA_PREFIX:-}\" || (echo 'OCTRA_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/octraocaml/src && swig -doxygen -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/octraocaml/src src/octraocaml/swig/octraocaml.i"
 
 # }}} prebuild commands
 
@@ -407,10 +410,16 @@ test-ocaml:
 
 test-cpp:
     @echo "Running Tests"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S tests -B build/debug/tests -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_MAKE_PROGRAM=$(command -v make)"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/tests -j{{ JOBS }} --verbose"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "find ./build/ -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
-    {{ NIX_DEVELOP }} .#cpp --command bash -lc "ctest --test-dir build/debug/tests --output-on-failure"
+    @bash -lc 'set -euo pipefail; \
+      gtest_prefix=""; \
+      for p in /nix/store/*-gtest-*-dev; do \
+        if [ -f "$p/lib/cmake/GTest/GTestConfig.cmake" ]; then gtest_prefix="$p"; break; fi; \
+      done; \
+      rm -rf build/debug/tests; \
+      cmake -S tests -B build/debug/tests -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_MAKE_PROGRAM="$(command -v make)" ${gtest_prefix:+-DCMAKE_PREFIX_PATH="$gtest_prefix"}; \
+      cmake --build build/debug/tests -j{{ JOBS }} --verbose; \
+      find ./build/ -name "compile_commands.json" -exec cat {} + | jq -s add > compile_commands.json; \
+      ctest --test-dir build/debug/tests --output-on-failure'
 
 
 # }}} test commands
@@ -451,37 +460,55 @@ memcheck:
   valgrind --leak-check=full --track-origins=yes ./build/debug/examples/{{TARGET}}
 
 
-coverage: test-cpp
-    pushd ./build/debug/tests/_deps/octra-build/CMakeFiles/octra.dir/src/octra/ > /dev/null && \
-    find . -type f -name '*.cpp.*' -exec bash -c 'for file in "$@"; do \
-      new_file="${file/.cpp/}"; \
-      if [ "$file" != "$new_file" ]; then \
-        mv "$file" "$new_file"; \
-      fi; \
-    done' bash {} + && \
-    popd > /dev/null
-    mkdir -p build/gcov
-    find ./build/debug/tests/_deps/octra-build/CMakeFiles/octra.dir/src/octra/ -type f -name "*.gcda" -exec cp {} ./build/gcov \;
-    find ./build/debug/tests/_deps/octra-build/CMakeFiles/octra.dir/src/octra/ -type f -name "*.gcno" -exec cp {} ./build/gcov \;
-    find ./source/ -type f -name "*.cpp" | while read -r src_file; do \
-      filename=$(basename "$src_file"); \
-      prefix="${filename%%.*}"; \
-      if ls ./build/gcov/"${prefix}"*.gcda > /dev/null 2>&1; then \
-        cp "$src_file" ./build/gcov; \
-      fi; \
-    done
-    cp ./tests/cpp/main.cpp ./build/gcov
-    # cp ./build/debug/tests/CMakeFiles/octraTests.dir/source/main* ./build/gcov
-    # mv ./build/gcov/main.cpp.gcda ./build/gcov/main.gcda
-    # mv ./build/gcov/main.cpp.gcno ./build/gcov/main.gcno
-    mv ./build/gcov/main.cpp ./build/gcov/main.ol
-    pushd build/gcov > /dev/null && \
-      gcov -b -o . *.cpp && \
-      lcov -c --ignore mismatch --directory . --output-file main_coverage.info && \
-      lcov --ignore-errors inconsistent --ignore-errors unused -r main_coverage.info "Core/" --output-file main_coverage.info && \
-      lcov --ignore-errors inconsistent --ignore-errors unused -r main_coverage.info "include/" --output-file main_coverage.info && \
-      lcov --ignore-errors inconsistent --ignore-errors unused -r main_coverage.info "doctest/" --output-file main_coverage.info && \
-      genhtml --ignore-errors inconsistent  --ignore-errors corrupt main_coverage.info --output-directory .
+coverage:
+    rm -rf build/coverage
+    @bash -lc 'set -euo pipefail; \
+      gtest_prefix=""; \
+      for p in /nix/store/*-gtest-*-dev; do \
+        if [ -f "$p/lib/cmake/GTest/GTestConfig.cmake" ]; then gtest_prefix="$p"; break; fi; \
+      done; \
+      cmake -S tests -B build/coverage/tests -DCMAKE_BUILD_TYPE=Debug -DENABLE_TEST_COVERAGE=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_MAKE_PROGRAM="$(command -v make)" ${gtest_prefix:+-DCMAKE_PREFIX_PATH="$gtest_prefix"}; \
+      cmake --build build/coverage/tests -j{{ JOBS }} --verbose; \
+      ctest --test-dir build/coverage/tests --output-on-failure'
+    mkdir -p build/coverage
+    lcov -c --rc lcov_function_coverage=0 --ignore-errors mismatch,inconsistent --directory build/coverage/tests --output-file build/coverage/coverage.info
+    lcov --ignore-errors inconsistent --ignore-errors unused -r build/coverage/coverage.info '/nix/store/*' --output-file build/coverage/coverage.info
+    lcov --ignore-errors inconsistent --ignore-errors unused -r build/coverage/coverage.info '*/_deps/*' --output-file build/coverage/coverage.info
+    genhtml --rc genhtml_function_coverage=0 --ignore-errors inconsistent --ignore-errors corrupt build/coverage/coverage.info --output-directory build/coverage/html
+
+test-coverage: coverage
+    @bash -lc 'set -euo pipefail; \
+      info="build/coverage/coverage.info"; \
+      test -f "$info"; \
+      awk -v want1="$(pwd)/src/octra/octra.cpp" -v want2="$(pwd)/src/octra/octra_c.cpp" '\'' \
+        function finish() { \
+          if (!in_wanted) return; \
+          if (total == 0) { \
+            printf("coverage: %s: no line data found\\n", file) > "/dev/stderr"; \
+            exit 2; \
+          } \
+          if (hit != total) { \
+            printf("coverage: %s: %d/%d lines (%.2f%%)\\n", file, hit, total, (100.0*hit/total)) > "/dev/stderr"; \
+            exit 1; \
+          } \
+        } \
+        /^SF:/ { \
+          finish(); \
+          file = substr($0, 4); \
+          in_wanted = (file == want1 || file == want2); \
+          total = 0; hit = 0; \
+          next; \
+        } \
+        /^DA:/ { \
+          if (!in_wanted) next; \
+          split(substr($0, 4), a, ","); \
+          total++; \
+          if (a[2] + 0 > 0) hit++; \
+          next; \
+        } \
+        /^end_of_record/ { finish(); in_wanted=0; next } \
+        END { finish(); print "coverage: OK (octra.cpp and octra_c.cpp are 100%)" } \
+      '\'' "$info"'
 
 
 
@@ -520,6 +547,12 @@ docs: build
     just prebuild-docs-pages
     {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake -S docs -B build/debug/docs"
     {{ NIX_DEVELOP }} .#cpp --command bash -lc "cmake --build build/debug/docs --target GenerateDocs"
+
+docs-bindings: prebuild-swig
+    @echo "Binding documentation is emitted as SWIG-generated docstrings/comments (per language)."
+
+docs-all: docs docs-bindings
+    @echo "Core + binding docs are up to date."
 
 # }}} docs commands
 

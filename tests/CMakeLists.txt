@@ -17,7 +17,11 @@ include(../cmake/CPM.cmake)
 
 CPMAddPackage(NAME octra SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
-find_package(GTest QUIET)
+# Prefer a preinstalled GTest (offline-friendly), then fall back to fetching.
+find_package(GTest QUIET CONFIG)
+if(NOT GTest_FOUND)
+  find_package(GTest QUIET)
+endif()
 if(NOT GTest_FOUND)
   CPMAddPackage(
     NAME googletest
@@ -33,9 +37,6 @@ endif()
 enable_testing()
 # ---- Create binary ----
 
-set(CMAKE_CXX_FLAGS "-g")
-set(CMAKE_C_FLAGS "-g")
-
 file(GLOB cpp_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cpp/*.cpp)
 file(GLOB c_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/cpp/*.c)
 message(STATUS "c_sources: ${c_sources}")
@@ -46,6 +47,22 @@ set_target_properties(run_tests PROPERTIES CXX_STANDARD 17)
 
 include(GoogleTest)
 gtest_discover_tests(run_tests)
+
+# ---- code coverage ----
+if(ENABLE_TEST_COVERAGE)
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+    target_compile_options(run_tests PRIVATE -O0 -g --coverage)
+    target_link_options(run_tests PRIVATE --coverage)
+
+    # Ensure the octra library (built via CPM in this build) is also instrumented.
+    if(TARGET octra)
+      target_compile_options(octra PRIVATE -O0 -g --coverage)
+      target_link_options(octra PRIVATE --coverage)
+    endif()
+  else()
+    message(WARNING "ENABLE_TEST_COVERAGE is ON but coverage flags are only wired for Clang/GNU.")
+  endif()
+endif()
 
 # # enable compiler warnings if(NOT TEST_INSTALLED_VERSION) if(CMAKE_CXX_COMPILER_ID MATCHES "Clang"
 # OR CMAKE_CXX_COMPILER_ID MATCHES "GNU") target_compile_options(datamunge PUBLIC -Wall -Wpedantic
