@@ -10,7 +10,8 @@ declare const _SWIG_type_tag: unique symbol;
 
 export const STD_STRINGS_BODY_SECTION: string;
 
-export class IPair {
+export  class IPair {
+
   constructor();
 
   constructor(first: number, second: number);
@@ -22,7 +23,8 @@ export class IPair {
   second: number;
 }
 
-export class DPair {
+export  class DPair {
+
   constructor();
 
   constructor(first: number, second: number);
@@ -34,7 +36,8 @@ export class DPair {
   second: number;
 }
 
-export class SPair {
+export  class SPair {
+
   constructor();
 
   constructor(first: string, second: string);
@@ -46,7 +49,8 @@ export class SPair {
   second: string;
 }
 
-export class IVector {
+export  class IVector {
+
   constructor();
 
   constructor(n: any);
@@ -70,7 +74,8 @@ export class IVector {
   set(i: number, val: any): void;
 }
 
-export class DVector {
+export  class DVector {
+
   constructor();
 
   constructor(n: any);
@@ -94,7 +99,8 @@ export class DVector {
   set(i: number, val: any): void;
 }
 
-export class SizeVector {
+export  class SizeVector {
+
   constructor();
 
   constructor(n: any);
@@ -118,7 +124,8 @@ export class SizeVector {
   set(i: number, val: any): void;
 }
 
-export class SVector {
+export  class SVector {
+
   constructor();
 
   constructor(n: any);
@@ -144,7 +151,8 @@ export class SVector {
 
 export function hello(): void;
 
-export class Callback {
+export  class Callback {
+
   call(x: number): number;
 
   constructor();
@@ -161,3 +169,5 @@ export function sum_dvector(values: any): number;
 export function make_dpair(a: number, b: number): any;
 
 export function sum_dpair(values: any): number;
+
+

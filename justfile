@@ -103,7 +103,7 @@ prebuild-python:
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -python -o ../src/octra_python_wrap.cpp -oh ../src/octra_python_wrap.h ../src/pyoctra/swig/pyoctra.i && mv ../src/octra.py ../src/pyoctra/octra.py"
 
 prebuild-javascript:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -javascript -typescript -napi -c++ -o ../src/octra_js_wrap.cpp -oh ../src/octra_js_wrap.h ../src/octrajs/src/octrajs.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -javascript -typescript -napi -c++ -o ../src/octra_js_wrap.cpp -oh ../src/octra_js_wrap.h ../src/octrajs/src/octrajs.i"
   # Inject deterministic JS->C callback bridge helpers (SWIG Node backend doesn't support directors here).
   perl -0777 -pi -e 's/#include <napi.h>\n/#include <napi.h>\n#include \"octra_js_callbacks.inl\"\n/s' src/octra_js_wrap.cpp
   perl -0777 -pi -e 's/SWIG_InitializeModule\(env\);\n/SWIG_InitializeModule(env);\n  OctraJS_RegisterCallbackBridge(env, exports);\n/s' src/octra_js_wrap.cpp
@@ -114,27 +114,27 @@ prebuild-csharp:
   {{ NIX_DEVELOP }} .#cpp --command bash -lc "sed -i 's/DllImport(\"octra\"/DllImport(\"octra_csharp\"/g' ./{{ BINDINGS_DIR }}/octradotnet/octraPINVOKE.cs"
 
 prebuild-r:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -r -o ../src/octra_r_wrap.cpp -oh ../src/octra_r_wrap.h ../src/octrar/swig/octrar.i && mv ../src/octrar.R ../R"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -r -o ../src/octra_r_wrap.cpp -oh ../src/octra_r_wrap.h ../src/octrar/swig/octrar.i && mv ../src/octrar.R ../R"
 
 prebuild-perl:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/perloctra/lib && swig -doxygen -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perloctra/Octra_wrap.cxx -oh {{ BINDINGS_DIR }}/perloctra/Octra_wrap.h -outdir {{ BINDINGS_DIR }}/perloctra/lib src/perloctra/swig/perloctra.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/perloctra/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perloctra/Octra_wrap.cxx -oh {{ BINDINGS_DIR }}/perloctra/Octra_wrap.h -outdir {{ BINDINGS_DIR }}/perloctra/lib src/perloctra/swig/perloctra.i"
 
 # Ruby (SWIG)
 prebuild-ruby:
-  {{ NIX_DEVELOP }} .#ruby --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/octruby/ext/octruby {{ BINDINGS_DIR }}/octruby/lib/octruby && swig -doxygen -ruby -c++ -Iinclude -o {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.cxx -oh {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.h -outdir {{ BINDINGS_DIR }}/octruby/lib/octruby src/octruby/swig/octruby.i"
+  {{ NIX_DEVELOP }} .#ruby --command bash -lc "mkdir -p {{ BINDINGS_DIR }}/octruby/ext/octruby {{ BINDINGS_DIR }}/octruby/lib/octruby && swig -ruby -c++ -Iinclude -o {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.cxx -oh {{ BINDINGS_DIR }}/octruby/ext/octruby/octruby_wrap.h -outdir {{ BINDINGS_DIR }}/octruby/lib/octruby src/octruby/swig/octruby.i"
 
 # Tcl (SWIG)
 prebuild-tcl:
-  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/octratcl/swig && swig -doxygen -tcl8 -c++ -Iinclude -o build/octratcl/swig/octra_tcl_wrap.cxx -oh build/octratcl/swig/octra_tcl_wrap.h src/octratcl/swig/octratcl.i"
+  {{ NIX_DEVELOP }} .#tcl --command bash -lc "mkdir -p build/octratcl/swig && swig -tcl8 -c++ -Iinclude -o build/octratcl/swig/octra_tcl_wrap.cxx -oh build/octratcl/swig/octra_tcl_wrap.h src/octratcl/swig/octratcl.i"
 
 # Lua (SWIG)
 prebuild-lua:
-  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/octralua-swig && swig -doxygen -lua -c++ -Iinclude -outdir build/octralua-swig -o build/octralua-swig/octra_lua_wrap.cxx -oh build/octralua-swig/octra_lua_wrap.h src/octralua/swig/octralua.i"
+  {{ NIX_DEVELOP }} .#lua --command bash -lc "mkdir -p build/octralua-swig && swig -lua -c++ -Iinclude -outdir build/octralua-swig -o build/octralua-swig/octra_lua_wrap.cxx -oh build/octralua-swig/octra_lua_wrap.h src/octralua/swig/octralua.i"
 
 # D (SWIG)
 prebuild-d:
   bash -lc 'set -euo pipefail; \
-    cmd="mkdir -p {{ BINDINGS_DIR }}/octrad/source && swig -doxygen -c++ -d -Iinclude -o {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.cpp -oh {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.h -outdir {{ BINDINGS_DIR }}/octrad/source src/octrad/swig/octrad.i"; \
+    cmd="mkdir -p {{ BINDINGS_DIR }}/octrad/source && swig -c++ -d -Iinclude -o {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.cpp -oh {{ BINDINGS_DIR }}/octrad/source/octrad_wrap.h -outdir {{ BINDINGS_DIR }}/octrad/source src/octrad/swig/octrad.i"; \
     if command -v nix >/dev/null 2>&1 && {{ NIX_DEVELOP }} .#d --command true >/dev/null 2>&1; then \
       {{ NIX_DEVELOP }} .#d --command bash -lc "$cmd"; \
     else \
@@ -143,18 +143,16 @@ prebuild-d:
 
 # Guile (SWIG)
 prebuild-guile:
-  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/octraguile-swig && swig -doxygen -guile -c++ -Iinclude -o build/octraguile-swig/octra_guile_wrap.cxx -oh build/octraguile-swig/octra_guile_wrap.h src/octraguile/swig/octraguile.i"
+  {{ NIX_DEVELOP }} .#guile --command bash -lc "mkdir -p build/octraguile-swig && swig -guile -c++ -Iinclude -o build/octraguile-swig/octra_guile_wrap.cxx -oh build/octraguile-swig/octra_guile_wrap.h src/octraguile/swig/octraguile.i"
 
 prebuild-octave:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/octraoctave-swig && swig -doxygen -octave -c++ -Iinclude -o build/octraoctave-swig/octra_octave_wrap.cxx -oh build/octraoctave-swig/octra_octave_wrap.h src/octraoctave/swig/octraoctave.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "mkdir -p build/octraoctave-swig && swig -octave -c++ -Iinclude -o build/octraoctave-swig/octra_octave_wrap.cxx -oh build/octraoctave-swig/octra_octave_wrap.h src/octraoctave/swig/octraoctave.i"
 
-# TODO:
 prebuild-go:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -doxygen -go -c++ -intgosize 64 -Iinclude -o {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.cxx -oh {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.h -outdir {{ BINDINGS_DIR }}/gooctra src/gooctra/swig/gooctra.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "swig -go -c++ -intgosize 64 -Iinclude -o {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.cxx -oh {{ BINDINGS_DIR }}/gooctra/gooctra_wrap.h -outdir {{ BINDINGS_DIR }}/gooctra src/gooctra/swig/gooctra.i"
 
-# TODO:
 prebuild-php:
-  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -doxygen -c++ -php7 -o ../src/octra_php_wrap.cpp -oh ../src/octra_php_wrap.h ../src/octraPHP/swig/octraPHP.i"
+  {{ NIX_DEVELOP }} .#cpp --command bash -lc "cd ./include && swig -c++ -php7 -o ../src/octra_php_wrap.cpp -oh ../src/octra_php_wrap.h ../src/octraPHP/swig/octraPHP.i"
 
 prebuild-java:
     {{ NIX_DEVELOP }} .#java --command bash -lc "find {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra -type f -name '*.java' ! -name 'App.java' ! -path '{{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/examples/*' -exec rm {} +"
@@ -164,7 +162,7 @@ prebuild-java:
     {{ NIX_DEVELOP }} .#java --command bash -lc "perl -0777 -pi -e 's/public class octra \\{/public class octra {\\n  static { System.loadLibrary(\"octra_jni\"); }/s' {{ BINDINGS_DIR }}/joctra/src/main/java/js/octra/joctra/octra.java"
 
 prebuild-ocaml:
-  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${OCTRA_PREFIX:-}\" || (echo 'OCTRA_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/octraocaml/src && swig -doxygen -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/octraocaml/src src/octraocaml/swig/octraocaml.i"
+  {{ NIX_DEVELOP }} .#ocaml --command bash -lc "test -n \"${OCTRA_PREFIX:-}\" || (echo 'OCTRA_PREFIX is not set' >&2; exit 1) && mkdir -p {{ BINDINGS_DIR }}/octraocaml/src && swig -ocaml -c++ -Iinclude -o {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.cxx -oh {{ BINDINGS_DIR }}/octraocaml/src/octra_ocaml_wrap.h -outdir {{ BINDINGS_DIR }}/octraocaml/src src/octraocaml/swig/octraocaml.i"
 
 # }}} prebuild commands
 
@@ -615,7 +613,8 @@ update-java-deps:
 update-csharp-deps:
   nix/update-nuget-deps.sh
 
-all-test: test-cpp test-python test-r test-javascript test-csharp test-java test-php test-go test-perl test-ocaml test-guile test-d
+all-test:
+  bash ./scripts/test_all.sh
 
 test-all: all-test
 

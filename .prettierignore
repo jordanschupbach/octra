@@ -10,3 +10,6 @@
 **/result/**
 **/*.min.js
 **/*.lock
+current_prompt.md
+src/perloctra/MYMETA.json
+src/perloctra/MYMETA.yml

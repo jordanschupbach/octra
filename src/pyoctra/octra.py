@@ -5,7 +5,6 @@
 # the SWIG interface file instead.
 
 from sys import version_info as _swig_python_version_info
-
 # Import the low-level C/C++ module
 if getattr(globals().get("__spec__"), "parent", None) or __package__ or "." in __name__:
     from . import _octra
@@ -17,17 +16,12 @@ try:
 except ImportError:
     import __builtin__
 
-
 def _swig_repr(self):
     try:
         strthis = "proxy of " + self.this.__repr__()
     except __builtin__.Exception:
         strthis = ""
-    return "<%s.%s; %s >" % (
-        self.__class__.__module__,
-        self.__class__.__name__,
-        strthis,
-    )
+    return "<%s.%s; %s >" % (self.__class__.__module__, self.__class__.__name__, strthis,)
 
 
 def _swig_setattr_nondynamic_instance_variable(set):
@@ -40,7 +34,6 @@ def _swig_setattr_nondynamic_instance_variable(set):
             set(self, name, value)
         else:
             raise AttributeError("You cannot add instance attributes to %s" % self)
-
     return set_instance_attr
 
 
@@ -50,38 +43,29 @@ def _swig_setattr_nondynamic_class_variable(set):
             set(cls, name, value)
         else:
             raise AttributeError("You cannot add class attributes to %s" % cls)
-
     return set_class_attr
 
 
 def _swig_add_metaclass(metaclass):
     """Class decorator for adding a metaclass to a SWIG wrapped class - a slimmed down version of six.add_metaclass"""
-
     def wrapper(cls):
         return metaclass(cls.__name__, cls.__bases__, cls.__dict__.copy())
-
     return wrapper
 
 
 class _SwigNonDynamicMeta(type):
     """Meta class to enforce nondynamic attributes (no new attributes) for a class"""
-
     __setattr__ = _swig_setattr_nondynamic_class_variable(type.__setattr__)
 
 
 import weakref
 
 SHARED_PTR_DISOWN = _octra.SHARED_PTR_DISOWN
-
-
 class SwigPyIterator(object):
-    thisown = property(
-        lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag"
-    )
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
-
     __repr__ = _swig_repr
     __swig_destroy__ = _octra.delete_SwigPyIterator
 
@@ -132,136 +116,96 @@ class SwigPyIterator(object):
 
     def __sub__(self, *args):
         return _octra.SwigPyIterator___sub__(self, *args)
-
     def __iter__(self):
         return self
-
 
 # Register SwigPyIterator in _octra:
 _octra.SwigPyIterator_swigregister(SwigPyIterator)
 STD_STRINGS_BODY_SECTION = _octra.STD_STRINGS_BODY_SECTION
-
-
 class IPair(object):
-    thisown = property(
-        lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag"
-    )
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
         _octra.IPair_swiginit(self, _octra.new_IPair(*args))
-
     first = property(_octra.IPair_first_get, _octra.IPair_first_set)
     second = property(_octra.IPair_second_get, _octra.IPair_second_set)
-
     def __len__(self):
         return 2
-
     def __repr__(self):
         return str((self.first, self.second))
-
-    def __getitem__(self, index):
+    def __getitem__(self, index): 
         if not (index % 2):
             return self.first
         else:
             return self.second
-
     def __setitem__(self, index, val):
         if not (index % 2):
             self.first = val
         else:
             self.second = val
-
     __swig_destroy__ = _octra.delete_IPair
-
 
 # Register IPair in _octra:
 _octra.IPair_swigregister(IPair)
-
-
 class DPair(object):
-    thisown = property(
-        lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag"
-    )
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
         _octra.DPair_swiginit(self, _octra.new_DPair(*args))
-
     first = property(_octra.DPair_first_get, _octra.DPair_first_set)
     second = property(_octra.DPair_second_get, _octra.DPair_second_set)
-
     def __len__(self):
         return 2
-
     def __repr__(self):
         return str((self.first, self.second))
-
-    def __getitem__(self, index):
+    def __getitem__(self, index): 
         if not (index % 2):
             return self.first
         else:
             return self.second
-
     def __setitem__(self, index, val):
         if not (index % 2):
             self.first = val
         else:
             self.second = val
-
     __swig_destroy__ = _octra.delete_DPair
-
 
 # Register DPair in _octra:
 _octra.DPair_swigregister(DPair)
-
-
 class SPair(object):
-    thisown = property(
-        lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag"
-    )
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
         _octra.SPair_swiginit(self, _octra.new_SPair(*args))
-
     first = property(_octra.SPair_first_get, _octra.SPair_first_set)
     second = property(_octra.SPair_second_get, _octra.SPair_second_set)
-
     def __len__(self):
         return 2
-
     def __repr__(self):
         return str((self.first, self.second))
-
-    def __getitem__(self, index):
+    def __getitem__(self, index): 
         if not (index % 2):
             return self.first
         else:
             return self.second
-
     def __setitem__(self, index, val):
         if not (index % 2):
             self.first = val
         else:
             self.second = val
-
     __swig_destroy__ = _octra.delete_SPair
-
 
 # Register SPair in _octra:
 _octra.SPair_swigregister(SPair)
-
-
 class IVector(object):
-    thisown = property(
-        lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag"
-    )
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def iterator(self):
         return _octra.IVector_iterator(self)
-
     def __iter__(self):
         return self.iterator()
 
@@ -357,23 +301,16 @@ class IVector(object):
 
     def capacity(self):
         return _octra.IVector_capacity(self)
-
     __swig_destroy__ = _octra.delete_IVector
-
 
 # Register IVector in _octra:
 _octra.IVector_swigregister(IVector)
-
-
 class DVector(object):
-    thisown = property(
-        lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag"
-    )
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def iterator(self):
         return _octra.DVector_iterator(self)
-
     def __iter__(self):
         return self.iterator()
 
@@ -469,23 +406,16 @@ class DVector(object):
 
     def capacity(self):
         return _octra.DVector_capacity(self)
-
     __swig_destroy__ = _octra.delete_DVector
-
 
 # Register DVector in _octra:
 _octra.DVector_swigregister(DVector)
-
-
 class SizeVector(object):
-    thisown = property(
-        lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag"
-    )
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def iterator(self):
         return _octra.SizeVector_iterator(self)
-
     def __iter__(self):
         return self.iterator()
 
@@ -581,23 +511,16 @@ class SizeVector(object):
 
     def capacity(self):
         return _octra.SizeVector_capacity(self)
-
     __swig_destroy__ = _octra.delete_SizeVector
-
 
 # Register SizeVector in _octra:
 _octra.SizeVector_swigregister(SizeVector)
-
-
 class SVector(object):
-    thisown = property(
-        lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag"
-    )
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def iterator(self):
         return _octra.SVector_iterator(self)
-
     def __iter__(self):
         return self.iterator()
 
@@ -693,22 +616,15 @@ class SVector(object):
 
     def capacity(self):
         return _octra.SVector_capacity(self)
-
     __swig_destroy__ = _octra.delete_SVector
-
 
 # Register SVector in _octra:
 _octra.SVector_swigregister(SVector)
 
-
 def hello():
     return _octra.hello()
-
-
 class Callback(object):
-    thisown = property(
-        lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag"
-    )
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     __swig_destroy__ = _octra.delete_Callback
 
@@ -720,42 +636,30 @@ class Callback(object):
             _self = None
         else:
             _self = self
-        _octra.Callback_swiginit(
-            self,
-            _octra.new_Callback(
-                _self,
-            ),
-        )
-
+        _octra.Callback_swiginit(self, _octra.new_Callback(_self, ))
     def __disown__(self):
         self.this.disown()
         _octra.disown_Callback(self)
         return weakref.proxy(self)
 
-
 # Register Callback in _octra:
 _octra.Callback_swigregister(Callback)
-
 
 def call_with_callback(x, cb):
     return _octra.call_with_callback(x, cb)
 
-
 def map_dvector_with_callback(values, cb):
     return _octra.map_dvector_with_callback(values, cb)
-
 
 def make_dvector(a, b, c):
     return _octra.make_dvector(a, b, c)
 
-
 def sum_dvector(values):
     return _octra.sum_dvector(values)
-
 
 def make_dpair(a, b):
     return _octra.make_dpair(a, b)
 
-
 def sum_dpair(values):
     return _octra.sum_dpair(values)
+

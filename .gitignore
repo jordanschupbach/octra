@@ -43,3 +43,6 @@ src/octruby/ext/octruby/mkmf.log
 \#*\#
 .\#*
 .DS_Store
+
+examples/ocaml/octra_ex.cmi
+examples/ocaml/octra_ex.cmx

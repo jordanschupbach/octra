@@ -147,20 +147,26 @@ import "unsafe"
 import _ "runtime/cgo"
 import "sync"
 
+
 type _ unsafe.Pointer
+
+
 
 var Swig_escape_always_false bool
 var Swig_escape_val interface{}
 
+
 type _swig_fnptr *byte
 type _swig_memberptr *byte
 
-func getSwigcptr(v interface{ Swigcptr() uintptr }) uintptr {
+
+func getSwigcptr(v interface { Swigcptr() uintptr }) uintptr {
 	if v == nil {
 		return 0
 	}
 	return v.Swigcptr()
 }
+
 
 type _ sync.Mutex
 
@@ -175,16 +181,13 @@ func cgo_panic__octra_edfc800af80047e0(p *byte) {
 	panic(string(s))
 }
 
-type swig_gostring struct {
-	p uintptr
-	n int
-}
 
+type swig_gostring struct { p uintptr; n int }
 func swigCopyString(s string) string {
-	p := *(*swig_gostring)(unsafe.Pointer(&s))
-	r := string((*[0x7fffffff]byte)(unsafe.Pointer(p.p))[:p.n])
-	Swig_free(p.p)
-	return r
+  p := *(*swig_gostring)(unsafe.Pointer(&s))
+  r := string((*[0x7fffffff]byte)(unsafe.Pointer(p.p))[:p.n])
+  Swig_free(p.p)
+  return r
 }
 
 func Swig_free(arg1 uintptr) {
@@ -432,7 +435,7 @@ func (arg1 SwigcptrSPair) GetFirst() (_swig_ret string) {
 	swig_r_p := C._wrap_SPair_first_get_octra_edfc800af80047e0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
-	swig_r_1 = swigCopyString(swig_r)
+ swig_r_1 = swigCopyString(swig_r) 
 	return swig_r_1
 }
 
@@ -451,7 +454,7 @@ func (arg1 SwigcptrSPair) GetSecond() (_swig_ret string) {
 	swig_r_p := C._wrap_SPair_second_get_octra_edfc800af80047e0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
-	swig_r_1 = swigCopyString(swig_r)
+ swig_r_1 = swigCopyString(swig_r) 
 	return swig_r_1
 }
 
@@ -918,7 +921,7 @@ func (arg1 SwigcptrSVector) Get(arg2 int) (_swig_ret string) {
 	swig_r_p := C._wrap_SVector_get_octra_edfc800af80047e0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
-	swig_r_1 = swigCopyString(swig_r)
+ swig_r_1 = swigCopyString(swig_r) 
 	return swig_r_1
 }
 
@@ -1034,3 +1037,5 @@ func Sum_dpair(arg1 DPair) (_swig_ret float64) {
 	swig_r = (float64)(C._wrap_sum_dpair_octra_edfc800af80047e0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
+
+

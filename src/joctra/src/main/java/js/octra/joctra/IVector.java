@@ -162,4 +162,5 @@ public class IVector extends java.util.AbstractList<Integer> implements java.uti
   private void doRemoveRange(int fromIndex, int toIndex) {
     octraJNI.IVector_doRemoveRange(swigCPtr, this, fromIndex, toIndex);
   }
+
 }

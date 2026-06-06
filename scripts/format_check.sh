@@ -18,6 +18,10 @@ prune_expr=(
 	-path './build/*' -o
 	-path './*/build' -o
 	-path './*/build/*' -o
+	-path './_build' -o
+	-path './_build/*' -o
+	-path './*/_build' -o
+	-path './*/_build/*' -o
 	-path './dist' -o
 	-path './dist/*' -o
 	-path './*/dist' -o
