@@ -16383,19 +16383,72 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_SVector", _wrap_delete_SVector, METH_O, NULL},
 	 { "SVector_swigregister", SVector_swigregister, METH_O, NULL},
 	 { "SVector_swiginit", SVector_swiginit, METH_VARARGS, NULL},
-	 { "hello", _wrap_hello, METH_NOARGS, NULL},
-	 { "delete_Callback", _wrap_delete_Callback, METH_O, NULL},
-	 { "Callback_call", _wrap_Callback_call, METH_VARARGS, NULL},
+	 { "hello", _wrap_hello, METH_NOARGS, "Prints a hello message to standard output."},
+	 { "delete_Callback", _wrap_delete_Callback, METH_O, "Virtual destructor — ensures proper cleanup of derived objects."},
+	 { "Callback_call", _wrap_Callback_call, METH_VARARGS, "\n"
+		"Applies the callback to a single value.\n"
+		":type x: float\n"
+		":param x: Input value.\n"
+		":rtype: float\n"
+		":return: Transformed value; the default implementation returns ``x`` unchanged.\n"
+		""},
 	 { "new_Callback", _wrap_new_Callback, METH_O, NULL},
 	 { "disown_Callback", _wrap_disown_Callback, METH_O, NULL},
 	 { "Callback_swigregister", Callback_swigregister, METH_O, NULL},
 	 { "Callback_swiginit", Callback_swiginit, METH_VARARGS, NULL},
-	 { "call_with_callback", _wrap_call_with_callback, METH_VARARGS, NULL},
-	 { "map_dvector_with_callback", _wrap_map_dvector_with_callback, METH_VARARGS, NULL},
-	 { "make_dvector", _wrap_make_dvector, METH_VARARGS, NULL},
-	 { "sum_dvector", _wrap_sum_dvector, METH_O, NULL},
-	 { "make_dpair", _wrap_make_dpair, METH_VARARGS, NULL},
-	 { "sum_dpair", _wrap_sum_dpair, METH_O, NULL},
+	 { "call_with_callback", _wrap_call_with_callback, METH_VARARGS, "\n"
+		"Invokes a callback with the given value.\n"
+		":type x: float\n"
+		":param x:    Input value passed to the callback.\n"
+		":type cb: :py:class:`Callback`\n"
+		":param cb:   Pointer to a ``Callback`` instance; must not be null.\n"
+		":rtype: float\n"
+		":return: Result of ``cb-``>call(x).\n"
+		""},
+	 { "map_dvector_with_callback", _wrap_map_dvector_with_callback, METH_VARARGS, "\n"
+		"Applies a callback to every element of a vector.\n"
+		":type values: std::vector< double,std::allocator< double > >\n"
+		":param values: Source vector of doubles.\n"
+		":type cb: :py:class:`Callback`\n"
+		":param cb:     Pointer to a ``Callback`` instance; must not be null.\n"
+		":rtype: std::vector< double,std::allocator< double > >\n"
+		":return: New vector where each element is the result of ``cb-``>call(v)\n"
+		"                  for the corresponding element ``v`` in ``values``.\n"
+		""},
+	 { "make_dvector", _wrap_make_dvector, METH_VARARGS, "\n"
+		"Constructs a three-element vector from individual values.\n"
+		":type a: float\n"
+		":param a: First element.\n"
+		":type b: float\n"
+		":param b: Second element.\n"
+		":type c: float\n"
+		":param c: Third element.\n"
+		":rtype: std::vector< double,std::allocator< double > >\n"
+		":return: ``std::vector``<double>{a, b, c}.\n"
+		""},
+	 { "sum_dvector", _wrap_sum_dvector, METH_O, "\n"
+		"Computes the sum of all elements in a vector.\n"
+		":type values: std::vector< double,std::allocator< double > >\n"
+		":param values: Vector of doubles to sum.\n"
+		":rtype: float\n"
+		":return: Sum of all elements, or 0.0 if the vector is empty.\n"
+		""},
+	 { "make_dpair", _wrap_make_dpair, METH_VARARGS, "\n"
+		"Constructs a pair of doubles.\n"
+		":type a: float\n"
+		":param a: First element.\n"
+		":type b: float\n"
+		":param b: Second element.\n"
+		":rtype: std::pair< double,double >\n"
+		":return: ``std::pair``<double, double>{a, b}.\n"
+		""},
+	 { "sum_dpair", _wrap_sum_dpair, METH_O, "\n"
+		"Computes the sum of both elements in a pair.\n"
+		":type values: std::pair< double,double >\n"
+		":param values: Pair of doubles.\n"
+		":rtype: float\n"
+		":return: ``values.first`` + values.second.\n"
+		""},
 	 { NULL, NULL, 0, NULL }
 };
 
