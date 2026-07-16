@@ -1,5 +1,5 @@
 TARGET := "octra_ex"
-BENCH_TARGET := ""
+BENCH_TARGET := "splitmix64_bench"
 JOBS := "20"
 
 NIX_DEVELOP := "nix develop --accept-flake-config --option eval-cache false"
@@ -89,7 +89,7 @@ run-cpp: examples
 
 run-benchmark:
     @echo "Running Benchmarks"
-    ./build/benchmarks/${BENCH_TARGET}
+    ./build/benchmarks/{{ BENCH_TARGET }}
 
 
 # }}} run commands
@@ -427,6 +427,18 @@ test-cpp:
       find ./build/ -name "compile_commands.json" -exec cat {} + | jq -s add > compile_commands.json; \
       ctest --test-dir build/debug/tests --output-on-failure'
 
+test-random:
+    @echo "Running SplitMix64 tests"
+    @bash -lc 'set -euo pipefail; \
+      gtest_prefix=""; \
+      for p in /nix/store/*-gtest-*-dev; do \
+        if [ -f "$p/lib/cmake/GTest/GTestConfig.cmake" ]; then gtest_prefix="$p"; break; fi; \
+      done; \
+      rm -rf build/debug/tests; \
+      cmake -S tests -B build/debug/tests -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_MAKE_PROGRAM="$(command -v make)" ${gtest_prefix:+-DCMAKE_PREFIX_PATH="$gtest_prefix"}; \
+      cmake --build build/debug/tests -j{{ JOBS }} --verbose; \
+      ./build/debug/tests/run_tests --gtest_filter=octra_random.*'
+
 
 # }}} test commands
 
@@ -457,9 +469,13 @@ flamechart:
 
 
 benchmark:
-    @echo "Building Examples"
+    @echo "Building Benchmarks"
     cmake -S benchmarks -B build/benchmarks
-    cmake --build build/benchmarks -j${JOBS} --verbose
+    cmake --build build/benchmarks -j{{ JOBS }} --verbose
+
+benchmark-random: benchmark
+    @echo "Running SplitMix64 benchmark"
+    ./build/benchmarks/splitmix64_bench
 
 
 memcheck:

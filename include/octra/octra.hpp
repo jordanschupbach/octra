@@ -1,6 +1,8 @@
 #include <utility>
 #include <vector>
 
+#include <octra/random/random.hpp>
+
 namespace octra {
 
 /// @brief Prints a hello message to standard output.
