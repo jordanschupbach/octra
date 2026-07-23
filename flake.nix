@@ -356,7 +356,7 @@
             ];
             doCheck = true;
             checkPhase = ''
-              tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
+              tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\.[0-9]+).*|\1|')"
               export TCLLIBPATH="${octratcl}/lib/$tclVersionDir"
               tclsh tests/tcl/test_octra.tcl
             '';
@@ -690,6 +690,16 @@
 
           shellHook = ''
             export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            octraLibDir="$(pkg-config --variable=libdir octra 2>/dev/null || true)"
+            octraIncludeDir="$(pkg-config --variable=includedir octra 2>/dev/null || true)"
+            if [ -n "$octraLibDir" ]; then
+              export LD_LIBRARY_PATH="$octraLibDir''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+              export LIBRARY_PATH="$octraLibDir''${LIBRARY_PATH:+:}$LIBRARY_PATH"
+            fi
+            if [ -n "$octraIncludeDir" ]; then
+              export C_INCLUDE_PATH="$octraIncludeDir''${C_INCLUDE_PATH:+:}$C_INCLUDE_PATH"
+              export CPLUS_INCLUDE_PATH="$octraIncludeDir''${CPLUS_INCLUDE_PATH:+:}$CPLUS_INCLUDE_PATH"
+            fi
 
             # Octave: make the installed .m files discoverable.
             export OCTRA_PREFIX="${octra}"
@@ -808,6 +818,20 @@
             # pkgs.nodePackages.npm
 
           ];
+
+          shellHook = ''
+            export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            octraLibDir="$(pkg-config --variable=libdir octra 2>/dev/null || true)"
+            octraIncludeDir="$(pkg-config --variable=includedir octra 2>/dev/null || true)"
+            if [ -n "$octraLibDir" ]; then
+              export LD_LIBRARY_PATH="$octraLibDir''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+              export LIBRARY_PATH="$octraLibDir''${LIBRARY_PATH:+:}$LIBRARY_PATH"
+            fi
+            if [ -n "$octraIncludeDir" ]; then
+              export C_INCLUDE_PATH="$octraIncludeDir''${C_INCLUDE_PATH:+:}$C_INCLUDE_PATH"
+              export CPLUS_INCLUDE_PATH="$octraIncludeDir''${CPLUS_INCLUDE_PATH:+:}$CPLUS_INCLUDE_PATH"
+            fi
+          '';
         };
 
         devShells.java = pkgs.mkShell {
@@ -994,7 +1018,7 @@
           ];
 
           shellHook = ''
-            tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
+            tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\.[0-9]+).*|\1|')"
             export TCLLIBPATH="${octratcl}/lib/$tclVersionDir''${TCLLIBPATH:+ $TCLLIBPATH}"
           '';
         };
@@ -1104,8 +1128,15 @@
 
         devShells.docs-pages = pkgs.mkShell {
           packages = [
-            # Doc export tooling
-            pkgs.emacs
+            # Doc export tooling. `ob-php`/`ob-go` give Org Babel native
+            # backends for PHP/Go (Lua/Tcl/Scheme use a small custom
+            # backend from docs/init.el instead; see there for why).
+            ((pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (
+              epkgs: with epkgs; [
+                ob-php
+                ob-go
+              ]
+            ))
             pkgs.direnv
             pkgs.just
             pkgs.jq
@@ -1118,21 +1149,26 @@
             pkgs.stdenv.cc
             pkgs.swig
 
-            # Language runtimes + bindings for runnable examples
+            # Language runtimes + bindings for runnable examples.
+            # (`python3.withPackages (ps: [ pyoctra ])` intermittently
+            # resolved to a stale `pyoctra` build in testing here, so
+            # PYTHONPATH is wired explicitly in the shellHook instead.)
             pyoctra
             pkgs.python3
 
             octrajs
             pkgs.nodejs
 
-            octrar
-            pkgs.R
+            (pkgs.rWrapper.override { packages = [ octrar ]; })
 
             octruby
             pkgs.ruby
 
+            # Perl/PHP/OCaml/Go bindings have no Nix derivation; they're
+            # built locally (see `just build-perl`/`build-php`/`install-ocaml`)
+            # and wired up via docs/init.el instead of this shellHook.
             pkgs.perl
-
+            pkgs.perlPackages.ExtUtilsMakeMaker
             phpPackage
 
             octralua
@@ -1147,16 +1183,24 @@
             octraguile
             pkgs.guile
 
-            # For building/running OCaml + Go examples during export
             pkgs.ocamlPackages.ocaml
             pkgs.ocamlPackages.dune_3
             pkgs.ocamlPackages.findlib
-            pkgs.ocamlPackages.alcotest
             pkgs.go
           ];
 
           shellHook = ''
             export PKG_CONFIG_PATH="${octra}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
+            octraLibDir="$(pkg-config --variable=libdir octra 2>/dev/null || true)"
+            octraIncludeDir="$(pkg-config --variable=includedir octra 2>/dev/null || true)"
+            if [ -n "$octraLibDir" ]; then
+              export LD_LIBRARY_PATH="$octraLibDir''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+              export LIBRARY_PATH="$octraLibDir''${LIBRARY_PATH:+:}$LIBRARY_PATH"
+            fi
+            if [ -n "$octraIncludeDir" ]; then
+              export C_INCLUDE_PATH="$octraIncludeDir''${C_INCLUDE_PATH:+:}$C_INCLUDE_PATH"
+              export CPLUS_INCLUDE_PATH="$octraIncludeDir''${CPLUS_INCLUDE_PATH:+:}$CPLUS_INCLUDE_PATH"
+            fi
 
             # Octave: make the installed .m files discoverable.
             export OCTRA_PREFIX="${octra}"
@@ -1169,6 +1213,22 @@
             fi
             export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
             export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+
+            # Python: make the installed module discoverable.
+            pyoctraSitePackages="$(find "${pyoctra}/lib" -maxdepth 2 -type d -name site-packages -print -quit)"
+            export PYTHONPATH="$pyoctraSitePackages''${PYTHONPATH:+:}$PYTHONPATH"
+
+            # Ruby: make the installed extension discoverable.
+            export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
+
+            # Tcl: make the installed package discoverable.
+            tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\.[0-9]+).*|\1|')"
+            export TCLLIBPATH="${octratcl}/lib/$tclVersionDir''${TCLLIBPATH:+ $TCLLIBPATH}"
+
+            # Lua: make the installed module discoverable.
+            luaVersion="$(${lua}/bin/lua -e 'io.write((_VERSION or ""):match("%d+%.%d+") or "")')"
+            export LUA_PATH="${octralua}/share/lua/$luaVersion/?.lua;${octralua}/share/lua/?.lua;./?.lua;;"
+            export LUA_CPATH="${octralua}/lib/lua/$luaVersion/?.so;${octralua}/lib/lua/?.so;${octralua}/lib64/lua/$luaVersion/?.so;${octralua}/lib64/lua/?.so;;"
           '';
         };
       }

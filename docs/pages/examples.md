@@ -18,19 +18,26 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
 
     (+ 40 2)
 
+    42
+
     echo "Org Babel is executing blocks."
+
+    Org Babel is executing blocks.
 
 
 ## C++
 
     #include <octra/octra.hpp>
+    #include <cstdio>
     
     int main(void) {
       octra::hello();
+      printf("splitmix64_runif_seeded(42) = %.17g\n", octra::random::splitmix64_runif_seeded(42));
       return 0;
     }
 
     Hello octra
+    splitmix64_runif_seeded(42) = 0.74156487877182331
 
 
 ## Python
@@ -66,16 +73,19 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     v = octra.make_dvector(1.0, 2.0, 3.0)
     v2 = octra.map_dvector_with_callback(v, cb)
     print("sum_dvector(map_dvector_with_callback(1,2,3)) =", octra.sum_dvector(v2))
+    
+    print("splitmix64_runif_seeded(42) =", octra.splitmix64_runif_seeded(42))
 
     Hello octra
     call_with_callback(3.0) = 9.0
     sum_dvector(map_dvector_with_callback(1,2,3)) = 18.0
+    splitmix64_runif_seeded(42) = 0.7415648787718233
 
 
 ## JavaScript (Node)
 
     // Local dev: build first (`just build-javascript`), then run this example.
-    const octra = require("../../index.js");
+    const octra = require("index.js");
     
     octra.hello();
     
@@ -91,12 +101,15 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     console.log("call_with_function(3.0) =", octra.call_with_function(3.0, (x) => x * 2.0));
     const out = octra.map_array_with_function([1.0, 2.0, 3.0], (x) => x * 2.0);
     console.log("map_array_with_function([1,2,3]) =", out);
+    
+    console.log("splitmix64_runif_seeded(42) =", octra.splitmix64_runif_seeded(42));
 
     Hello octra
     call_with_callback(3.0) = 3
     sum_dvector(map_dvector_with_callback) = 6
     call_with_function(3.0) = 6
     map_array_with_function([1,2,3]) = [ 2, 4, 6 ]
+    splitmix64_runif_seeded(42) = 0.7415648787718233
 
 
 ## R
@@ -120,6 +133,8 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     p <- octrar::IPair(1.1, 2.2) # converts to integer
     p$first
     p$second
+    
+    cat("splitmix64_runif_seeded(42) =", octrar::splitmix64_runif_seeded(42), "\n")
 
     Hello octra
     NULL
@@ -127,6 +142,7 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     [1] 2.2
     [1] 1
     [1] 2
+    splitmix64_runif_seeded(42) = 0.7415649 
 
 
 ## Ruby
@@ -152,11 +168,14 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     v = Octra.make_dvector(1.0, 2.0, 3.0)
     v2 = Octra.map_dvector_with_callback(v, cb)
     puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Octra.sum_dvector(v2)}"
+    
+    puts "splitmix64_runif_seeded(42) = #{Octra.splitmix64_runif_seeded(42)}"
 
     Hello octra
     DPair created: std::pair<double,double > (1.0,2.0)
     call_with_callback(3.0) = 6.0
     sum_dvector(map_dvector_with_callback(1,2,3)) = 12.0
+    splitmix64_runif_seeded(42) = 0.7415648787718233
 
 
 ## Perl
@@ -186,11 +205,14 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     my $v = Octra::make_dvector(1.0, 2.0, 3.0);
     my $v2 = Octra::map_dvector_with_callback($v, $cb);
     print "sum_dvector(map_dvector_with_callback(1,2,3)) = ", Octra::sum_dvector($v2), "\n";
+    
+    print "splitmix64_runif_seeded(42) = ", Octra::splitmix64_runif_seeded(42), "\n";
 
     Hello octra
     DPair: First=1, Second=2
     call_with_callback(3.0) = 6
     sum_dvector(map_dvector_with_callback(1,2,3)) = 12
+    splitmix64_runif_seeded(42) = 0.741564878771823
 
 
 ## PHP
@@ -216,7 +238,9 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
         print($v2->get($i) . "\n");
     }
     
-    hello()
+    hello();
+    
+    echo "splitmix64_runif_seeded(42) = " . splitmix64_runif_seeded(42) . "\n";
     
     ?>
 
@@ -241,6 +265,7 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     12
     13
     Hello octra
+    splitmix64_runif_seeded(42) = 0.74156487877182
 
 
 ## Lua
@@ -258,12 +283,15 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     print("call_with_callback(3.0):", octra.call_with_callback(3.0, cb))
     local v2 = octra.map_dvector_with_callback(octra.make_dvector(1.0, 2.0, 3.0), cb)
     print("sum_dvector(map_dvector_with_callback(1,2,3)):", octra.sum_dvector(v2))
+    
+    print("splitmix64_runif_seeded(42):", octra.splitmix64_runif_seeded(42))
 
     Hello octra
     sum_dvector:	6.0
     sum_dpair:	4.0
     call_with_callback(3.0):	3.0
     sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
+    splitmix64_runif_seeded(42):	0.74156487877182
 
 
 ## Tcl
@@ -284,8 +312,15 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     octra::delete_DPair $p
     
     puts "Octra Tcl example ran successfully."
+    
+    puts "splitmix64_runif_seeded(42): [octra::splitmix64_runif_seeded 42]"
 
+    Hello octra
+    DVector size: 2
+    DVector[0]: 1.25
+    DPair: (3.0, 4.5)
     Octra Tcl example ran successfully.
+    splitmix64_runif_seeded(42): 0.7415648787718233
 
 
 ## Octave
@@ -305,11 +340,14 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     
     p = DPair (10.0, 25.5);
     printf ("pair sum: %f\n", p.first + p.second);
+    
+    printf ("splitmix64_runif_seeded(42) = %.17g\n", splitmix64_runif_seeded (42));
 
     Hello octra
     vector size: 3
     vector[0]=1.000000 vector[1]=2.000000
     pair sum: 35.500000
+    splitmix64_runif_seeded(42) = 0.74156487877182331
 
 
 ## Guile
@@ -324,11 +362,14 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     
     (let ((p (make_dpair 4.0 5.0)))
       (format #t "sum_dpair = ~a\n" (sum_dpair p)))
+    
+    (format #t "splitmix64_runif_seeded(42) = ~a\n" (splitmix64_runif_seeded 42))
 
     Hello octra
     Hello from Guile + Octra
     sum_dvector = 60.0
     sum_dpair = 9.0
+    splitmix64_runif_seeded(42) = 0.7415648787718233
 
 
 ## OCaml
@@ -350,12 +391,16 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
       let v0 = get_float (invoke v "[]" (C_int 0)) in
       let v1 = get_float (invoke v "[]" (C_int 1)) in
       let v_sum = get_float (Octra._sum_dvector v) in
-      Printf.printf "DVector: [0]=%g [1]=%g sum=%g\n" v0 v1 v_sum
+      Printf.printf "DVector: [0]=%g [1]=%g sum=%g\n" v0 v1 v_sum;
+    
+      let r = get_float (Octra._splitmix64_runif_seeded (C_int 42)) in
+      Printf.printf "splitmix64_runif_seeded(42) = %.17g\n" r
 
     Hello octra
     octra: _hello() ok
     DPair: first=1.25 second=2.5 sum=3.75
     DVector: [0]=3 [1]=4.5 sum=7.5
+    splitmix64_runif_seeded(42) = 0.74156487877182331
 
 
 ## Go
@@ -363,30 +408,33 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     package main
     
     import (
-            "fmt"
-            "octra"
+    	"fmt"
+    	"octra"
     )
     
     func main() {
-            octra.Hello()
+    	octra.Hello()
     
-            dp := octra.NewDPair(1.0, 2.0)
-            fmt.Printf("DPair: First=%v, Second=%v\n", dp.GetFirst(), dp.GetSecond())
+    	dp := octra.NewDPair(1.0, 2.0)
+    	fmt.Printf("DPair: First=%v, Second=%v\n", dp.GetFirst(), dp.GetSecond())
     
-            s := octra.NewSVector(int64(3))
-            s.Set(0, "1")
-            s.Set(1, "2")
-            s.Set(2, "3")
-            fmt.Printf("SVector: [0]=%v, [1]=%v, [2]=%v\n", s.Get(0), s.Get(1), s.Get(2))
+    	s := octra.NewSVector(int64(3))
+    	s.Set(0, "1")
+    	s.Set(1, "2")
+    	s.Set(2, "3")
+    	fmt.Printf("SVector: [0]=%v, [1]=%v, [2]=%v\n", s.Get(0), s.Get(1), s.Get(2))
     
-            // Clean up
-            octra.DeleteDPair(dp)
-            octra.DeleteSVector(s)
+    	// Clean up
+    	octra.DeleteDPair(dp)
+    	octra.DeleteSVector(s)
+    
+    	fmt.Printf("splitmix64_runif_seeded(42) = %v\n", octra.Splitmix64_runif_seeded(42))
     }
 
     Hello octra
     DPair: First=1, Second=2
     SVector: [0]=1, [1]=2, [2]=3
+    splitmix64_runif_seeded(42) = 0.7415648787718233
 
 
 # Using Octra

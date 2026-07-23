@@ -2326,6 +2326,74 @@ setMethod('$', '_p_std__vectorT_size_t_t', function(x, name)
 );
 # end of accessor method for std::vector< size_t >
 setMethod('delete', '_p_std__vectorT_size_t_t', function(obj) {delete_std__vectorT_size_t_t(obj)})
+# Start of splitmix64_next
+
+`splitmix64_next` = function(state, .copy = FALSE)
+{
+  if (inherits(state, "ExternalReference")) state = slot(state,"ref"); 
+  ;.Call('R_swig_splitmix64_next', state, as.logical(.copy), PACKAGE='octrar');
+  
+}
+
+attr(`splitmix64_next`, 'returnType') = 'integer'
+attr(`splitmix64_next`, "inputTypes") = c('_p_unsigned_long_long')
+class(`splitmix64_next`) = c("SWIGFunction", class('splitmix64_next'))
+
+# Start of splitmix64_runif
+
+`splitmix64_runif` = function(state, .copy = FALSE)
+{
+  if (inherits(state, "ExternalReference")) state = slot(state,"ref"); 
+  ;.Call('R_swig_splitmix64_runif', state, as.logical(.copy), PACKAGE='octrar');
+  
+}
+
+attr(`splitmix64_runif`, 'returnType') = 'numeric'
+attr(`splitmix64_runif`, "inputTypes") = c('_p_unsigned_long_long')
+class(`splitmix64_runif`) = c("SWIGFunction", class('splitmix64_runif'))
+
+# Start of fill_runif
+
+`fill_runif` = function(data, size, seed)
+{
+  size = as.integer(size);
+  
+  if(length(size) > 1) {
+    warning("using only the first element of size");
+  };
+  
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  ;.Call('R_swig_fill_runif', data, size, seed, PACKAGE='octrar');
+  
+}
+
+attr(`fill_runif`, 'returnType') = 'void'
+attr(`fill_runif`, "inputTypes") = c('numeric', 'integer', 'integer')
+class(`fill_runif`) = c("SWIGFunction", class('fill_runif'))
+
+# Start of splitmix64_runif_seeded
+
+`splitmix64_runif_seeded` = function(seed, .copy = FALSE)
+{
+  seed = as.integer(seed);
+  
+  if(length(seed) > 1) {
+    warning("using only the first element of seed");
+  };
+  
+  ;.Call('R_swig_splitmix64_runif_seeded', seed, as.logical(.copy), PACKAGE='octrar');
+  
+}
+
+attr(`splitmix64_runif_seeded`, 'returnType') = 'numeric'
+attr(`splitmix64_runif_seeded`, "inputTypes") = c('integer')
+class(`splitmix64_runif_seeded`) = c("SWIGFunction", class('splitmix64_runif_seeded'))
+
 # Start of hello
 
 `hello` = function()

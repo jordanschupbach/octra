@@ -28,6 +28,7 @@ package ifneeded Octra 0.0.1 [list apply {{dir} {
     DPair_first_set octra::DPair_first_set
     DPair_second_set octra::DPair_second_set
     delete_DPair octra::delete_DPair
+    splitmix64_runif_seeded octra::splitmix64_runif_seeded
   } {
     if {[llength [info commands $src]] && ![llength [info commands $dst]]} {
       interp alias {} $dst {} $src

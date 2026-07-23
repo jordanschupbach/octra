@@ -26,4 +26,8 @@ void fill_runif(double* data, std::size_t size, std::uint64_t seed) noexcept {
   }
 }
 
+double splitmix64_runif_seeded(std::uint64_t seed) noexcept {
+  return splitmix64_runif(seed);
+}
+
 } // namespace octra::random

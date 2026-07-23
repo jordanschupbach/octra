@@ -165,6 +165,8 @@ void main() {
 }
 #+END_SRC
 
+#+RESULTS:
+
 ** Go (=examples/go/octra_ex.go=)
 #+BEGIN_SRC go :results output :exports both
 package main
@@ -210,6 +212,21 @@ func main() {
 (let ((p (make_dpair 4.0 5.0)))
   (format #t "sum_dpair = ~a\n" (sum_dpair p)))
 #+END_SRC
+
+#+RESULTS:
+#+begin_example
+;;; note: auto-compilation is enabled, set GUILE_AUTO_COMPILE=0
+;;;       or pass the --no-auto-compile argument to disable.
+;;; compiling /nix/store/jb1dnk8qh7fvkip1z2ch9zrqm7k6r7b8-octraguile-0.0.1/share/guile/site/3.0/octra.scm
+octra.scm:48:21: warning: possibly unbound variable `make-dvector'
+octra.scm:49:20: warning: possibly unbound variable `sum-dvector'
+octra.scm:50:19: warning: possibly unbound variable `make-dpair'
+octra.scm:51:18: warning: possibly unbound variable `sum-dpair'
+;;; compiled /home/jordan/.cache/guile/ccache/3.0-LE-8-4.7/nix/store/jb1dnk8qh7fvkip1z2ch9zrqm7k6r7b8-octraguile-0.0.1/share/guile/site/3.0/octra.scm.go
+Hello from Guile + Octra
+sum_dvector = 60.0
+sum_dpair = 9.0
+#+end_example
 
 ** Java (=examples/java/StlEx.java=)
 #+BEGIN_SRC java :results output :exports both
@@ -320,6 +337,8 @@ let () =
   Printf.printf "DVector: [0]=%g [1]=%g sum=%g\n" v0 v1 v_sum
 #+END_SRC
 
+#+RESULTS:
+
 ** Octave (=examples/octave/octra_ex.m=)
 #+BEGIN_SRC octave :results output :exports both
 1;
@@ -403,6 +422,13 @@ hello()
 
 ?>
 #+END_SRC
+
+#+RESULTS:
+: 
+: Fatal error: Uncaught Error: Class "DVector" not found in /tmp/babel-wMrRSW/php-HMk4a6.php:7
+: Stack trace:
+: #0 {main}
+:   thrown in /tmp/babel-wMrRSW/php-HMk4a6.php on line 7
 
 ** Python (=examples/python/octra_ex.py=)
 #+BEGIN_SRC python :results output :exports both
@@ -521,3 +547,6 @@ octra::delete_DPair $p
 
 puts "Octra Tcl example ran successfully."
 #+END_SRC
+
+#+RESULTS:
+: Octra Tcl example ran successfully.

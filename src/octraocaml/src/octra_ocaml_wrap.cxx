@@ -1607,8 +1607,9 @@ namespace Swig {
 #define SWIGTYPE_p_octra__Callback swig_types[1]
 #define SWIGTYPE_p_std__pairT_double_double_t swig_types[2]
 #define SWIGTYPE_p_std__vectorT_double_t swig_types[3]
-static swig_type_info *swig_types[5];
-static swig_module_info swig_module = {swig_types, 4, 0, 0, 0, 0};
+#define SWIGTYPE_p_unsigned_long_long swig_types[4]
+static swig_type_info *swig_types[6];
+static swig_module_info swig_module = {swig_types, 5, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1708,6 +1709,9 @@ SWIGINTERN void SWIG_OCamlException(int code, const char *msg) {
 
 #include <typeinfo>
 #include <stdexcept>
+
+
+#include <stdint.h>		// Use the C99 official header
 
 
 #include <typeinfo>
@@ -2383,6 +2387,103 @@ SWIGEXT value _wrap_delete_DVectoroctra (value args)
 }
 
 
+SWIGEXT value _wrap_splitmix64_nextoctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::uint64_t *arg1 = 0 ;
+  std::uint64_t result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'splitmix64_next'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (std::uint64_t *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_unsigned_long_long);
+  }
+  result = (std::uint64_t)octra::random::splitmix64_next(*arg1);
+  {
+    rv = caml_val_ulong(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_splitmix64_runifoctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::uint64_t *arg1 = 0 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'splitmix64_runif'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (std::uint64_t *) caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_unsigned_long_long);
+  }
+  result = (double)octra::random::splitmix64_runif(*arg1);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_fill_runifoctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  double *arg1 = (double *) 0 ;
+  std::size_t arg2 ;
+  std::uint64_t arg3 ;
+  
+  if (caml_list_length(args) < 3 || caml_list_length(args) > 3) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'fill_runif'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = (double *)caml_ptr_val(caml_list_nth(args,0),SWIGTYPE_p_double);
+  }
+  {
+    arg2 = caml_long_val(caml_list_nth(args,1));
+  }
+  {
+    arg3 = caml_long_val(caml_list_nth(args,2));
+  }
+  octra::random::fill_runif(arg1,SWIG_STD_MOVE(arg2),arg3);
+  rv = Val_unit;
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
+SWIGEXT value _wrap_splitmix64_runif_seededoctra (value args)
+{
+  CAMLparam1(args);
+  CAMLlocal2(swig_result,rv);
+  std::uint64_t arg1 ;
+  double result;
+  
+  if (caml_list_length(args) < 1 || caml_list_length(args) > 1) {
+    caml_invalid_argument("Incorrect number of arguments passed to 'splitmix64_runif_seeded'");
+  }
+  swig_result = Val_unit;
+  {
+    arg1 = caml_long_val(caml_list_nth(args,0));
+  }
+  result = (double)octra::random::splitmix64_runif_seeded(arg1);
+  {
+    rv = caml_val_double(result);
+  }
+  swig_result = caml_list_append(swig_result,rv);
+  CAMLreturn(swig_result);
+}
+
+
 SWIGEXT value _wrap_hellooctra (value args)
 {
   CAMLparam1(args);
@@ -2671,24 +2772,28 @@ static swig_type_info _swigt__p_double = {"_p_double", "double *", 0, 0, (void*)
 static swig_type_info _swigt__p_octra__Callback = {"_p_octra__Callback", "octra::Callback *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__pairT_double_double_t = {"_p_std__pairT_double_double_t", "std::pair< double,double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "std::vector< double > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "std::uint64_t *|unsigned long long *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_double,
   &_swigt__p_octra__Callback,
   &_swigt__p_std__pairT_double_double_t,
   &_swigt__p_std__vectorT_double_t,
+  &_swigt__p_unsigned_long_long,
 };
 
 static swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_octra__Callback[] = {  {&_swigt__p_octra__Callback, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__pairT_double_double_t[] = {  {&_swigt__p_std__pairT_double_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_double_t[] = {  {&_swigt__p_std__vectorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_unsigned_long_long[] = {  {&_swigt__p_unsigned_long_long, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_double,
   _swigc__p_octra__Callback,
   _swigc__p_std__pairT_double_double_t,
   _swigc__p_std__vectorT_double_t,
+  _swigc__p_unsigned_long_long,
 };
 
 

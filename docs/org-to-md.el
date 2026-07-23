@@ -1,7 +1,7 @@
 ;; org-to-md.el --- Batch convert Org -> Markdown with Babel execution -*- lexical-binding: t; -*-
 
 ;; Usage:
-;;   emacs --batch -Q -l docs/org-to-md.el -- <input.org> <output.md>
+;;   emacs --batch -Q -l docs/init.el -l docs/org-to-md.el -- <input.org> <output.md>
 ;;
 ;; Behavior:
 ;; - Optionally applies direnv environment if `direnv` is available and an
@@ -9,6 +9,9 @@
 ;; - Executes Org Babel source blocks (best-effort; errors are captured and do
 ;;   not fail the export).
 ;; - Exports to Markdown via `ox-md`.
+;;
+;; Org Babel language setup lives in `docs/init.el`, shared with interactive
+;; use, so `-l docs/init.el` must precede `-l docs/org-to-md.el`.
 
 (setq package-enable-at-startup nil)
 
@@ -18,14 +21,8 @@
 (require 'seq)
 (require 'json)
 
-(setq org-confirm-babel-evaluate nil)
-(setq org-export-use-babel t)
-
-;; Keep this conservative; add languages as needed by docs.
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (shell . t)))
+(unless (featurep 'octra-docs-init)
+  (load (expand-file-name "init.el" (file-name-directory (or load-file-name buffer-file-name)))))
 
 (defun octra--ensure-parent-dir (path)
   (let ((parent (file-name-directory (expand-file-name path))))

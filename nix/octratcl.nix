@@ -9,7 +9,15 @@ pkgs.stdenv.mkDerivation rec {
   pname = "octratcl";
   version = "0.0.1";
 
-  src = pkgs.lib.cleanSource ../.;
+  src = pkgs.lib.cleanSourceWith {
+    src = ../.;
+    filter =
+      path: type:
+      let
+        base = builtins.baseNameOf path;
+      in
+      !(base == ".git" || base == "build" || base == "dist" || base == "node_modules" || base == "result");
+  };
 
   nativeBuildInputs = [
     pkgs.cmake
@@ -32,7 +40,7 @@ pkgs.stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-        tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
+        tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\.[0-9]+).*|\1|')"
         if [ -z "$tclVersionDir" ]; then
           echo "Could not determine Tcl version directory from [info library]" >&2
           exit 1
@@ -76,6 +84,7 @@ pkgs.stdenv.mkDerivation rec {
         DPair_first_set octra::DPair_first_set
         DPair_second_set octra::DPair_second_set
         delete_DPair octra::delete_DPair
+        splitmix64_runif_seeded octra::splitmix64_runif_seeded
       } {
         if {[llength [info commands $src]] && ![llength [info commands $dst]]} {
           interp alias {} $dst {} $src

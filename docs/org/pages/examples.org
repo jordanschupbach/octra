@@ -3,6 +3,9 @@
 #+PROPERTY: header-args :exports both
 #+PROPERTY: header-args :noweb yes
 #+PROPERTY: header-args:shell :results output :shebang "#!/usr/bin/env bash" :prologue "set -euo pipefail" :dir ../../../
+#+PROPERTY: header-args:cpp :results output :flags (mapconcat #'identity (append (process-lines "pkg-config" "--cflags" "octra") (process-lines "pkg-config" "--libs" "octra")) " ")
+#+PROPERTY: header-args:javascript :dir ../../../ :session none
+#+PROPERTY: header-args:php :dir ../../../
 
 * Org → Markdown (with Babel)
 
@@ -22,40 +25,35 @@ best-effort (printing `SKIP` when the relevant runtime/binding is unavailable).
 (+ 40 2)
 #+end_src
 
+#+RESULTS:
+: 42
+
 #+begin_src shell
 echo "Org Babel is executing blocks."
 #+end_src
 
+#+RESULTS:
+: Org Babel is executing blocks.
+
 ** C++
 
 #+name: octra_ex_cpp
-#+begin_src c++ :eval no
+#+begin_src cpp
 #include <octra/octra.hpp>
+#include <cstdio>
 
 int main(void) {
   octra::hello();
+  printf("splitmix64_runif_seeded(42) = %.17g\n", octra::random::splitmix64_runif_seeded(42));
   return 0;
 }
 #+end_src
 
-#+begin_src shell :exports results
-if command -v g++ >/dev/null 2>&1 && command -v pkg-config >/dev/null 2>&1 && pkg-config --exists octra; then
-  tmp="$(mktemp -d)"
-  cat >"$tmp/octra_ex.cpp" <<'CPP'
-<<octra_ex_cpp>>
-CPP
-  g++ -std=c++20 -O0 "$tmp/octra_ex.cpp" -o "$tmp/octra_ex" $(pkg-config --cflags --libs octra) >/dev/null 2>&1 \
-    || { echo "SKIP: C++ example failed to compile (octra not installed?)"; exit 0; }
-  "$tmp/octra_ex"
-else
-  echo "SKIP: C++ toolchain/pkg-config/octra not available"
-fi
-#+end_src
 
 ** Python
 
 #+name: octra_ex_python
-#+begin_src python :eval no
+#+begin_src python :results output
 from pyoctra import octra
 
 # dir(octra)
@@ -87,25 +85,17 @@ print("call_with_callback(3.0) =", octra.call_with_callback(3.0, cb))
 v = octra.make_dvector(1.0, 2.0, 3.0)
 v2 = octra.map_dvector_with_callback(v, cb)
 print("sum_dvector(map_dvector_with_callback(1,2,3)) =", octra.sum_dvector(v2))
+
+print("splitmix64_runif_seeded(42) =", octra.splitmix64_runif_seeded(42))
 #+end_src
 
-#+begin_src shell :exports results
-if command -v python >/dev/null 2>&1; then
-  PYTHONPATH="$(pwd)/src/pyoctra:${PYTHONPATH:-}" \
-    python - <<'PY' || { echo "SKIP: python binding not importable"; exit 0; }
-<<octra_ex_python>>
-PY
-else
-  echo "SKIP: python not available"
-fi
-#+end_src
 
 ** JavaScript (Node)
 
 #+name: octra_ex_javascript
-#+begin_src javascript :eval no
+#+begin_src javascript :results output
 // Local dev: build first (`just build-javascript`), then run this example.
-const octra = require("../../index.js");
+const octra = require("index.js");
 
 octra.hello();
 
@@ -121,22 +111,15 @@ console.log("sum_dvector(map_dvector_with_callback) =", octra.sum_dvector(v2));
 console.log("call_with_function(3.0) =", octra.call_with_function(3.0, (x) => x * 2.0));
 const out = octra.map_array_with_function([1.0, 2.0, 3.0], (x) => x * 2.0);
 console.log("map_array_with_function([1,2,3]) =", out);
+
+console.log("splitmix64_runif_seeded(42) =", octra.splitmix64_runif_seeded(42));
 #+end_src
 
-#+begin_src shell :exports results
-if command -v node >/dev/null 2>&1; then
-  (cd examples/javascript && node - <<'JS') || { echo "SKIP: node binding not loadable"; exit 0; }
-<<octra_ex_javascript>>
-JS
-else
-  echo "SKIP: node not available"
-fi
-#+end_src
 
 ** R
 
 #+name: octra_ex_r
-#+begin_src R :eval no
+#+begin_src R :results output
 library(octrar)
 
 octrar::hello()
@@ -156,22 +139,14 @@ p$second
 p <- octrar::IPair(1.1, 2.2) # converts to integer
 p$first
 p$second
-#+end_src
 
-#+begin_src shell :exports results
-if command -v R >/dev/null 2>&1; then
-  Rscript - <<'RSCRIPT' || { echo "SKIP: R binding not loadable"; exit 0; }
-<<octra_ex_r>>
-RSCRIPT
-else
-  echo "SKIP: R not available"
-fi
+cat("splitmix64_runif_seeded(42) =", octrar::splitmix64_runif_seeded(42), "\n")
 #+end_src
 
 ** Ruby
 
 #+name: octra_ex_ruby
-#+begin_src ruby :eval no
+#+begin_src ruby :results output
 require "octruby"
 
 Octra.hello
@@ -193,29 +168,14 @@ puts "call_with_callback(3.0) = #{Octra.call_with_callback(3.0, cb)}"
 v = Octra.make_dvector(1.0, 2.0, 3.0)
 v2 = Octra.map_dvector_with_callback(v, cb)
 puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Octra.sum_dvector(v2)}"
-#+end_src
 
-#+begin_src shell :exports results
-if command -v ruby >/dev/null 2>&1; then
-  # Prefer in-repo Ruby extension if present.
-  if [ -d src/octruby/lib ]; then
-    RUBYLIB="$(pwd)/src/octruby/lib:${RUBYLIB:-}" ruby - <<'RB' || { echo "SKIP: ruby binding not loadable"; exit 0; }
-<<octra_ex_ruby>>
-RB
-  else
-    ruby - <<'RB' || { echo "SKIP: ruby binding not loadable"; exit 0; }
-<<octra_ex_ruby>>
-RB
-  fi
-else
-  echo "SKIP: ruby not available"
-fi
+puts "splitmix64_runif_seeded(42) = #{Octra.splitmix64_runif_seeded(42)}"
 #+end_src
 
 ** Perl
 
 #+name: octra_ex_perl
-#+begin_src perl :eval no
+#+begin_src perl :results output
 use strict;
 use warnings;
 
@@ -241,30 +201,15 @@ print "call_with_callback(3.0) = ", Octra::call_with_callback(3.0, $cb), "\n";
 my $v = Octra::make_dvector(1.0, 2.0, 3.0);
 my $v2 = Octra::map_dvector_with_callback($v, $cb);
 print "sum_dvector(map_dvector_with_callback(1,2,3)) = ", Octra::sum_dvector($v2), "\n";
+
+print "splitmix64_runif_seeded(42) = ", Octra::splitmix64_runif_seeded(42), "\n";
 #+end_src
 
-#+begin_src shell :exports results
-if command -v perl >/dev/null 2>&1; then
-  if [ ! -f build/perl/lib/perl5/Octra.pm ]; then
-    if command -v just >/dev/null 2>&1; then
-      just build-perl >/dev/null 2>&1 || { echo "SKIP: perl binding build failed"; exit 0; }
-    else
-      echo "SKIP: just not available to build perl binding"
-      exit 0
-    fi
-  fi
-  export PERL5LIB="$(pwd)/build/perl/lib/perl5${PERL5LIB:+:}${PERL5LIB:-}"
-  export LD_LIBRARY_PATH="$(pwd)/build${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH:-}"
-  perl examples/perl/octra_ex.pl || { echo "SKIP: perl binding not loadable"; exit 0; }
-else
-  echo "SKIP: perl not available"
-fi
-#+end_src
 
 ** PHP
 
 #+name: octra_ex_php
-#+begin_src php :eval no
+#+begin_src php :results output
 <?php
 
 
@@ -286,31 +231,18 @@ for($i = 0; $i < 10; $i += 1) {
     print($v2->get($i) . "\n");
 }
 
-hello()
+hello();
+
+echo "splitmix64_runif_seeded(42) = " . splitmix64_runif_seeded(42) . "\n";
 
 ?>
 #+end_src
 
-#+begin_src shell :exports results
-if command -v php >/dev/null 2>&1; then
-  if [ ! -f build/octraPHP/liboctraPHP.so ]; then
-    if command -v just >/dev/null 2>&1; then
-      just build-php >/dev/null 2>&1 || { echo "SKIP: php binding build failed"; exit 0; }
-    else
-      echo "SKIP: just not available to build php binding"
-      exit 0
-    fi
-  fi
-  php --php-ini .user.ini examples/php/octra_ex.php || { echo "SKIP: php binding not loadable"; exit 0; }
-else
-  echo "SKIP: php not available"
-fi
-#+end_src
 
 ** Lua
 
 #+name: octra_ex_lua
-#+begin_src lua :eval no
+#+begin_src lua :results output
 local octra = require("octra")
 octra.hello()
 
@@ -324,22 +256,15 @@ local cb = octra.Callback()
 print("call_with_callback(3.0):", octra.call_with_callback(3.0, cb))
 local v2 = octra.map_dvector_with_callback(octra.make_dvector(1.0, 2.0, 3.0), cb)
 print("sum_dvector(map_dvector_with_callback(1,2,3)):", octra.sum_dvector(v2))
+
+print("splitmix64_runif_seeded(42):", octra.splitmix64_runif_seeded(42))
 #+end_src
 
-#+begin_src shell :exports results
-if command -v lua >/dev/null 2>&1; then
-  lua - <<'LUA' || { echo "SKIP: lua binding not loadable"; exit 0; }
-<<octra_ex_lua>>
-LUA
-else
-  echo "SKIP: lua not available"
-fi
-#+end_src
 
 ** Tcl
 
 #+name: octra_ex_tcl
-#+begin_src tcl :eval no
+#+begin_src tcl
 package require Octra 0.0.1
 
 octra::hello
@@ -356,22 +281,15 @@ puts "DPair: ([octra::DPair_first_get $p], [octra::DPair_second_get $p])"
 octra::delete_DPair $p
 
 puts "Octra Tcl example ran successfully."
+
+puts "splitmix64_runif_seeded(42): [octra::splitmix64_runif_seeded 42]"
 #+end_src
 
-#+begin_src shell :exports results
-if command -v tclsh >/dev/null 2>&1; then
-  tclsh - <<'TCL' || { echo "SKIP: tcl binding not loadable"; exit 0; }
-<<octra_ex_tcl>>
-TCL
-else
-  echo "SKIP: tclsh not available"
-fi
-#+end_src
 
 ** Octave
 
 #+name: octra_ex_octave
-#+begin_src octave :eval no
+#+begin_src octave :results output
 1;
 
 octra;
@@ -387,24 +305,15 @@ printf ("vector[0]=%f vector[1]=%f\n", v.__paren__ (0), v.__paren__ (1));
 
 p = DPair (10.0, 25.5);
 printf ("pair sum: %f\n", p.first + p.second);
+
+printf ("splitmix64_runif_seeded(42) = %.17g\n", splitmix64_runif_seeded (42));
 #+end_src
 
-#+begin_src shell :exports results
-if command -v octave >/dev/null 2>&1; then
-  tmp="$(mktemp -d)"
-  cat >"$tmp/octra_ex.m" <<'OCT'
-<<octra_ex_octave>>
-OCT
-  octave --quiet "$tmp/octra_ex.m" || { echo "SKIP: octave binding not loadable"; exit 0; }
-else
-  echo "SKIP: octave not available"
-fi
-#+end_src
 
 ** Guile
 
 #+name: octra_ex_guile
-#+begin_src scheme :eval no
+#+begin_src scheme :results output
 (use-modules (octra))
 
 (display "Hello from Guile + Octra\n")
@@ -415,24 +324,14 @@ fi
 
 (let ((p (make_dpair 4.0 5.0)))
   (format #t "sum_dpair = ~a\n" (sum_dpair p)))
-#+end_src
 
-#+begin_src shell :exports results
-if command -v guile >/dev/null 2>&1; then
-  tmp="$(mktemp -d)"
-  cat >"$tmp/octra_ex.scm" <<'SCM'
-<<octra_ex_guile>>
-SCM
-  guile "$tmp/octra_ex.scm" || { echo "SKIP: guile binding not loadable"; exit 0; }
-else
-  echo "SKIP: guile not available"
-fi
+(format #t "splitmix64_runif_seeded(42) = ~a\n" (splitmix64_runif_seeded 42))
 #+end_src
 
 ** OCaml
 
 #+name: octra_ex_ocaml
-#+begin_src ocaml :eval no
+#+begin_src ocaml :results output
 let () =
   let open Swig in
   ignore (Octra._hello C_void);
@@ -450,35 +349,17 @@ let () =
   let v0 = get_float (invoke v "[]" (C_int 0)) in
   let v1 = get_float (invoke v "[]" (C_int 1)) in
   let v_sum = get_float (Octra._sum_dvector v) in
-  Printf.printf "DVector: [0]=%g [1]=%g sum=%g\n" v0 v1 v_sum
+  Printf.printf "DVector: [0]=%g [1]=%g sum=%g\n" v0 v1 v_sum;
+
+  let r = get_float (Octra._splitmix64_runif_seeded (C_int 42)) in
+  Printf.printf "splitmix64_runif_seeded(42) = %.17g\n" r
 #+end_src
 
-#+begin_src shell :exports results
-if command -v ocaml >/dev/null 2>&1 && command -v ocamlfind >/dev/null 2>&1; then
-  if command -v just >/dev/null 2>&1; then
-    just install-ocaml >/dev/null 2>&1 || { echo "SKIP: OCaml binding build/install failed"; exit 0; }
-  else
-    echo "SKIP: just not available to build OCaml binding"
-    exit 0
-  fi
-
-  export OCAMLPATH="$(pwd)/build/ocaml/prefix/lib${OCAMLPATH:+:}$OCAMLPATH"
-  tmp="$(mktemp -d)"
-  cat >"$tmp/octra_ex.ml" <<'ML'
-<<octra_ex_ocaml>>
-ML
-  ocamlfind ocamlopt -package octraocaml -linkpkg "$tmp/octra_ex.ml" -o "$tmp/octra_ex" >/dev/null 2>&1 \
-    || { echo "SKIP: OCaml example failed to compile"; exit 0; }
-  "$tmp/octra_ex" || { echo "SKIP: OCaml example failed to run"; exit 0; }
-else
-  echo "SKIP: ocaml/ocamlfind not available"
-fi
-#+end_src
 
 ** Go
 
 #+name: octra_ex_go
-#+begin_src go :eval no
+#+begin_src go :results output :dir ../../../src/gooctra
 package main
 
 import (
@@ -501,34 +382,16 @@ func main() {
 	// Clean up
 	octra.DeleteDPair(dp)
 	octra.DeleteSVector(s)
+
+	fmt.Printf("splitmix64_runif_seeded(42) = %v\n", octra.Splitmix64_runif_seeded(42))
 }
 #+end_src
 
-#+begin_src shell :exports results
-if command -v go >/dev/null 2>&1; then
-  if command -v just >/dev/null 2>&1; then
-    # Build the Go binding (and the core library) if missing.
-    if [ ! -f src/gooctra/go.mod ] || [ ! -f src/gooctra/octra.go ]; then
-      echo "SKIP: Go binding sources not present"
-      exit 0
-    fi
-    just build-go >/dev/null 2>&1 || { echo "SKIP: Go binding build failed"; exit 0; }
-  else
-    echo "SKIP: just not available to build Go binding"
-    exit 0
-  fi
-
-  (cd src/gooctra && \
-    export LD_LIBRARY_PATH="$(pwd)/../../build${LD_LIBRARY_PATH:+:}${LD_LIBRARY_PATH:-}" && \
-    export CGO_CPPFLAGS="-I$(pwd)/../../include" && \
-    export CGO_LDFLAGS="-L$(pwd)/../../build -loctra" && \
-    go run ../../examples/go/octra_ex.go) \
-    || { echo "SKIP: Go example failed to run"; exit 0; }
-else
-  echo "SKIP: go not available"
-fi
-#+end_src
 
 * Using Octra
 
 See `README.md` for language bindings and build/test commands.
+
+# Local Variables:
+# org-confirm-babel-evaluate: nil
+# End:

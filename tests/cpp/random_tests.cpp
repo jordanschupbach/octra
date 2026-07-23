@@ -54,6 +54,12 @@ TEST(octra_random, fill_runif_handles_null_and_empty_buffers) {
   EXPECT_EQ(values, original);
 }
 
+TEST(octra_random, splitmix64_runif_seeded_matches_runif) {
+  std::uint64_t state = 42ULL;
+
+  EXPECT_EQ(octra::random::splitmix64_runif_seeded(42ULL), octra::random::splitmix64_runif(state));
+}
+
 TEST(octra_random, fill_runif_populates_all_values_in_range) {
   std::vector<double> values(4096, std::numeric_limits<double>::quiet_NaN());
 

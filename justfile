@@ -550,19 +550,32 @@ clean:
 
 # {{{ docs commands
 
-prebuild-docs-pages:
-    @echo "Exporting Org pages -> Markdown"
+# Export a single Org page (docs/org/pages/*.org) to Markdown (docs/pages/*.md),
+# executing its Babel source blocks along the way.
+docs-md-file FILE:
+    @echo "Exporting {{ FILE }} -> Markdown"
     @bash -lc 'set -euo pipefail; \
-      export_cmd='\''set -euo pipefail; shopt -s nullglob; for f in docs/org/pages/*.org; do base="$(basename "$f" .org)"; out="docs/pages/${base}.md"; emacs --batch -Q -l docs/org-to-md.el -- "$f" "$out"; done'\''; \
+      f="{{ FILE }}"; \
+      base="$(basename "$f" .org)"; \
+      out="docs/pages/$base.md"; \
+      export_cmd="emacs --batch -Q -l docs/init.el -l docs/org-to-md.el -- \"$f\" \"$out\""; \
       if command -v nix >/dev/null 2>&1; then \
-        if nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd" >/dev/null 2>&1; then \
-          nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
-        else \
-          bash -lc "$export_cmd"; \
-        fi; \
+        nix develop --accept-flake-config .#docs-pages --command bash -lc "$export_cmd"; \
       else \
         bash -lc "$export_cmd"; \
       fi'
+
+# Export every Org page under docs/org/pages/ to Markdown under docs/pages/.
+# Perl/PHP/OCaml/Go have no Nix derivation (see docs/init.el), so their
+# examples need these local builds in place before Babel can run them.
+docs-md: build-cpp build-perl build-php install-ocaml
+    @echo "Exporting Org pages -> Markdown"
+    @bash -lc 'set -euo pipefail; shopt -s nullglob; \
+      for f in docs/org/pages/*.org; do \
+        just docs-md-file "$f"; \
+      done'
+
+prebuild-docs-pages: docs-md
 
 docs: build
     @echo "Building docs"

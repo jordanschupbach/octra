@@ -135,6 +135,30 @@ let _delete_DVector arg = match _delete_DVector_f ((fnhelper arg)) with
 | [x] -> (if false then Gc.finalise 
   (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
 | lst -> C_list lst ;;
+external _splitmix64_next_f : c_obj list -> c_obj list = "_wrap_splitmix64_nextoctra" ;;
+let _splitmix64_next arg = match _splitmix64_next_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _splitmix64_runif_f : c_obj list -> c_obj list = "_wrap_splitmix64_runifoctra" ;;
+let _splitmix64_runif arg = match _splitmix64_runif_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _fill_runif_f : c_obj list -> c_obj list = "_wrap_fill_runifoctra" ;;
+let _fill_runif arg = match _fill_runif_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
+external _splitmix64_runif_seeded_f : c_obj list -> c_obj list = "_wrap_splitmix64_runif_seededoctra" ;;
+let _splitmix64_runif_seeded arg = match _splitmix64_runif_seeded_f ((fnhelper arg)) with
+  [] -> C_void
+| [x] -> (if false then Gc.finalise 
+  (fun x -> ignore ((invoke x) "~" C_void)) x) ; x
+| lst -> C_list lst ;;
 external _hello_f : c_obj list -> c_obj list = "_wrap_hellooctra" ;;
 let _hello arg = match _hello_f ((fnhelper arg)) with
   [] -> C_void

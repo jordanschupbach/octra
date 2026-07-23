@@ -3,7 +3,8 @@
             make_dvector
             sum_dvector
             make_dpair
-            sum_dpair))
+            sum_dpair
+            splitmix64_runif_seeded))
 
 ;; Load the compiled SWIG extension into this module, so its symbols land here.
 ;; Avoid doing this at compile time so auto-compilation doesn't fail before the
@@ -49,3 +50,4 @@
 (define sum_dvector sum-dvector)
 (define make_dpair make-dpair)
 (define sum_dpair sum-dpair)
+(define splitmix64_runif_seeded splitmix64-runif-seeded)

@@ -49,6 +49,10 @@ sub this {
 
 package Octra;
 
+*splitmix64_next = *Octrac::splitmix64_next;
+*splitmix64_runif = *Octrac::splitmix64_runif;
+*fill_runif = *Octrac::fill_runif;
+*splitmix64_runif_seeded = *Octrac::splitmix64_runif_seeded;
 *hello = *Octrac::hello;
 *call_with_callback = *Octrac::call_with_callback;
 *map_dvector_with_callback = *Octrac::map_dvector_with_callback;

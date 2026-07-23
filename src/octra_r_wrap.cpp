@@ -6998,6 +6998,156 @@ R_swig_delete_SizeVector ( SEXP self)
 
 
 SWIGEXPORT SEXP
+R_swig_splitmix64_next ( SEXP state, SEXP s_swig_copy)
+{
+  {
+    std::uint64_t result;
+    std::uint64_t *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(state, &argp1, SWIGTYPE_p_unsigned_long_long,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "splitmix64_next" "', argument " "1"" of type '" "std::uint64_t &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "splitmix64_next" "', argument " "1"" of type '" "std::uint64_t &""'"); 
+    }
+    arg1 = reinterpret_cast< std::uint64_t * >(argp1);
+    result = (std::uint64_t)octra::random::splitmix64_next(*arg1);
+    r_ans = SWIG_From_long(static_cast< long >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_splitmix64_runif ( SEXP state, SEXP s_swig_copy)
+{
+  {
+    double result;
+    std::uint64_t *arg1 = 0 ;
+    void *argp1 = 0 ;
+    int res1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    res1 = SWIG_R_ConvertPtr(state, &argp1, SWIGTYPE_p_unsigned_long_long,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "splitmix64_runif" "', argument " "1"" of type '" "std::uint64_t &""'"); 
+    }
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "splitmix64_runif" "', argument " "1"" of type '" "std::uint64_t &""'"); 
+    }
+    arg1 = reinterpret_cast< std::uint64_t * >(argp1);
+    result = (double)octra::random::splitmix64_runif(*arg1);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_fill_runif ( SEXP data, SEXP size, SEXP seed)
+{
+  {
+    double *arg1 = 0 ;
+    std::size_t arg2 ;
+    std::uint64_t arg3 ;
+    int val2 ;
+    int ecode2 = 0 ;
+    long val3 ;
+    int ecode3 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    {
+      {
+        int _rswigi;
+        int _rswiglen = LENGTH(data);
+        arg1 = static_cast< double * >(calloc(sizeof(double), _rswiglen));
+        for (_rswigi=0; _rswigi<_rswiglen; _rswigi++) {
+          arg1[_rswigi] = REAL(data)[_rswigi];
+        }
+      }
+    }
+    ecode2 = SWIG_AsVal_int(size, &val2);
+    if (!SWIG_IsOK(ecode2)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "fill_runif" "', argument " "2"" of type '" "std::size_t""'");
+    } 
+    arg2 = static_cast< std::size_t >(val2);
+    ecode3 = SWIG_AsVal_long(seed, &val3);
+    if (!SWIG_IsOK(ecode3)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "fill_runif" "', argument " "3"" of type '" "std::uint64_t""'");
+    } 
+    arg3 = static_cast< std::uint64_t >(val3);
+    octra::random::fill_runif(arg1,SWIG_STD_MOVE(arg2),arg3);
+    r_ans = R_NilValue;
+    
+    free(arg1);
+    
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+    
+    free(arg1);
+    
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
+R_swig_splitmix64_runif_seeded ( SEXP seed, SEXP s_swig_copy)
+{
+  {
+    double result;
+    std::uint64_t arg1 ;
+    long val1 ;
+    int ecode1 = 0 ;
+    unsigned int r_nprotect = 0;
+    SEXP r_ans = R_NilValue ;
+    VMAXTYPE r_vmax = vmaxget() ;
+    
+    ecode1 = SWIG_AsVal_long(seed, &val1);
+    if (!SWIG_IsOK(ecode1)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "splitmix64_runif_seeded" "', argument " "1"" of type '" "std::uint64_t""'");
+    } 
+    arg1 = static_cast< std::uint64_t >(val1);
+    result = (double)octra::random::splitmix64_runif_seeded(arg1);
+    r_ans = SWIG_From_double(static_cast< double >(result));
+    vmaxset(r_vmax);
+    if(r_nprotect)  Rf_unprotect(r_nprotect);
+    
+    return r_ans;
+    fail: SWIGUNUSED;
+  }
+  Rf_error("%s %s", SWIG_ErrorType(SWIG_lasterror_code), SWIG_lasterror_msg);
+  return R_NilValue;
+}
+
+
+SWIGEXPORT SEXP
 R_swig_hello ( )
 {
   {
@@ -7336,7 +7486,7 @@ SWIGINTERN swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t,std::allocator< size_t > > *|std::vector< size_t > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_char = {"_p_unsigned_char", "uint8_t *|uint_fast8_t *|uint_least8_t *|unsigned char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_int = {"_p_unsigned_int", "uint32_t *|uint_fast16_t *|uint_fast32_t *|uint_least32_t *|uintptr_t *|unsigned int *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "uint64_t *|uint_fast64_t *|uint_least64_t *|uintmax_t *|unsigned long long *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "std::uint64_t *|uint64_t *|uint_fast64_t *|uint_least64_t *|uintmax_t *|unsigned long long *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_short = {"_p_unsigned_short", "uint16_t *|uint_least16_t *|unsigned short *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
 
@@ -7861,6 +8011,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SizeVector_capacity", (DL_FUNC) &R_swig_SizeVector_capacity, 2},
    {"R_swig_DVector_append", (DL_FUNC) &R_swig_DVector_append, 2},
    {"R_swig_DVector_assign", (DL_FUNC) &R_swig_DVector_assign, 3},
+   {"R_swig_splitmix64_runif_seeded", (DL_FUNC) &R_swig_splitmix64_runif_seeded, 2},
    {"R_swig_DPair_second_set", (DL_FUNC) &R_swig_DPair_second_set, 2},
    {"R_swig_IPair_first_get", (DL_FUNC) &R_swig_IPair_first_get, 2},
    {"R_swig_SizeVector_pop", (DL_FUNC) &R_swig_SizeVector_pop, 2},
@@ -7874,6 +8025,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_IVector_capacity", (DL_FUNC) &R_swig_IVector_capacity, 2},
    {"R_swig_DVector___setitem__", (DL_FUNC) &R_swig_DVector___setitem__, 3},
    {"R_swig_DVector_front", (DL_FUNC) &R_swig_DVector_front, 2},
+   {"R_swig_splitmix64_next", (DL_FUNC) &R_swig_splitmix64_next, 2},
    {"R_swig_IVector___delitem__", (DL_FUNC) &R_swig_IVector___delitem__, 2},
    {"R_swig_new_IPair__SWIG_0", (DL_FUNC) &R_swig_new_IPair__SWIG_0, 0},
    {"R_swig_new_IPair__SWIG_1", (DL_FUNC) &R_swig_new_IPair__SWIG_1, 2},
@@ -7918,6 +8070,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_DVector___delslice__", (DL_FUNC) &R_swig_DVector___delslice__, 3},
    {"R_swig_new_SizeVector__SWIG_2", (DL_FUNC) &R_swig_new_SizeVector__SWIG_2, 1},
    {"R_swig_new_SizeVector__SWIG_3", (DL_FUNC) &R_swig_new_SizeVector__SWIG_3, 2},
+   {"R_swig_fill_runif", (DL_FUNC) &R_swig_fill_runif, 3},
    {"R_swig_SizeVector_swap", (DL_FUNC) &R_swig_SizeVector_swap, 2},
    {"R_swig_new_DPair__SWIG_0", (DL_FUNC) &R_swig_new_DPair__SWIG_0, 0},
    {"R_swig_delete_DVector", (DL_FUNC) &R_swig_delete_DVector, 1},
@@ -7947,6 +8100,7 @@ SWIGINTERN R_CallMethodDef CallEntries[] = {
    {"R_swig_SizeVector_resize__SWIG_1", (DL_FUNC) &R_swig_SizeVector_resize__SWIG_1, 3},
    {"R_swig_DVector_resize__SWIG_0", (DL_FUNC) &R_swig_DVector_resize__SWIG_0, 2},
    {"R_swig_IPair_second_set", (DL_FUNC) &R_swig_IPair_second_set, 2},
+   {"R_swig_splitmix64_runif", (DL_FUNC) &R_swig_splitmix64_runif, 2},
    {"R_swig_DVector_resize__SWIG_1", (DL_FUNC) &R_swig_DVector_resize__SWIG_1, 3},
    {"R_swig_SizeVector___setitem__", (DL_FUNC) &R_swig_SizeVector___setitem__, 3},
    {"R_swig_sum_dpair", (DL_FUNC) &R_swig_sum_dpair, 2},

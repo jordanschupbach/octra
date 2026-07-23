@@ -13,9 +13,9 @@ extern
 #ifdef __cplusplus
   "C"
 #endif
-  void cgo_panic__octra_edfc800af80047e0(const char*);
+  void cgo_panic__octra_81b4410bfaa0dbf2(const char*);
 static void _swig_gopanic(const char *p) {
-  cgo_panic__octra_edfc800af80047e0(p);
+  cgo_panic__octra_81b4410bfaa0dbf2(p);
 }
 
 
@@ -388,7 +388,7 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__set(std::vector< std::string > *sel
 extern "C" {
 #endif
 
-void _wrap_Swig_free_octra_edfc800af80047e0(void *_swig_go_0) {
+void _wrap_Swig_free_octra_81b4410bfaa0dbf2(void *_swig_go_0) {
   void *arg1 = 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -398,7 +398,7 @@ void _wrap_Swig_free_octra_edfc800af80047e0(void *_swig_go_0) {
 }
 
 
-void *_wrap_Swig_malloc_octra_edfc800af80047e0(intgo _swig_go_0) {
+void *_wrap_Swig_malloc_octra_81b4410bfaa0dbf2(intgo _swig_go_0) {
   int arg1 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -411,7 +411,7 @@ void *_wrap_Swig_malloc_octra_edfc800af80047e0(intgo _swig_go_0) {
 }
 
 
-std::pair< int,int > *_wrap_new_IPair__SWIG_0_octra_edfc800af80047e0() {
+std::pair< int,int > *_wrap_new_IPair__SWIG_0_octra_81b4410bfaa0dbf2() {
   std::pair< int,int > *result = 0 ;
   std::pair< int,int > *_swig_go_result;
   
@@ -422,7 +422,7 @@ std::pair< int,int > *_wrap_new_IPair__SWIG_0_octra_edfc800af80047e0() {
 }
 
 
-std::pair< int,int > *_wrap_new_IPair__SWIG_1_octra_edfc800af80047e0(intgo _swig_go_0, intgo _swig_go_1) {
+std::pair< int,int > *_wrap_new_IPair__SWIG_1_octra_81b4410bfaa0dbf2(intgo _swig_go_0, intgo _swig_go_1) {
   int arg1 ;
   int arg2 ;
   std::pair< int,int > *result = 0 ;
@@ -437,7 +437,7 @@ std::pair< int,int > *_wrap_new_IPair__SWIG_1_octra_edfc800af80047e0(intgo _swig
 }
 
 
-std::pair< int,int > *_wrap_new_IPair__SWIG_2_octra_edfc800af80047e0(std::pair< int,int > *_swig_go_0) {
+std::pair< int,int > *_wrap_new_IPair__SWIG_2_octra_81b4410bfaa0dbf2(std::pair< int,int > *_swig_go_0) {
   std::pair< int,int > *arg1 = 0 ;
   std::pair< int,int > *result = 0 ;
   std::pair< int,int > *_swig_go_result;
@@ -450,7 +450,7 @@ std::pair< int,int > *_wrap_new_IPair__SWIG_2_octra_edfc800af80047e0(std::pair< 
 }
 
 
-void _wrap_IPair_first_set_octra_edfc800af80047e0(std::pair< int,int > *_swig_go_0, intgo _swig_go_1) {
+void _wrap_IPair_first_set_octra_81b4410bfaa0dbf2(std::pair< int,int > *_swig_go_0, intgo _swig_go_1) {
   std::pair< int,int > *arg1 = 0 ;
   int arg2 ;
   
@@ -462,7 +462,7 @@ void _wrap_IPair_first_set_octra_edfc800af80047e0(std::pair< int,int > *_swig_go
 }
 
 
-intgo _wrap_IPair_first_get_octra_edfc800af80047e0(std::pair< int,int > *_swig_go_0) {
+intgo _wrap_IPair_first_get_octra_81b4410bfaa0dbf2(std::pair< int,int > *_swig_go_0) {
   std::pair< int,int > *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
@@ -475,7 +475,7 @@ intgo _wrap_IPair_first_get_octra_edfc800af80047e0(std::pair< int,int > *_swig_g
 }
 
 
-void _wrap_IPair_second_set_octra_edfc800af80047e0(std::pair< int,int > *_swig_go_0, intgo _swig_go_1) {
+void _wrap_IPair_second_set_octra_81b4410bfaa0dbf2(std::pair< int,int > *_swig_go_0, intgo _swig_go_1) {
   std::pair< int,int > *arg1 = 0 ;
   int arg2 ;
   
@@ -487,7 +487,7 @@ void _wrap_IPair_second_set_octra_edfc800af80047e0(std::pair< int,int > *_swig_g
 }
 
 
-intgo _wrap_IPair_second_get_octra_edfc800af80047e0(std::pair< int,int > *_swig_go_0) {
+intgo _wrap_IPair_second_get_octra_81b4410bfaa0dbf2(std::pair< int,int > *_swig_go_0) {
   std::pair< int,int > *arg1 = 0 ;
   int result;
   intgo _swig_go_result;
@@ -500,7 +500,7 @@ intgo _wrap_IPair_second_get_octra_edfc800af80047e0(std::pair< int,int > *_swig_
 }
 
 
-void _wrap_delete_IPair_octra_edfc800af80047e0(std::pair< int,int > *_swig_go_0) {
+void _wrap_delete_IPair_octra_81b4410bfaa0dbf2(std::pair< int,int > *_swig_go_0) {
   std::pair< int,int > *arg1 = 0 ;
   
   arg1 = *(std::pair< int,int > **)&_swig_go_0; 
@@ -510,7 +510,7 @@ void _wrap_delete_IPair_octra_edfc800af80047e0(std::pair< int,int > *_swig_go_0)
 }
 
 
-std::pair< double,double > *_wrap_new_DPair__SWIG_0_octra_edfc800af80047e0() {
+std::pair< double,double > *_wrap_new_DPair__SWIG_0_octra_81b4410bfaa0dbf2() {
   std::pair< double,double > *result = 0 ;
   std::pair< double,double > *_swig_go_result;
   
@@ -521,7 +521,7 @@ std::pair< double,double > *_wrap_new_DPair__SWIG_0_octra_edfc800af80047e0() {
 }
 
 
-std::pair< double,double > *_wrap_new_DPair__SWIG_1_octra_edfc800af80047e0(double _swig_go_0, double _swig_go_1) {
+std::pair< double,double > *_wrap_new_DPair__SWIG_1_octra_81b4410bfaa0dbf2(double _swig_go_0, double _swig_go_1) {
   double arg1 ;
   double arg2 ;
   std::pair< double,double > *result = 0 ;
@@ -536,7 +536,7 @@ std::pair< double,double > *_wrap_new_DPair__SWIG_1_octra_edfc800af80047e0(doubl
 }
 
 
-std::pair< double,double > *_wrap_new_DPair__SWIG_2_octra_edfc800af80047e0(std::pair< double,double > *_swig_go_0) {
+std::pair< double,double > *_wrap_new_DPair__SWIG_2_octra_81b4410bfaa0dbf2(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   std::pair< double,double > *result = 0 ;
   std::pair< double,double > *_swig_go_result;
@@ -549,7 +549,7 @@ std::pair< double,double > *_wrap_new_DPair__SWIG_2_octra_edfc800af80047e0(std::
 }
 
 
-void _wrap_DPair_first_set_octra_edfc800af80047e0(std::pair< double,double > *_swig_go_0, double _swig_go_1) {
+void _wrap_DPair_first_set_octra_81b4410bfaa0dbf2(std::pair< double,double > *_swig_go_0, double _swig_go_1) {
   std::pair< double,double > *arg1 = 0 ;
   double arg2 ;
   
@@ -561,7 +561,7 @@ void _wrap_DPair_first_set_octra_edfc800af80047e0(std::pair< double,double > *_s
 }
 
 
-double _wrap_DPair_first_get_octra_edfc800af80047e0(std::pair< double,double > *_swig_go_0) {
+double _wrap_DPair_first_get_octra_81b4410bfaa0dbf2(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -574,7 +574,7 @@ double _wrap_DPair_first_get_octra_edfc800af80047e0(std::pair< double,double > *
 }
 
 
-void _wrap_DPair_second_set_octra_edfc800af80047e0(std::pair< double,double > *_swig_go_0, double _swig_go_1) {
+void _wrap_DPair_second_set_octra_81b4410bfaa0dbf2(std::pair< double,double > *_swig_go_0, double _swig_go_1) {
   std::pair< double,double > *arg1 = 0 ;
   double arg2 ;
   
@@ -586,7 +586,7 @@ void _wrap_DPair_second_set_octra_edfc800af80047e0(std::pair< double,double > *_
 }
 
 
-double _wrap_DPair_second_get_octra_edfc800af80047e0(std::pair< double,double > *_swig_go_0) {
+double _wrap_DPair_second_get_octra_81b4410bfaa0dbf2(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -599,7 +599,7 @@ double _wrap_DPair_second_get_octra_edfc800af80047e0(std::pair< double,double > 
 }
 
 
-void _wrap_delete_DPair_octra_edfc800af80047e0(std::pair< double,double > *_swig_go_0) {
+void _wrap_delete_DPair_octra_81b4410bfaa0dbf2(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   
   arg1 = *(std::pair< double,double > **)&_swig_go_0; 
@@ -609,7 +609,7 @@ void _wrap_delete_DPair_octra_edfc800af80047e0(std::pair< double,double > *_swig
 }
 
 
-std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_0_octra_edfc800af80047e0() {
+std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_0_octra_81b4410bfaa0dbf2() {
   std::pair< std::string,std::string > *result = 0 ;
   std::pair< std::string,std::string > *_swig_go_result;
   
@@ -620,7 +620,7 @@ std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_0_octra_edfc800af800
 }
 
 
-std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_1_octra_edfc800af80047e0(_gostring_ _swig_go_0, _gostring_ _swig_go_1) {
+std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_1_octra_81b4410bfaa0dbf2(_gostring_ _swig_go_0, _gostring_ _swig_go_1) {
   std::string arg1 ;
   std::string arg2 ;
   std::pair< std::string,std::string > *result = 0 ;
@@ -635,7 +635,7 @@ std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_1_octra_edfc800af800
 }
 
 
-std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_2_octra_edfc800af80047e0(std::pair< std::string,std::string > *_swig_go_0) {
+std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_2_octra_81b4410bfaa0dbf2(std::pair< std::string,std::string > *_swig_go_0) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::pair< std::string,std::string > *result = 0 ;
   std::pair< std::string,std::string > *_swig_go_result;
@@ -648,7 +648,7 @@ std::pair< std::string,std::string > *_wrap_new_SPair__SWIG_2_octra_edfc800af800
 }
 
 
-void _wrap_SPair_first_set_octra_edfc800af80047e0(std::pair< std::string,std::string > *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_SPair_first_set_octra_81b4410bfaa0dbf2(std::pair< std::string,std::string > *_swig_go_0, _gostring_ _swig_go_1) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -663,7 +663,7 @@ void _wrap_SPair_first_set_octra_edfc800af80047e0(std::pair< std::string,std::st
 }
 
 
-_gostring_ _wrap_SPair_first_get_octra_edfc800af80047e0(std::pair< std::string,std::string > *_swig_go_0) {
+_gostring_ _wrap_SPair_first_get_octra_81b4410bfaa0dbf2(std::pair< std::string,std::string > *_swig_go_0) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -676,7 +676,7 @@ _gostring_ _wrap_SPair_first_get_octra_edfc800af80047e0(std::pair< std::string,s
 }
 
 
-void _wrap_SPair_second_set_octra_edfc800af80047e0(std::pair< std::string,std::string > *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_SPair_second_set_octra_81b4410bfaa0dbf2(std::pair< std::string,std::string > *_swig_go_0, _gostring_ _swig_go_1) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   
@@ -691,7 +691,7 @@ void _wrap_SPair_second_set_octra_edfc800af80047e0(std::pair< std::string,std::s
 }
 
 
-_gostring_ _wrap_SPair_second_get_octra_edfc800af80047e0(std::pair< std::string,std::string > *_swig_go_0) {
+_gostring_ _wrap_SPair_second_get_octra_81b4410bfaa0dbf2(std::pair< std::string,std::string > *_swig_go_0) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   std::string *result = 0 ;
   _gostring_ _swig_go_result;
@@ -704,7 +704,7 @@ _gostring_ _wrap_SPair_second_get_octra_edfc800af80047e0(std::pair< std::string,
 }
 
 
-void _wrap_delete_SPair_octra_edfc800af80047e0(std::pair< std::string,std::string > *_swig_go_0) {
+void _wrap_delete_SPair_octra_81b4410bfaa0dbf2(std::pair< std::string,std::string > *_swig_go_0) {
   std::pair< std::string,std::string > *arg1 = 0 ;
   
   arg1 = *(std::pair< std::string,std::string > **)&_swig_go_0; 
@@ -714,7 +714,7 @@ void _wrap_delete_SPair_octra_edfc800af80047e0(std::pair< std::string,std::strin
 }
 
 
-std::vector< int > *_wrap_new_IVector__SWIG_0_octra_edfc800af80047e0() {
+std::vector< int > *_wrap_new_IVector__SWIG_0_octra_81b4410bfaa0dbf2() {
   std::vector< int > *result = 0 ;
   std::vector< int > *_swig_go_result;
   
@@ -725,7 +725,7 @@ std::vector< int > *_wrap_new_IVector__SWIG_0_octra_edfc800af80047e0() {
 }
 
 
-std::vector< int > *_wrap_new_IVector__SWIG_1_octra_edfc800af80047e0(long long _swig_go_0) {
+std::vector< int > *_wrap_new_IVector__SWIG_1_octra_81b4410bfaa0dbf2(long long _swig_go_0) {
   std::vector< int >::size_type arg1 ;
   std::vector< int > *result = 0 ;
   std::vector< int > *_swig_go_result;
@@ -738,7 +738,7 @@ std::vector< int > *_wrap_new_IVector__SWIG_1_octra_edfc800af80047e0(long long _
 }
 
 
-std::vector< int > *_wrap_new_IVector__SWIG_2_octra_edfc800af80047e0(std::vector< int > *_swig_go_0) {
+std::vector< int > *_wrap_new_IVector__SWIG_2_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int > *result = 0 ;
   std::vector< int > *_swig_go_result;
@@ -751,7 +751,7 @@ std::vector< int > *_wrap_new_IVector__SWIG_2_octra_edfc800af80047e0(std::vector
 }
 
 
-long long _wrap_IVector_size_octra_edfc800af80047e0(std::vector< int > *_swig_go_0) {
+long long _wrap_IVector_size_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int >::size_type result;
   long long _swig_go_result;
@@ -764,7 +764,7 @@ long long _wrap_IVector_size_octra_edfc800af80047e0(std::vector< int > *_swig_go
 }
 
 
-long long _wrap_IVector_capacity_octra_edfc800af80047e0(std::vector< int > *_swig_go_0) {
+long long _wrap_IVector_capacity_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int >::size_type result;
   long long _swig_go_result;
@@ -777,7 +777,7 @@ long long _wrap_IVector_capacity_octra_edfc800af80047e0(std::vector< int > *_swi
 }
 
 
-void _wrap_IVector_reserve_octra_edfc800af80047e0(std::vector< int > *_swig_go_0, long long _swig_go_1) {
+void _wrap_IVector_reserve_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0, long long _swig_go_1) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int >::size_type arg2 ;
   
@@ -789,7 +789,7 @@ void _wrap_IVector_reserve_octra_edfc800af80047e0(std::vector< int > *_swig_go_0
 }
 
 
-bool _wrap_IVector_isEmpty_octra_edfc800af80047e0(std::vector< int > *_swig_go_0) {
+bool _wrap_IVector_isEmpty_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -802,7 +802,7 @@ bool _wrap_IVector_isEmpty_octra_edfc800af80047e0(std::vector< int > *_swig_go_0
 }
 
 
-void _wrap_IVector_clear_octra_edfc800af80047e0(std::vector< int > *_swig_go_0) {
+void _wrap_IVector_clear_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   
   arg1 = *(std::vector< int > **)&_swig_go_0; 
@@ -812,7 +812,7 @@ void _wrap_IVector_clear_octra_edfc800af80047e0(std::vector< int > *_swig_go_0) 
 }
 
 
-void _wrap_IVector_add_octra_edfc800af80047e0(std::vector< int > *_swig_go_0, intgo _swig_go_1) {
+void _wrap_IVector_add_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0, intgo _swig_go_1) {
   std::vector< int > *arg1 = 0 ;
   std::vector< int >::value_type *arg2 = 0 ;
   
@@ -825,7 +825,7 @@ void _wrap_IVector_add_octra_edfc800af80047e0(std::vector< int > *_swig_go_0, in
 }
 
 
-intgo _wrap_IVector_get_octra_edfc800af80047e0(std::vector< int > *_swig_go_0, intgo _swig_go_1) {
+intgo _wrap_IVector_get_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0, intgo _swig_go_1) {
   std::vector< int > *arg1 = 0 ;
   int arg2 ;
   std::vector< int >::value_type *result = 0 ;
@@ -844,7 +844,7 @@ intgo _wrap_IVector_get_octra_edfc800af80047e0(std::vector< int > *_swig_go_0, i
 }
 
 
-void _wrap_IVector_set_octra_edfc800af80047e0(std::vector< int > *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
+void _wrap_IVector_set_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
   std::vector< int > *arg1 = 0 ;
   int arg2 ;
   std::vector< int >::value_type *arg3 = 0 ;
@@ -863,7 +863,7 @@ void _wrap_IVector_set_octra_edfc800af80047e0(std::vector< int > *_swig_go_0, in
 }
 
 
-void _wrap_delete_IVector_octra_edfc800af80047e0(std::vector< int > *_swig_go_0) {
+void _wrap_delete_IVector_octra_81b4410bfaa0dbf2(std::vector< int > *_swig_go_0) {
   std::vector< int > *arg1 = 0 ;
   
   arg1 = *(std::vector< int > **)&_swig_go_0; 
@@ -873,7 +873,7 @@ void _wrap_delete_IVector_octra_edfc800af80047e0(std::vector< int > *_swig_go_0)
 }
 
 
-std::vector< double > *_wrap_new_DVector__SWIG_0_octra_edfc800af80047e0() {
+std::vector< double > *_wrap_new_DVector__SWIG_0_octra_81b4410bfaa0dbf2() {
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
   
@@ -884,7 +884,7 @@ std::vector< double > *_wrap_new_DVector__SWIG_0_octra_edfc800af80047e0() {
 }
 
 
-std::vector< double > *_wrap_new_DVector__SWIG_1_octra_edfc800af80047e0(long long _swig_go_0) {
+std::vector< double > *_wrap_new_DVector__SWIG_1_octra_81b4410bfaa0dbf2(long long _swig_go_0) {
   std::vector< double >::size_type arg1 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -897,7 +897,7 @@ std::vector< double > *_wrap_new_DVector__SWIG_1_octra_edfc800af80047e0(long lon
 }
 
 
-std::vector< double > *_wrap_new_DVector__SWIG_2_octra_edfc800af80047e0(std::vector< double > *_swig_go_0) {
+std::vector< double > *_wrap_new_DVector__SWIG_2_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double > *result = 0 ;
   std::vector< double > *_swig_go_result;
@@ -910,7 +910,7 @@ std::vector< double > *_wrap_new_DVector__SWIG_2_octra_edfc800af80047e0(std::vec
 }
 
 
-long long _wrap_DVector_size_octra_edfc800af80047e0(std::vector< double > *_swig_go_0) {
+long long _wrap_DVector_size_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double >::size_type result;
   long long _swig_go_result;
@@ -923,7 +923,7 @@ long long _wrap_DVector_size_octra_edfc800af80047e0(std::vector< double > *_swig
 }
 
 
-long long _wrap_DVector_capacity_octra_edfc800af80047e0(std::vector< double > *_swig_go_0) {
+long long _wrap_DVector_capacity_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double >::size_type result;
   long long _swig_go_result;
@@ -936,7 +936,7 @@ long long _wrap_DVector_capacity_octra_edfc800af80047e0(std::vector< double > *_
 }
 
 
-void _wrap_DVector_reserve_octra_edfc800af80047e0(std::vector< double > *_swig_go_0, long long _swig_go_1) {
+void _wrap_DVector_reserve_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0, long long _swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double >::size_type arg2 ;
   
@@ -948,7 +948,7 @@ void _wrap_DVector_reserve_octra_edfc800af80047e0(std::vector< double > *_swig_g
 }
 
 
-bool _wrap_DVector_isEmpty_octra_edfc800af80047e0(std::vector< double > *_swig_go_0) {
+bool _wrap_DVector_isEmpty_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -961,7 +961,7 @@ bool _wrap_DVector_isEmpty_octra_edfc800af80047e0(std::vector< double > *_swig_g
 }
 
 
-void _wrap_DVector_clear_octra_edfc800af80047e0(std::vector< double > *_swig_go_0) {
+void _wrap_DVector_clear_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   
   arg1 = *(std::vector< double > **)&_swig_go_0; 
@@ -971,7 +971,7 @@ void _wrap_DVector_clear_octra_edfc800af80047e0(std::vector< double > *_swig_go_
 }
 
 
-void _wrap_DVector_add_octra_edfc800af80047e0(std::vector< double > *_swig_go_0, double _swig_go_1) {
+void _wrap_DVector_add_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0, double _swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   std::vector< double >::value_type *arg2 = 0 ;
   
@@ -983,7 +983,7 @@ void _wrap_DVector_add_octra_edfc800af80047e0(std::vector< double > *_swig_go_0,
 }
 
 
-double _wrap_DVector_get_octra_edfc800af80047e0(std::vector< double > *_swig_go_0, intgo _swig_go_1) {
+double _wrap_DVector_get_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0, intgo _swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   int arg2 ;
   std::vector< double >::value_type *result = 0 ;
@@ -1002,7 +1002,7 @@ double _wrap_DVector_get_octra_edfc800af80047e0(std::vector< double > *_swig_go_
 }
 
 
-void _wrap_DVector_set_octra_edfc800af80047e0(std::vector< double > *_swig_go_0, intgo _swig_go_1, double _swig_go_2) {
+void _wrap_DVector_set_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0, intgo _swig_go_1, double _swig_go_2) {
   std::vector< double > *arg1 = 0 ;
   int arg2 ;
   std::vector< double >::value_type *arg3 = 0 ;
@@ -1020,7 +1020,7 @@ void _wrap_DVector_set_octra_edfc800af80047e0(std::vector< double > *_swig_go_0,
 }
 
 
-void _wrap_delete_DVector_octra_edfc800af80047e0(std::vector< double > *_swig_go_0) {
+void _wrap_delete_DVector_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   
   arg1 = *(std::vector< double > **)&_swig_go_0; 
@@ -1030,7 +1030,7 @@ void _wrap_delete_DVector_octra_edfc800af80047e0(std::vector< double > *_swig_go
 }
 
 
-std::vector< size_t > *_wrap_new_SizeVector__SWIG_0_octra_edfc800af80047e0() {
+std::vector< size_t > *_wrap_new_SizeVector__SWIG_0_octra_81b4410bfaa0dbf2() {
   std::vector< size_t > *result = 0 ;
   std::vector< size_t > *_swig_go_result;
   
@@ -1041,7 +1041,7 @@ std::vector< size_t > *_wrap_new_SizeVector__SWIG_0_octra_edfc800af80047e0() {
 }
 
 
-std::vector< size_t > *_wrap_new_SizeVector__SWIG_1_octra_edfc800af80047e0(long long _swig_go_0) {
+std::vector< size_t > *_wrap_new_SizeVector__SWIG_1_octra_81b4410bfaa0dbf2(long long _swig_go_0) {
   std::vector< size_t >::size_type arg1 ;
   std::vector< size_t > *result = 0 ;
   std::vector< size_t > *_swig_go_result;
@@ -1054,7 +1054,7 @@ std::vector< size_t > *_wrap_new_SizeVector__SWIG_1_octra_edfc800af80047e0(long 
 }
 
 
-std::vector< size_t > *_wrap_new_SizeVector__SWIG_2_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0) {
+std::vector< size_t > *_wrap_new_SizeVector__SWIG_2_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0) {
   std::vector< size_t > *arg1 = 0 ;
   std::vector< size_t > *result = 0 ;
   std::vector< size_t > *_swig_go_result;
@@ -1067,7 +1067,7 @@ std::vector< size_t > *_wrap_new_SizeVector__SWIG_2_octra_edfc800af80047e0(std::
 }
 
 
-long long _wrap_SizeVector_size_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0) {
+long long _wrap_SizeVector_size_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0) {
   std::vector< size_t > *arg1 = 0 ;
   std::vector< size_t >::size_type result;
   long long _swig_go_result;
@@ -1080,7 +1080,7 @@ long long _wrap_SizeVector_size_octra_edfc800af80047e0(std::vector< size_t > *_s
 }
 
 
-long long _wrap_SizeVector_capacity_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0) {
+long long _wrap_SizeVector_capacity_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0) {
   std::vector< size_t > *arg1 = 0 ;
   std::vector< size_t >::size_type result;
   long long _swig_go_result;
@@ -1093,7 +1093,7 @@ long long _wrap_SizeVector_capacity_octra_edfc800af80047e0(std::vector< size_t >
 }
 
 
-void _wrap_SizeVector_reserve_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0, long long _swig_go_1) {
+void _wrap_SizeVector_reserve_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0, long long _swig_go_1) {
   std::vector< size_t > *arg1 = 0 ;
   std::vector< size_t >::size_type arg2 ;
   
@@ -1105,7 +1105,7 @@ void _wrap_SizeVector_reserve_octra_edfc800af80047e0(std::vector< size_t > *_swi
 }
 
 
-bool _wrap_SizeVector_isEmpty_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0) {
+bool _wrap_SizeVector_isEmpty_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0) {
   std::vector< size_t > *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -1118,7 +1118,7 @@ bool _wrap_SizeVector_isEmpty_octra_edfc800af80047e0(std::vector< size_t > *_swi
 }
 
 
-void _wrap_SizeVector_clear_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0) {
+void _wrap_SizeVector_clear_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0) {
   std::vector< size_t > *arg1 = 0 ;
   
   arg1 = *(std::vector< size_t > **)&_swig_go_0; 
@@ -1128,7 +1128,7 @@ void _wrap_SizeVector_clear_octra_edfc800af80047e0(std::vector< size_t > *_swig_
 }
 
 
-void _wrap_SizeVector_add_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0, long long _swig_go_1) {
+void _wrap_SizeVector_add_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0, long long _swig_go_1) {
   std::vector< size_t > *arg1 = 0 ;
   std::vector< size_t >::value_type *arg2 = 0 ;
   
@@ -1140,7 +1140,7 @@ void _wrap_SizeVector_add_octra_edfc800af80047e0(std::vector< size_t > *_swig_go
 }
 
 
-long long _wrap_SizeVector_get_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0, intgo _swig_go_1) {
+long long _wrap_SizeVector_get_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0, intgo _swig_go_1) {
   std::vector< size_t > *arg1 = 0 ;
   int arg2 ;
   std::vector< size_t >::value_type *result = 0 ;
@@ -1159,7 +1159,7 @@ long long _wrap_SizeVector_get_octra_edfc800af80047e0(std::vector< size_t > *_sw
 }
 
 
-void _wrap_SizeVector_set_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0, intgo _swig_go_1, long long _swig_go_2) {
+void _wrap_SizeVector_set_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0, intgo _swig_go_1, long long _swig_go_2) {
   std::vector< size_t > *arg1 = 0 ;
   int arg2 ;
   std::vector< size_t >::value_type *arg3 = 0 ;
@@ -1177,7 +1177,7 @@ void _wrap_SizeVector_set_octra_edfc800af80047e0(std::vector< size_t > *_swig_go
 }
 
 
-void _wrap_delete_SizeVector_octra_edfc800af80047e0(std::vector< size_t > *_swig_go_0) {
+void _wrap_delete_SizeVector_octra_81b4410bfaa0dbf2(std::vector< size_t > *_swig_go_0) {
   std::vector< size_t > *arg1 = 0 ;
   
   arg1 = *(std::vector< size_t > **)&_swig_go_0; 
@@ -1187,7 +1187,7 @@ void _wrap_delete_SizeVector_octra_edfc800af80047e0(std::vector< size_t > *_swig
 }
 
 
-std::vector< std::string > *_wrap_new_SVector__SWIG_0_octra_edfc800af80047e0() {
+std::vector< std::string > *_wrap_new_SVector__SWIG_0_octra_81b4410bfaa0dbf2() {
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
   
@@ -1198,7 +1198,7 @@ std::vector< std::string > *_wrap_new_SVector__SWIG_0_octra_edfc800af80047e0() {
 }
 
 
-std::vector< std::string > *_wrap_new_SVector__SWIG_1_octra_edfc800af80047e0(long long _swig_go_0) {
+std::vector< std::string > *_wrap_new_SVector__SWIG_1_octra_81b4410bfaa0dbf2(long long _swig_go_0) {
   std::vector< std::string >::size_type arg1 ;
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
@@ -1211,7 +1211,7 @@ std::vector< std::string > *_wrap_new_SVector__SWIG_1_octra_edfc800af80047e0(lon
 }
 
 
-std::vector< std::string > *_wrap_new_SVector__SWIG_2_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0) {
+std::vector< std::string > *_wrap_new_SVector__SWIG_2_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string > *result = 0 ;
   std::vector< std::string > *_swig_go_result;
@@ -1224,7 +1224,7 @@ std::vector< std::string > *_wrap_new_SVector__SWIG_2_octra_edfc800af80047e0(std
 }
 
 
-long long _wrap_SVector_size_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0) {
+long long _wrap_SVector_size_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string >::size_type result;
   long long _swig_go_result;
@@ -1237,7 +1237,7 @@ long long _wrap_SVector_size_octra_edfc800af80047e0(std::vector< std::string > *
 }
 
 
-long long _wrap_SVector_capacity_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0) {
+long long _wrap_SVector_capacity_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string >::size_type result;
   long long _swig_go_result;
@@ -1250,7 +1250,7 @@ long long _wrap_SVector_capacity_octra_edfc800af80047e0(std::vector< std::string
 }
 
 
-void _wrap_SVector_reserve_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0, long long _swig_go_1) {
+void _wrap_SVector_reserve_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0, long long _swig_go_1) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string >::size_type arg2 ;
   
@@ -1262,7 +1262,7 @@ void _wrap_SVector_reserve_octra_edfc800af80047e0(std::vector< std::string > *_s
 }
 
 
-bool _wrap_SVector_isEmpty_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0) {
+bool _wrap_SVector_isEmpty_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   bool result;
   bool _swig_go_result;
@@ -1275,7 +1275,7 @@ bool _wrap_SVector_isEmpty_octra_edfc800af80047e0(std::vector< std::string > *_s
 }
 
 
-void _wrap_SVector_clear_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0) {
+void _wrap_SVector_clear_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   
   arg1 = *(std::vector< std::string > **)&_swig_go_0; 
@@ -1285,7 +1285,7 @@ void _wrap_SVector_clear_octra_edfc800af80047e0(std::vector< std::string > *_swi
 }
 
 
-void _wrap_SVector_add_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_SVector_add_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0, _gostring_ _swig_go_1) {
   std::vector< std::string > *arg1 = 0 ;
   std::vector< std::string >::value_type *arg2 = 0 ;
   
@@ -1300,7 +1300,7 @@ void _wrap_SVector_add_octra_edfc800af80047e0(std::vector< std::string > *_swig_
 }
 
 
-_gostring_ _wrap_SVector_get_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0, intgo _swig_go_1) {
+_gostring_ _wrap_SVector_get_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0, intgo _swig_go_1) {
   std::vector< std::string > *arg1 = 0 ;
   int arg2 ;
   std::vector< std::string >::value_type *result = 0 ;
@@ -1319,7 +1319,7 @@ _gostring_ _wrap_SVector_get_octra_edfc800af80047e0(std::vector< std::string > *
 }
 
 
-void _wrap_SVector_set_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2) {
+void _wrap_SVector_set_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2) {
   std::vector< std::string > *arg1 = 0 ;
   int arg2 ;
   std::vector< std::string >::value_type *arg3 = 0 ;
@@ -1340,7 +1340,7 @@ void _wrap_SVector_set_octra_edfc800af80047e0(std::vector< std::string > *_swig_
 }
 
 
-void _wrap_delete_SVector_octra_edfc800af80047e0(std::vector< std::string > *_swig_go_0) {
+void _wrap_delete_SVector_octra_81b4410bfaa0dbf2(std::vector< std::string > *_swig_go_0) {
   std::vector< std::string > *arg1 = 0 ;
   
   arg1 = *(std::vector< std::string > **)&_swig_go_0; 
@@ -1350,13 +1350,66 @@ void _wrap_delete_SVector_octra_edfc800af80047e0(std::vector< std::string > *_sw
 }
 
 
-void _wrap_hello_octra_edfc800af80047e0() {
+long long _wrap_splitmix64_next_octra_81b4410bfaa0dbf2(long long *_swig_go_0) {
+  std::uint64_t *arg1 = 0 ;
+  std::uint64_t result;
+  long long _swig_go_result;
+  
+  arg1 = *(std::uint64_t **)&_swig_go_0; 
+  
+  result = (std::uint64_t)octra::random::splitmix64_next(*arg1);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+double _wrap_splitmix64_runif_octra_81b4410bfaa0dbf2(long long *_swig_go_0) {
+  std::uint64_t *arg1 = 0 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = *(std::uint64_t **)&_swig_go_0; 
+  
+  result = (double)octra::random::splitmix64_runif(*arg1);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_fill_runif_octra_81b4410bfaa0dbf2(double *_swig_go_0, long long _swig_go_1, long long _swig_go_2) {
+  double *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::uint64_t arg3 ;
+  
+  arg1 = *(double **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  arg3 = (std::uint64_t)_swig_go_2; 
+  
+  octra::random::fill_runif(arg1,SWIG_STD_MOVE(arg2),arg3);
+  
+}
+
+
+double _wrap_splitmix64_runif_seeded_octra_81b4410bfaa0dbf2(long long _swig_go_0) {
+  std::uint64_t arg1 ;
+  double result;
+  double _swig_go_result;
+  
+  arg1 = (std::uint64_t)_swig_go_0; 
+  
+  result = (double)octra::random::splitmix64_runif_seeded(arg1);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_hello_octra_81b4410bfaa0dbf2() {
   octra::hello();
   
 }
 
 
-void _wrap_delete_Callback_octra_edfc800af80047e0(octra::Callback *_swig_go_0) {
+void _wrap_delete_Callback_octra_81b4410bfaa0dbf2(octra::Callback *_swig_go_0) {
   octra::Callback *arg1 = 0 ;
   
   arg1 = *(octra::Callback **)&_swig_go_0; 
@@ -1366,7 +1419,7 @@ void _wrap_delete_Callback_octra_edfc800af80047e0(octra::Callback *_swig_go_0) {
 }
 
 
-double _wrap_Callback_call_octra_edfc800af80047e0(octra::Callback *_swig_go_0, double _swig_go_1) {
+double _wrap_Callback_call_octra_81b4410bfaa0dbf2(octra::Callback *_swig_go_0, double _swig_go_1) {
   octra::Callback *arg1 = 0 ;
   double arg2 ;
   double result;
@@ -1381,7 +1434,7 @@ double _wrap_Callback_call_octra_edfc800af80047e0(octra::Callback *_swig_go_0, d
 }
 
 
-octra::Callback *_wrap_new_Callback_octra_edfc800af80047e0() {
+octra::Callback *_wrap_new_Callback_octra_81b4410bfaa0dbf2() {
   octra::Callback *result = 0 ;
   octra::Callback *_swig_go_result;
   
@@ -1392,7 +1445,7 @@ octra::Callback *_wrap_new_Callback_octra_edfc800af80047e0() {
 }
 
 
-double _wrap_call_with_callback_octra_edfc800af80047e0(double _swig_go_0, octra::Callback *_swig_go_1) {
+double _wrap_call_with_callback_octra_81b4410bfaa0dbf2(double _swig_go_0, octra::Callback *_swig_go_1) {
   double arg1 ;
   octra::Callback *arg2 = 0 ;
   double result;
@@ -1407,7 +1460,7 @@ double _wrap_call_with_callback_octra_edfc800af80047e0(double _swig_go_0, octra:
 }
 
 
-std::vector< double > *_wrap_map_dvector_with_callback_octra_edfc800af80047e0(std::vector< double > *_swig_go_0, octra::Callback *_swig_go_1) {
+std::vector< double > *_wrap_map_dvector_with_callback_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0, octra::Callback *_swig_go_1) {
   std::vector< double > *arg1 = 0 ;
   octra::Callback *arg2 = 0 ;
   std::vector< double > result;
@@ -1422,7 +1475,7 @@ std::vector< double > *_wrap_map_dvector_with_callback_octra_edfc800af80047e0(st
 }
 
 
-std::vector< double > *_wrap_make_dvector_octra_edfc800af80047e0(double _swig_go_0, double _swig_go_1, double _swig_go_2) {
+std::vector< double > *_wrap_make_dvector_octra_81b4410bfaa0dbf2(double _swig_go_0, double _swig_go_1, double _swig_go_2) {
   double arg1 ;
   double arg2 ;
   double arg3 ;
@@ -1439,7 +1492,7 @@ std::vector< double > *_wrap_make_dvector_octra_edfc800af80047e0(double _swig_go
 }
 
 
-double _wrap_sum_dvector_octra_edfc800af80047e0(std::vector< double > *_swig_go_0) {
+double _wrap_sum_dvector_octra_81b4410bfaa0dbf2(std::vector< double > *_swig_go_0) {
   std::vector< double > *arg1 = 0 ;
   double result;
   double _swig_go_result;
@@ -1452,7 +1505,7 @@ double _wrap_sum_dvector_octra_edfc800af80047e0(std::vector< double > *_swig_go_
 }
 
 
-std::pair< double,double > *_wrap_make_dpair_octra_edfc800af80047e0(double _swig_go_0, double _swig_go_1) {
+std::pair< double,double > *_wrap_make_dpair_octra_81b4410bfaa0dbf2(double _swig_go_0, double _swig_go_1) {
   double arg1 ;
   double arg2 ;
   std::pair< double,double > result;
@@ -1467,7 +1520,7 @@ std::pair< double,double > *_wrap_make_dpair_octra_edfc800af80047e0(double _swig
 }
 
 
-double _wrap_sum_dpair_octra_edfc800af80047e0(std::pair< double,double > *_swig_go_0) {
+double _wrap_sum_dpair_octra_81b4410bfaa0dbf2(std::pair< double,double > *_swig_go_0) {
   std::pair< double,double > *arg1 = 0 ;
   double result;
   double _swig_go_result;

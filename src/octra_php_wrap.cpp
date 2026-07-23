@@ -1283,28 +1283,29 @@ SWIG_Php_AppendOutput(zval *target, zval *o, int is_void) {
 
 
 #define SWIGTYPE_p_difference_type swig_types[0]
-#define SWIGTYPE_p_first_type swig_types[1]
-#define SWIGTYPE_p_int swig_types[2]
-#define SWIGTYPE_p_long_long swig_types[3]
-#define SWIGTYPE_p_octra__Callback swig_types[4]
-#define SWIGTYPE_p_second_type swig_types[5]
-#define SWIGTYPE_p_short swig_types[6]
-#define SWIGTYPE_p_signed_char swig_types[7]
-#define SWIGTYPE_p_size_type swig_types[8]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[9]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[10]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[11]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[12]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[13]
-#define SWIGTYPE_p_unsigned_char swig_types[14]
-#define SWIGTYPE_p_unsigned_int swig_types[15]
-#define SWIGTYPE_p_unsigned_long_long swig_types[16]
-#define SWIGTYPE_p_unsigned_short swig_types[17]
-#define SWIGTYPE_p_value_type swig_types[18]
+#define SWIGTYPE_p_double swig_types[1]
+#define SWIGTYPE_p_first_type swig_types[2]
+#define SWIGTYPE_p_int swig_types[3]
+#define SWIGTYPE_p_long_long swig_types[4]
+#define SWIGTYPE_p_octra__Callback swig_types[5]
+#define SWIGTYPE_p_second_type swig_types[6]
+#define SWIGTYPE_p_short swig_types[7]
+#define SWIGTYPE_p_signed_char swig_types[8]
+#define SWIGTYPE_p_size_type swig_types[9]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[10]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[11]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[12]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[13]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[14]
+#define SWIGTYPE_p_unsigned_char swig_types[15]
+#define SWIGTYPE_p_unsigned_int swig_types[16]
+#define SWIGTYPE_p_unsigned_long_long swig_types[17]
+#define SWIGTYPE_p_unsigned_short swig_types[18]
+#define SWIGTYPE_p_value_type swig_types[19]
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
-SWIGINTERN swig_type_info *swig_types[20];
-SWIGINTERN swig_module_info swig_module = {swig_types, 19, 0, 0, 0, 0};
+SWIGINTERN swig_type_info *swig_types[21];
+SWIGINTERN swig_module_info swig_module = {swig_types, 20, 0, 0, 0, 0};
 /* header section */
 #define SWIG_name  "octra"
 #ifdef __cplusplus
@@ -1555,49 +1556,53 @@ static zend_object_handlers Callback_object_handlers;
 static zend_object *SWIG_Php_create_object_Callback(zend_class_entry *ce) {return SWIG_Php_do_create_object(ce, &Callback_object_handlers);}
 static void SWIG_Php_free_obj_Callback(zend_object *object) {delete (octra::Callback *)SWIG_Php_free_obj(object);}
 
-/* class entry for pointer to _p_int */
-static zend_class_entry *SWIG_Php_ce__p_int;
-
-/* class entry for pointer to _p_size_type */
-static zend_class_entry *SWIG_Php_ce__p_size_type;
+/* class entry for pointer to _p_unsigned_char */
+static zend_class_entry *SWIG_Php_ce__p_unsigned_char;
 
 /* class entry for pointer to _p_value_type */
 static zend_class_entry *SWIG_Php_ce__p_value_type;
 
-/* class entry for pointer to _p_unsigned_char */
-static zend_class_entry *SWIG_Php_ce__p_unsigned_char;
+/* class entry for pointer to _p_short */
+static zend_class_entry *SWIG_Php_ce__p_short;
 
-/* class entry for pointer to _p_unsigned_short */
-static zend_class_entry *SWIG_Php_ce__p_unsigned_short;
-
-/* class entry for pointer to _p_signed_char */
-static zend_class_entry *SWIG_Php_ce__p_signed_char;
+/* class entry for pointer to _p_size_type */
+static zend_class_entry *SWIG_Php_ce__p_size_type;
 
 /* class entry for pointer to _p_long_long */
 static zend_class_entry *SWIG_Php_ce__p_long_long;
 
-/* class entry for pointer to _p_unsigned_int */
-static zend_class_entry *SWIG_Php_ce__p_unsigned_int;
+/* class entry for pointer to _p_int */
+static zend_class_entry *SWIG_Php_ce__p_int;
 
 /* class entry for pointer to _p_first_type */
 static zend_class_entry *SWIG_Php_ce__p_first_type;
 
+/* class entry for pointer to _p_unsigned_int */
+static zend_class_entry *SWIG_Php_ce__p_unsigned_int;
+
+/* class entry for pointer to _p_signed_char */
+static zend_class_entry *SWIG_Php_ce__p_signed_char;
+
+/* class entry for pointer to _p_difference_type */
+static zend_class_entry *SWIG_Php_ce__p_difference_type;
+
 /* class entry for pointer to _p_unsigned_long_long */
 static zend_class_entry *SWIG_Php_ce__p_unsigned_long_long;
 
-/* class entry for pointer to _p_short */
-static zend_class_entry *SWIG_Php_ce__p_short;
+/* class entry for pointer to _p_double */
+static zend_class_entry *SWIG_Php_ce__p_double;
 
 /* class entry for pointer to _p_second_type */
 static zend_class_entry *SWIG_Php_ce__p_second_type;
 
-/* class entry for pointer to _p_difference_type */
-static zend_class_entry *SWIG_Php_ce__p_difference_type;
+/* class entry for pointer to _p_unsigned_short */
+static zend_class_entry *SWIG_Php_ce__p_unsigned_short;
 
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
 SWIGINTERN swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_double = {"_p_double", "double *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
@@ -1613,7 +1618,7 @@ SWIGINTERN swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t
 SWIGINTERN swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t > *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_char = {"_p_unsigned_char", "uint8_t *|uint_fast8_t *|uint_least8_t *|unsigned char *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_int = {"_p_unsigned_int", "uint32_t *|uint_fast16_t *|uint_fast32_t *|uint_least32_t *|uintptr_t *|unsigned int *", 0, 0, (void*)0, 0};
-SWIGINTERN swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "uint64_t *|uint_fast64_t *|uint_least64_t *|uintmax_t *|unsigned long long *", 0, 0, (void*)0, 0};
+SWIGINTERN swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "std::uint64_t *|uint64_t *|uint_fast64_t *|uint_least64_t *|uintmax_t *|unsigned long long *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_unsigned_short = {"_p_unsigned_short", "uint16_t *|uint_least16_t *|unsigned short *", 0, 0, (void*)0, 0};
 SWIGINTERN swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
 
@@ -1622,6 +1627,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 /* -------- TYPES TABLE (BEGIN) -------- */
 
   &_swigt__p_difference_type,
+  &_swigt__p_double,
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
@@ -1643,6 +1649,7 @@ SWIGINTERN swig_type_info *swig_type_initial[] = {
 };
 
 SWIGINTERN swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
+SWIGINTERN swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 SWIGINTERN swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
@@ -1664,6 +1671,7 @@ SWIGINTERN swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0,
 
 SWIGINTERN swig_cast_info *swig_cast_initial[] = {
   _swigc__p_difference_type,
+  _swigc__p_double,
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
@@ -3557,6 +3565,156 @@ fail:
 
 
 
+static PHP_METHOD(octra,splitmix64_next) {
+  PHP_FN(splitmix64_next)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(splitmix64_next) {
+  std::uint64_t *arg1 = 0 ;
+  zval args[1];
+  std::uint64_t result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_unsigned_long_long, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_unsigned_long_long for argument 1 of splitmix64_next");
+    return;
+  }
+  
+  result = (std::uint64_t)octra::random::splitmix64_next(*arg1);
+  
+  if (result <= (unsigned long long)LONG_MAX) {
+    RETVAL_LONG((long)(result));
+  } else {
+    RETVAL_NEW_STR(zend_strpprintf(0, "%llu", (unsigned long long)result));
+  }
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(octra,splitmix64_runif) {
+  PHP_FN(splitmix64_runif)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(splitmix64_runif) {
+  std::uint64_t *arg1 = 0 ;
+  zval args[1];
+  double result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_unsigned_long_long, 0) < 0 || arg1 == NULL) {
+    zend_type_error("Expected SWIGTYPE_p_unsigned_long_long for argument 1 of splitmix64_runif");
+    return;
+  }
+  
+  result = (double)octra::random::splitmix64_runif(*arg1);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(octra,fill_runif) {
+  PHP_FN(fill_runif)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(fill_runif) {
+  double *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::uint64_t arg3 ;
+  zval args[3];
+  
+  if(ZEND_NUM_ARGS() != 3 || zend_get_parameters_array_ex(3, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  if (SWIG_ConvertPtr(&args[0], (void **) &arg1, SWIGTYPE_p_double, 0) < 0) {
+    zend_type_error("Expected SWIGTYPE_p_double for argument 1 of fill_runif");
+    return;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,6,CONVERT_INT_IN@*/
+  arg2 = (std::size_t) zval_get_long(&args[1]);
+  /*@SWIG@*/;
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,27,CONVERT_UNSIGNED_LONG_LONG_IN@*/
+  switch (Z_TYPE(args[2])) {
+  case IS_DOUBLE:
+    arg3 = (std::uint64_t) Z_DVAL(args[2]);
+    break;
+    case IS_STRING: {
+      char * endptr;
+      errno = 0;
+      arg3 = (std::uint64_t) strtoull(Z_STRVAL(args[2]), &endptr, 10);
+      if (*endptr == '\0' && !errno) break;
+    }
+    /* FALL THRU */
+  default:
+    arg3 = (std::uint64_t) zval_get_long(&args[2]);
+  }
+  /*@SWIG@*/;
+  
+  octra::random::fill_runif(arg1,SWIG_STD_MOVE(arg2),arg3);
+  
+fail:
+  return;
+}
+
+
+static PHP_METHOD(octra,splitmix64_runif_seeded) {
+  PHP_FN(splitmix64_runif_seeded)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
+}
+
+static PHP_FUNCTION(splitmix64_runif_seeded) {
+  std::uint64_t arg1 ;
+  zval args[1];
+  double result;
+  
+  if(ZEND_NUM_ARGS() != 1 || zend_get_parameters_array_ex(1, args) != SUCCESS) {
+    WRONG_PARAM_COUNT;
+  }
+  
+  
+  /*@SWIG:/nix/store/f2231dwy4diqwv38y71ljwx1lb8m0pcj-swig-jse/share/swig-jse/5.0.6/php/utils.i,27,CONVERT_UNSIGNED_LONG_LONG_IN@*/
+  switch (Z_TYPE(args[0])) {
+  case IS_DOUBLE:
+    arg1 = (std::uint64_t) Z_DVAL(args[0]);
+    break;
+    case IS_STRING: {
+      char * endptr;
+      errno = 0;
+      arg1 = (std::uint64_t) strtoull(Z_STRVAL(args[0]), &endptr, 10);
+      if (*endptr == '\0' && !errno) break;
+    }
+    /* FALL THRU */
+  default:
+    arg1 = (std::uint64_t) zval_get_long(&args[0]);
+  }
+  /*@SWIG@*/;
+  
+  result = (double)octra::random::splitmix64_runif_seeded(arg1);
+  
+  RETVAL_DOUBLE(result);
+  
+fail:
+  return;
+}
+
+
 static PHP_METHOD(octra,hello) {
   PHP_FN(hello)(INTERNAL_FUNCTION_PARAM_PASSTHRU);
 }
@@ -3967,6 +4125,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_call_with_callback, 0, 2, M
  ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_DOUBLE,NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,Callback,MAY_BE_NULL,NULL)
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_fill_runif, 0, 3, MAY_BE_VOID)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_double,MAY_BE_NULL,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg2,MAY_BE_LONG,NULL)
+ ZEND_ARG_TYPE_MASK(0,arg3,MAY_BE_LONG|MAY_BE_STRING,NULL)
+ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_hello, 0, 0, MAY_BE_VOID)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_make_dpair, 0, 2, DPair, 0)
@@ -3981,6 +4144,15 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(swig_arginfo_map_dvector_with_callback, 0, 2, DVector, 0)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DVector,0,NULL)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg2,Callback,MAY_BE_NULL,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_splitmix64_next, 0, 1, MAY_BE_LONG|MAY_BE_STRING)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_unsigned_long_long,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_splitmix64_runif, 0, 1, MAY_BE_DOUBLE)
+ ZEND_ARG_OBJ_TYPE_MASK(0,arg1,SWIG\\_p_unsigned_long_long,0,NULL)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_splitmix64_runif_seeded, 0, 1, MAY_BE_DOUBLE)
+ ZEND_ARG_TYPE_MASK(0,arg1,MAY_BE_LONG|MAY_BE_STRING,NULL)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(swig_arginfo_sum_dpair, 0, 1, MAY_BE_DOUBLE)
  ZEND_ARG_OBJ_TYPE_MASK(0,arg1,DPair,0,NULL)
@@ -4154,6 +4326,10 @@ static const zend_function_entry class_Callback_functions[] = {
 /* entry subsection */
 /* Every non-class user visible function must have an entry here */
 static const zend_function_entry module_octra_functions[] = {
+ PHP_FE(splitmix64_next,swig_arginfo_splitmix64_next)
+ PHP_FE(splitmix64_runif,swig_arginfo_splitmix64_runif)
+ PHP_FE(fill_runif,swig_arginfo_fill_runif)
+ PHP_FE(splitmix64_runif_seeded,swig_arginfo_splitmix64_runif_seeded)
  PHP_FE(hello,swig_arginfo_hello)
  PHP_FE(call_with_callback,swig_arginfo_call_with_callback)
  PHP_FE(map_dvector_with_callback,swig_arginfo_map_dvector_with_callback)
@@ -4165,6 +4341,10 @@ static const zend_function_entry module_octra_functions[] = {
 };
 
 static const zend_function_entry class_octra_functions[] = {
+ PHP_ME(octra,splitmix64_next,swig_arginfo_splitmix64_next,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,splitmix64_runif,swig_arginfo_splitmix64_runif,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,fill_runif,swig_arginfo_fill_runif,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+ PHP_ME(octra,splitmix64_runif_seeded,swig_arginfo_splitmix64_runif_seeded,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  PHP_ME(octra,hello,swig_arginfo_hello,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  PHP_ME(octra,call_with_callback,swig_arginfo_call_with_callback,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
  PHP_ME(octra,map_dvector_with_callback,swig_arginfo_map_dvector_with_callback,ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
@@ -4699,17 +4879,11 @@ SWIG_php_minit {
   swig_ptr_object_handlers = *zend_get_std_object_handlers();
   swig_ptr_object_handlers.offset = XtOffsetOf(swig_object_wrapper, std);
   swig_ptr_object_handlers.cast_object = swig_ptr_cast_object;
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_int", NULL);
-  SWIG_Php_ce__p_int = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_int->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_int, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_int,SWIG_Php_ce__p_int);
-
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_size_type", NULL);
-  SWIG_Php_ce__p_size_type = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_size_type->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_size_type, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_size_type,SWIG_Php_ce__p_size_type);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_char", NULL);
+  SWIG_Php_ce__p_unsigned_char = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_unsigned_char->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_char, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_unsigned_char,SWIG_Php_ce__p_unsigned_char);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_value_type", NULL);
   SWIG_Php_ce__p_value_type = zend_register_internal_class(&internal_ce);
@@ -4717,23 +4891,17 @@ SWIG_php_minit {
   zend_do_implement_interface(SWIG_Php_ce__p_value_type, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_value_type,SWIG_Php_ce__p_value_type);
 
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_char", NULL);
-  SWIG_Php_ce__p_unsigned_char = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_unsigned_char->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_char, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_unsigned_char,SWIG_Php_ce__p_unsigned_char);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_short", NULL);
+  SWIG_Php_ce__p_short = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_short->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_short, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_short,SWIG_Php_ce__p_short);
 
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_short", NULL);
-  SWIG_Php_ce__p_unsigned_short = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_unsigned_short->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_short, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_unsigned_short,SWIG_Php_ce__p_unsigned_short);
-
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_signed_char", NULL);
-  SWIG_Php_ce__p_signed_char = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_signed_char->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_signed_char, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_signed_char,SWIG_Php_ce__p_signed_char);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_size_type", NULL);
+  SWIG_Php_ce__p_size_type = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_size_type->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_size_type, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_size_type,SWIG_Php_ce__p_size_type);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_long_long", NULL);
   SWIG_Php_ce__p_long_long = zend_register_internal_class(&internal_ce);
@@ -4741,11 +4909,11 @@ SWIG_php_minit {
   zend_do_implement_interface(SWIG_Php_ce__p_long_long, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_long_long,SWIG_Php_ce__p_long_long);
 
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_int", NULL);
-  SWIG_Php_ce__p_unsigned_int = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_unsigned_int->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_int, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_unsigned_int,SWIG_Php_ce__p_unsigned_int);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_int", NULL);
+  SWIG_Php_ce__p_int = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_int->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_int, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_int,SWIG_Php_ce__p_int);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_first_type", NULL);
   SWIG_Php_ce__p_first_type = zend_register_internal_class(&internal_ce);
@@ -4753,17 +4921,35 @@ SWIG_php_minit {
   zend_do_implement_interface(SWIG_Php_ce__p_first_type, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_first_type,SWIG_Php_ce__p_first_type);
 
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_int", NULL);
+  SWIG_Php_ce__p_unsigned_int = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_unsigned_int->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_int, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_unsigned_int,SWIG_Php_ce__p_unsigned_int);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_signed_char", NULL);
+  SWIG_Php_ce__p_signed_char = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_signed_char->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_signed_char, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_signed_char,SWIG_Php_ce__p_signed_char);
+
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_difference_type", NULL);
+  SWIG_Php_ce__p_difference_type = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_difference_type->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_difference_type, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_difference_type,SWIG_Php_ce__p_difference_type);
+
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_long_long", NULL);
   SWIG_Php_ce__p_unsigned_long_long = zend_register_internal_class(&internal_ce);
   SWIG_Php_ce__p_unsigned_long_long->create_object = swig_ptr_object_new;
   zend_do_implement_interface(SWIG_Php_ce__p_unsigned_long_long, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_unsigned_long_long,SWIG_Php_ce__p_unsigned_long_long);
 
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_short", NULL);
-  SWIG_Php_ce__p_short = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_short->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_short, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_short,SWIG_Php_ce__p_short);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_double", NULL);
+  SWIG_Php_ce__p_double = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_double->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_double, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_double,SWIG_Php_ce__p_double);
 
   INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_second_type", NULL);
   SWIG_Php_ce__p_second_type = zend_register_internal_class(&internal_ce);
@@ -4771,11 +4957,11 @@ SWIG_php_minit {
   zend_do_implement_interface(SWIG_Php_ce__p_second_type, &SWIG_Php_swig_wrapped_interface_ce);
   SWIG_TypeClientData(SWIGTYPE_p_second_type,SWIG_Php_ce__p_second_type);
 
-  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_difference_type", NULL);
-  SWIG_Php_ce__p_difference_type = zend_register_internal_class(&internal_ce);
-  SWIG_Php_ce__p_difference_type->create_object = swig_ptr_object_new;
-  zend_do_implement_interface(SWIG_Php_ce__p_difference_type, &SWIG_Php_swig_wrapped_interface_ce);
-  SWIG_TypeClientData(SWIGTYPE_p_difference_type,SWIG_Php_ce__p_difference_type);
+  INIT_CLASS_ENTRY(internal_ce, "SWIG\\_p_unsigned_short", NULL);
+  SWIG_Php_ce__p_unsigned_short = zend_register_internal_class(&internal_ce);
+  SWIG_Php_ce__p_unsigned_short->create_object = swig_ptr_object_new;
+  zend_do_implement_interface(SWIG_Php_ce__p_unsigned_short, &SWIG_Php_swig_wrapped_interface_ce);
+  SWIG_TypeClientData(SWIGTYPE_p_unsigned_short,SWIG_Php_ce__p_unsigned_short);
 
   /* end oinit subsection */
 

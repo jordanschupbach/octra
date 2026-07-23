@@ -149,6 +149,14 @@ export  class SVector {
   set(i: number, val: string): void;
 }
 
+export function splitmix64_next(state: any): number;
+
+export function splitmix64_runif(state: any): number;
+
+export function fill_runif(data: any, size: any, seed: number): void;
+
+export function splitmix64_runif_seeded(seed: number): number;
+
 export function hello(): void;
 
 export  class Callback {

@@ -1,5 +1,6 @@
 %module(directors="1") octra
 
+%include <stdint.i>
 %include <std_vector.i>
 %include <std_pair.i>
 
@@ -12,4 +13,5 @@
   #include "octra/octra.hpp"
 %}
 
+%include "octra/random/random.hpp"
 %include "octra/octra.hpp"

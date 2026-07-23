@@ -42,6 +42,10 @@ val _delete_DVector : c_obj -> c_obj
 val create_std_xxvector_xx_ldbrace_xx_lparendouble_xx_rparen_xx_rdbrace_from_ptr : c_obj -> c_obj
 
 
+val _splitmix64_next : c_obj -> c_obj
+val _splitmix64_runif : c_obj -> c_obj
+val _fill_runif : c_obj -> c_obj
+val _splitmix64_runif_seeded : c_obj -> c_obj
 val _hello : c_obj -> c_obj
 val _delete_Callback : c_obj -> c_obj
 val new_Callback : c_obj -> c_obj

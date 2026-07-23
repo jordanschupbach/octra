@@ -18,4 +18,5 @@
 %{
   #include "octra/octra.hpp"
 %}
+%include "octra/random/random.hpp"
 %include "octra/octra.hpp"

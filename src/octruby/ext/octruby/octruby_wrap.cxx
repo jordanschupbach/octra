@@ -2294,37 +2294,38 @@ namespace Swig {
 #define SWIGTYPE_p_allocator_type swig_types[0]
 #define SWIGTYPE_p_char swig_types[1]
 #define SWIGTYPE_p_difference_type swig_types[2]
-#define SWIGTYPE_p_first_type swig_types[3]
-#define SWIGTYPE_p_int swig_types[4]
-#define SWIGTYPE_p_long_long swig_types[5]
-#define SWIGTYPE_p_octra__Callback swig_types[6]
-#define SWIGTYPE_p_p_void swig_types[7]
-#define SWIGTYPE_p_second_type swig_types[8]
-#define SWIGTYPE_p_short swig_types[9]
-#define SWIGTYPE_p_signed_char swig_types[10]
-#define SWIGTYPE_p_size_type swig_types[11]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[12]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[13]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[14]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[15]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[16]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[17]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[18]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[19]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[20]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[21]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[22]
-#define SWIGTYPE_p_swig__ConstIterator swig_types[23]
-#define SWIGTYPE_p_swig__GC_VALUE swig_types[24]
-#define SWIGTYPE_p_swig__Iterator swig_types[25]
-#define SWIGTYPE_p_unsigned_char swig_types[26]
-#define SWIGTYPE_p_unsigned_int swig_types[27]
-#define SWIGTYPE_p_unsigned_long_long swig_types[28]
-#define SWIGTYPE_p_unsigned_short swig_types[29]
-#define SWIGTYPE_p_value_type swig_types[30]
-#define SWIGTYPE_p_void swig_types[31]
-static swig_type_info *swig_types[33];
-static swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
+#define SWIGTYPE_p_double swig_types[3]
+#define SWIGTYPE_p_first_type swig_types[4]
+#define SWIGTYPE_p_int swig_types[5]
+#define SWIGTYPE_p_long_long swig_types[6]
+#define SWIGTYPE_p_octra__Callback swig_types[7]
+#define SWIGTYPE_p_p_void swig_types[8]
+#define SWIGTYPE_p_second_type swig_types[9]
+#define SWIGTYPE_p_short swig_types[10]
+#define SWIGTYPE_p_signed_char swig_types[11]
+#define SWIGTYPE_p_size_type swig_types[12]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[13]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[14]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[15]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[16]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[17]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[18]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[19]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[20]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[21]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[22]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[23]
+#define SWIGTYPE_p_swig__ConstIterator swig_types[24]
+#define SWIGTYPE_p_swig__GC_VALUE swig_types[25]
+#define SWIGTYPE_p_swig__Iterator swig_types[26]
+#define SWIGTYPE_p_unsigned_char swig_types[27]
+#define SWIGTYPE_p_unsigned_int swig_types[28]
+#define SWIGTYPE_p_unsigned_long_long swig_types[29]
+#define SWIGTYPE_p_unsigned_short swig_types[30]
+#define SWIGTYPE_p_value_type swig_types[31]
+#define SWIGTYPE_p_void swig_types[32]
+static swig_type_info *swig_types[34];
+static swig_module_info swig_module = {swig_types, 33, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -17852,6 +17853,121 @@ free_std_vector_Sl_std_string_Sg_(void *self) {
 }
 
 SWIGINTERN VALUE
+_wrap_splitmix64_next(int argc, VALUE *argv, VALUE self) {
+  std::uint64_t *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::uint64_t result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_unsigned_long_long,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::uint64_t &","octra::random::splitmix64_next", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::uint64_t &","octra::random::splitmix64_next", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< std::uint64_t * >(argp1);
+  result = (std::uint64_t)octra::random::splitmix64_next(*arg1);
+  vresult = SWIG_From_unsigned_SS_long_SS_long(static_cast< unsigned long long >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_splitmix64_runif(int argc, VALUE *argv, VALUE self) {
+  std::uint64_t *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1, SWIGTYPE_p_unsigned_long_long,  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "std::uint64_t &","octra::random::splitmix64_runif", 1, argv[0] )); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, Ruby_Format_TypeError("invalid null reference ", "std::uint64_t &","octra::random::splitmix64_runif", 1, argv[0])); 
+  }
+  arg1 = reinterpret_cast< std::uint64_t * >(argp1);
+  result = (double)octra::random::splitmix64_runif(*arg1);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_fill_runif(int argc, VALUE *argv, VALUE self) {
+  double *arg1 = (double *) 0 ;
+  std::size_t arg2 ;
+  std::uint64_t arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  unsigned long long val3 ;
+  int ecode3 = 0 ;
+  
+  if ((argc < 3) || (argc > 3)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 3)",argc); SWIG_fail;
+  }
+  res1 = SWIG_ConvertPtr(argv[0], &argp1,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), Ruby_Format_TypeError( "", "double *","octra::random::fill_runif", 1, argv[0] )); 
+  }
+  arg1 = reinterpret_cast< double * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(argv[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), Ruby_Format_TypeError( "", "std::size_t","octra::random::fill_runif", 2, argv[1] ));
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long_SS_long(argv[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), Ruby_Format_TypeError( "", "std::uint64_t","octra::random::fill_runif", 3, argv[2] ));
+  } 
+  arg3 = static_cast< std::uint64_t >(val3);
+  octra::random::fill_runif(arg1,SWIG_STD_MOVE(arg2),arg3);
+  return Qnil;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
+_wrap_splitmix64_runif_seeded(int argc, VALUE *argv, VALUE self) {
+  std::uint64_t arg1 ;
+  unsigned long long val1 ;
+  int ecode1 = 0 ;
+  double result;
+  VALUE vresult = Qnil;
+  
+  if ((argc < 1) || (argc > 1)) {
+    rb_raise(rb_eArgError, "wrong # of arguments(%d for 1)",argc); SWIG_fail;
+  }
+  ecode1 = SWIG_AsVal_unsigned_SS_long_SS_long(argv[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), Ruby_Format_TypeError( "", "std::uint64_t","octra::random::splitmix64_runif_seeded", 1, argv[0] ));
+  } 
+  arg1 = static_cast< std::uint64_t >(val1);
+  result = (double)octra::random::splitmix64_runif_seeded(arg1);
+  vresult = SWIG_From_double(static_cast< double >(result));
+  return vresult;
+fail:
+  return Qnil;
+}
+
+
+SWIGINTERN VALUE
 _wrap_hello(int argc, VALUE *argv, VALUE self) {
   if ((argc < 0) || (argc > 0)) {
     rb_raise(rb_eArgError, "wrong # of arguments(%d for 0)",argc); SWIG_fail;
@@ -18194,6 +18310,7 @@ static void *_p_swig__IteratorTo_p_swig__ConstIterator(void *x, int *SWIGUNUSEDP
 static swig_type_info _swigt__p_allocator_type = {"_p_allocator_type", "allocator_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_double = {"_p_double", "double *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int32_t *|int_fast16_t *|int_fast32_t *|int_least32_t *|intptr_t *|int *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|int_fast64_t *|int_least64_t *|intmax_t *|long long *", 0, 0, (void*)0, 0};
@@ -18219,7 +18336,7 @@ static swig_type_info _swigt__p_swig__GC_VALUE = {"_p_swig__GC_VALUE", "swig::GC
 static swig_type_info _swigt__p_swig__Iterator = {"_p_swig__Iterator", "swig::Iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_unsigned_char = {"_p_unsigned_char", "uint8_t *|uint_fast8_t *|uint_least8_t *|unsigned char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_unsigned_int = {"_p_unsigned_int", "uint32_t *|uint_fast16_t *|uint_fast32_t *|uint_least32_t *|uintptr_t *|unsigned int *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "uint64_t *|uint_fast64_t *|uint_least64_t *|uintmax_t *|unsigned long long *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "std::uint64_t *|uint64_t *|uint_fast64_t *|uint_least64_t *|uintmax_t *|unsigned long long *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_unsigned_short = {"_p_unsigned_short", "uint16_t *|uint_least16_t *|unsigned short *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_void = {"_p_void", "VALUE|void *", 0, 0, (void*)0, 0};
@@ -18228,6 +18345,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_allocator_type,
   &_swigt__p_char,
   &_swigt__p_difference_type,
+  &_swigt__p_double,
   &_swigt__p_first_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
@@ -18262,6 +18380,7 @@ static swig_type_info *swig_type_initial[] = {
 static swig_cast_info _swigc__p_allocator_type[] = {  {&_swigt__p_allocator_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_double[] = {  {&_swigt__p_double, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
@@ -18296,6 +18415,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_allocator_type,
   _swigc__p_char,
   _swigc__p_difference_type,
+  _swigc__p_double,
   _swigc__p_first_type,
   _swigc__p_int,
   _swigc__p_long_long,
@@ -18863,6 +18983,10 @@ SWIGEXPORT void Init_octruby(void) {
   SwigClassSVector.mark = 0;
   SwigClassSVector.destroy = (void (*)(void *)) free_std_vector_Sl_std_string_Sg_;
   SwigClassSVector.trackObjects = 0;
+  rb_define_module_function(mOctruby, "splitmix64_next", VALUEFUNC(_wrap_splitmix64_next), -1);
+  rb_define_module_function(mOctruby, "splitmix64_runif", VALUEFUNC(_wrap_splitmix64_runif), -1);
+  rb_define_module_function(mOctruby, "fill_runif", VALUEFUNC(_wrap_fill_runif), -1);
+  rb_define_module_function(mOctruby, "splitmix64_runif_seeded", VALUEFUNC(_wrap_splitmix64_runif_seeded), -1);
   rb_define_module_function(mOctruby, "hello", VALUEFUNC(_wrap_hello), -1);
   rb_define_module_function(mOctruby, "disown_Callback", VALUEFUNC(_wrap_disown_Callback), -1);
   
