@@ -40,6 +40,22 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
     splitmix64_runif_seeded(42) = 0.74156487877182331
 
 
+## C#
+
+    using System;
+
+    class Program {
+      static void Main() {
+        octra.hello();
+        var p = new DPair(1.25, 2.5);
+        Console.WriteLine($"DPair sum = {octra.sum_dpair(p)}");
+      }
+    }
+
+    Hello octra
+    DPair sum = 3.75
+
+
 ## Python
 
     from pyoctra import octra
@@ -440,4 +456,3 @@ best-effort (printing \`SKIP\` when the relevant runtime/binding is unavailable)
 # Using Octra
 
 See \`README.md\` for language bindings and build/test commands.
-

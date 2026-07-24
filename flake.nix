@@ -102,6 +102,10 @@
         octraguile = import ./nix/octraguile.nix { pkgs = pkgs; };
         octraoctave = import ./nix/octraoctave.nix { pkgs = pkgs; };
         octrad = import ./nix/octrad.nix { pkgs = pkgs; };
+        docsEmacs = (pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (
+          epkgs: with epkgs; [ ob-php ob-go ]
+        );
+        octrarWrapper = pkgs.rWrapper.override { packages = [ octrar ]; };
 
         # }}} Bindings
 
@@ -636,7 +640,9 @@
             ))
 
             # Doc export tooling
-            pkgs.emacs
+            # Plain Emacs does not ship the PHP and Go Babel backends used
+            # by docs/org/pages/examples.org.
+            docsEmacs
             pkgs.direnv
             pkgs.just
             pkgs.jq
@@ -658,8 +664,7 @@
             octrajs
             pkgs.nodejs
 
-            octrar
-            pkgs.R
+            octrarWrapper
 
             octruby
             pkgs.ruby
@@ -667,6 +672,9 @@
             pkgs.perl
 
             phpPackage
+
+            # Required by the C# Babel backend in docs/init.el.
+            pkgs.dotnet-sdk_10
 
             octralua
             lua
@@ -686,6 +694,23 @@
             pkgs.ocamlPackages.findlib
             pkgs.ocamlPackages.alcotest
             pkgs.go
+
+            # Rust: `cargo run --example` builds/links against `rustoctra`.
+            pkgs.rustc
+            pkgs.cargo
+
+            # Java: compiles/runs against a locally-built `joctra` (no Nix
+            # derivation exists for it; see `just build-java`).
+            pkgs.jdk
+            gradleWrapped
+
+            # D: `octrad` is Nix-packaged as a dub package (see nix/octrad.nix).
+            octrad
+            pkgs.dub
+            pkgs.ldc
+
+            # Needed by Elpaca (org-mode/playground init) to fetch packages.
+            pkgs.git
           ];
 
           shellHook = ''
@@ -712,6 +737,33 @@
             fi
             export GUILE_LOAD_PATH="${octraguile}/share/guile/site/$effectiveVersion''${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
             export GUILE_EXTENSION_PATH="${octraguile}/lib/guile/$effectiveVersion/extensions:${octraguile}/lib64/guile/$effectiveVersion/extensions''${GUILE_EXTENSION_PATH:+:}$GUILE_EXTENSION_PATH"
+
+            # These bindings live in the Nix store, outside each runtime's
+            # usual search path.
+            pyoctraSitePackages="$(find "${pyoctra}/lib" -maxdepth 2 -type d -name site-packages -print -quit)"
+            export PYTHONPATH="$pyoctraSitePackages''${PYTHONPATH:+:}$PYTHONPATH"
+            export RUBYLIB="${octruby}/lib''${RUBYLIB:+:}$RUBYLIB"
+            tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\.[0-9]+).*|\1|')"
+            export TCLLIBPATH="${octratcl}/lib/$tclVersionDir''${TCLLIBPATH:+ }$TCLLIBPATH"
+            luaVersion="$(${lua}/bin/lua -e 'io.write((_VERSION or ""):match("%d+%.%d+") or "")')"
+            export LUA_PATH="${octralua}/share/lua/$luaVersion/?.lua;${octralua}/share/lua/?.lua;./?.lua;;"
+            export LUA_CPATH="${octralua}/lib/lua/$luaVersion/?.so;${octralua}/lib/lua/?.so;${octralua}/lib64/lua/$luaVersion/?.so;${octralua}/lib64/lua/?.so;;"
+
+            # It is fine for this directory not to exist yet; C# blocks
+            # explain that `just build-csharp` is the one-time prerequisite.
+            if [ -d "$PWD/build/dotnet/release" ]; then
+              export LD_LIBRARY_PATH="$PWD/build/dotnet/release:$PWD/build/dotnet/release/_deps/octra-build''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            fi
+
+            # D: expose `octrad` (Nix-built dub package) to `dub` by name, and
+            # give ldc2 the flags it needs to link against `liboctra` directly.
+            # `liboctra_wrap.so` is loaded at runtime via `dlopen`, so it just
+            # needs to be on LD_LIBRARY_PATH.
+            export OCTRA_CFLAGS="$(pkg-config --cflags octra 2>/dev/null || true)"
+            export OCTRA_LDFLAGS="$(pkg-config --libs octra 2>/dev/null || true)"
+            export LD_LIBRARY_PATH="${octrad}/lib''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            export DUB_HOME="$PWD/build/dub"
+            mkdir -p "$DUB_HOME"
           '';
 
         };
@@ -1131,12 +1183,7 @@
             # Doc export tooling. `ob-php`/`ob-go` give Org Babel native
             # backends for PHP/Go (Lua/Tcl/Scheme use a small custom
             # backend from docs/init.el instead; see there for why).
-            ((pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (
-              epkgs: with epkgs; [
-                ob-php
-                ob-go
-              ]
-            ))
+            docsEmacs
             pkgs.direnv
             pkgs.just
             pkgs.jq
@@ -1159,7 +1206,7 @@
             octrajs
             pkgs.nodejs
 
-            (pkgs.rWrapper.override { packages = [ octrar ]; })
+            octrarWrapper
 
             octruby
             pkgs.ruby
@@ -1170,6 +1217,7 @@
             pkgs.perl
             pkgs.perlPackages.ExtUtilsMakeMaker
             phpPackage
+            pkgs.dotnet-sdk_10
 
             octralua
             lua
@@ -1229,6 +1277,10 @@
             luaVersion="$(${lua}/bin/lua -e 'io.write((_VERSION or ""):match("%d+%.%d+") or "")')"
             export LUA_PATH="${octralua}/share/lua/$luaVersion/?.lua;${octralua}/share/lua/?.lua;./?.lua;;"
             export LUA_CPATH="${octralua}/lib/lua/$luaVersion/?.so;${octralua}/lib/lua/?.so;${octralua}/lib64/lua/$luaVersion/?.so;${octralua}/lib64/lua/?.so;;"
+
+            if [ -d "$PWD/build/dotnet/release" ]; then
+              export LD_LIBRARY_PATH="$PWD/build/dotnet/release:$PWD/build/dotnet/release/_deps/octra-build''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
+            fi
           '';
         };
       }

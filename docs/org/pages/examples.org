@@ -1,11 +1,6 @@
 #+TITLE: Examples
 #+OPTIONS: toc:nil num:nil
 #+PROPERTY: header-args :exports both
-#+PROPERTY: header-args :noweb yes
-#+PROPERTY: header-args:shell :results output :shebang "#!/usr/bin/env bash" :prologue "set -euo pipefail" :dir ../../../
-#+PROPERTY: header-args:cpp :results output :flags (mapconcat #'identity (append (process-lines "pkg-config" "--cflags" "octra") (process-lines "pkg-config" "--libs" "octra")) " ")
-#+PROPERTY: header-args:javascript :dir ../../../ :session none
-#+PROPERTY: header-args:php :dir ../../../
 
 * Org → Markdown (with Babel)
 
@@ -29,25 +24,49 @@ best-effort (printing `SKIP` when the relevant runtime/binding is unavailable).
 : 42
 
 #+begin_src shell
-echo "Org Babel is executing blocks."
+echo "Hello, worldzzz"
 #+end_src
 
 #+RESULTS:
-: Org Babel is executing blocks.
+: Hello, worldzzz
 
 ** C++
 
 #+name: octra_ex_cpp
-#+begin_src cpp
+#+BEGIN_SRC cpp :results output :exports both :flags "$(pkg-config --cflags --libs octra)"
 #include <octra/octra.hpp>
-#include <cstdio>
+#include <iostream>
 
 int main(void) {
+  std::cout << "Helloz, worldzz" << std::endl;
   octra::hello();
-  printf("splitmix64_runif_seeded(42) = %.17g\n", octra::random::splitmix64_runif_seeded(42));
+  // printf("splitmix64_runif_seeded(42) = %.17g\n", octra::random::splitmix64_runif_seeded(42));
   return 0;
 }
 #+end_src
+
+#+RESULTS: octra_ex_cpp
+: Helloz, worldzz
+: Hello octra
+
+
+** C#
+
+#+name: octra_ex_csharp
+#+begin_src csharp :results output :exports both
+using System;
+
+class Program {
+  static void Main() {
+    octra.hello();
+    var p = new DPair(1.25, 2.5);
+    Console.WriteLine($"DPair sum = {octra.sum_dpair(p)}");
+  }
+}
+#+end_src
+
+#+RESULTS: octra_ex_csharp
+
 
 
 ** Python
@@ -88,6 +107,12 @@ print("sum_dvector(map_dvector_with_callback(1,2,3)) =", octra.sum_dvector(v2))
 
 print("splitmix64_runif_seeded(42) =", octra.splitmix64_runif_seeded(42))
 #+end_src
+
+#+RESULTS: octra_ex_python
+: Hello octra
+: call_with_callback(3.0) = 9.0
+: sum_dvector(map_dvector_with_callback(1,2,3)) = 18.0
+: splitmix64_runif_seeded(42) = 0.7415648787718233
 
 
 ** JavaScript (Node)
@@ -143,6 +168,15 @@ p$second
 cat("splitmix64_runif_seeded(42) =", octrar::splitmix64_runif_seeded(42), "\n")
 #+end_src
 
+#+RESULTS: octra_ex_r
+: Hello octra
+: NULL
+: [1] 1.1
+: [1] 2.2
+: [1] 1
+: [1] 2
+: splitmix64_runif_seeded(42) = 0.7415649 
+
 ** Ruby
 
 #+name: octra_ex_ruby
@@ -171,6 +205,8 @@ puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Octra.sum_dvector(v2)}"
 
 puts "splitmix64_runif_seeded(42) = #{Octra.splitmix64_runif_seeded(42)}"
 #+end_src
+
+#+RESULTS: octra_ex_ruby
 
 ** Perl
 

@@ -4,7 +4,7 @@
 ;; sessions editing files under `docs/org/`. Centralizes:
 ;;   - which Org Babel languages are loaded and how they're executed
 ;;   - the environment each language's example needs to see the `octra`
-;;     bindings that aren't wired up by the Nix `docs-pages` devShell
+;;     bindings that aren't wired up by the Nix default/docs-pages devShell
 ;;     (Perl, PHP, OCaml, Go currently have no Nix derivation)
 
 (setq package-enable-at-startup nil)
@@ -30,7 +30,8 @@
 
 ;; {{{ Environment for bindings without a Nix derivation (Perl, PHP, OCaml, Go).
 ;; Everything else (Python, Ruby, R, Tcl, Lua, Octave, Guile, JS) is wired up
-;; by the `docs-pages` Nix devShell, which already exports the right
+;; by the default Nix devShell (and its `docs-pages` alias), which already
+;; exports the right
 ;; PYTHONPATH/RUBYLIB/TCLLIBPATH/LUA_PATH/etc. before Emacs is started.
 
 (let ((perl5lib (octra--path "build" "perl" "lib" "perl5")))
@@ -92,6 +93,41 @@
 ;; The docs use `javascript` rather than ob-js's `js`.
 (defalias 'org-babel-execute:javascript 'org-babel-execute:js)
 (defvaralias 'org-babel-default-header-args:javascript 'org-babel-default-header-args:js)
+
+;; Org includes a C# major mode but no maintained Babel backend.  Execute a
+;; temporary project that references the generated Octra binding instead.
+(add-to-list 'org-src-lang-modes '("csharp" . csharp))
+(defvar org-babel-default-header-args:csharp '((:results . "output")))
+(defun org-babel-execute:csharp (body _params)
+  "Run BODY as a C# program against the locally built Octra binding.
+
+`just build-csharp` must be run once after changing the binding; it produces
+the native libraries under build/dotnet/release used by DllImport."
+  (let* ((native-dir (octra--path "build" "dotnet" "release"))
+         (core-dir (octra--path "build" "dotnet" "release" "_deps" "octra-build"))
+         (binding-project (octra--path "src" "octradotnet" "octradotnet.csproj"))
+         (work-dir (make-temp-file "octra-csharp-" t))
+         (project (file-name-concat work-dir "Example.csproj"))
+         (source (file-name-concat work-dir "Program.cs")))
+    (unless (file-exists-p (file-name-concat native-dir "liboctra_csharp.so"))
+      (error "C# example needs a local native binding; run `just build-csharp` first"))
+    (unwind-protect
+        (progn
+          (with-temp-file source (insert body))
+          (with-temp-file project
+            (insert (format
+                     "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework></PropertyGroup><ItemGroup><ProjectReference Include=\"%s\" /></ItemGroup></Project>"
+                     binding-project)))
+          (let ((process-environment (copy-sequence process-environment)))
+            (setenv "LD_LIBRARY_PATH"
+                    (concat native-dir ":" core-dir
+                            (when (getenv "LD_LIBRARY_PATH")
+                              (concat ":" (getenv "LD_LIBRARY_PATH")))))
+            (org-babel-eval
+             (format "dotnet run --project %s --configuration Release"
+                     (shell-quote-argument project))
+             "")))
+      (delete-directory work-dir t))))
 
 ;; }}}
 

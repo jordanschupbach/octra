@@ -6,7 +6,7 @@
   <img src="./assets/octra.png" alt="Logo" style="width: 30%;">
 </p>
 
-> One C to rule them all, one C to find them, one C to bring them all and in the darkness...
+	> One C to rule them all, one C to find them, one C to bring them all and in the darkness...
 
 ---
 

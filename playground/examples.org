@@ -1,0 +1,444 @@
+#+TITLE: Octra Playground
+#+OPTIONS: toc:nil num:nil
+#+PROPERTY: header-args :exports both
+
+* Octra language playground
+
+Open this file in Emacs after loading =playground/init.el= (see
+=playground/README.md= / =just playground=) and evaluate any block with
+=C-c C-c=. Every language section below calls the same =octra= library
+through its SWIG (or native) binding; each block is a self-contained
+program, not a shell script, so evaluating it *is* compiling+running it.
+
+** C++
+
+#+name: octra_ex_cpp
+#+begin_src cpp :results output :flags "$(pkg-config --cflags --libs octra)"
+#include <octra/octra.hpp>
+#include <iostream>
+
+int main(void) {
+  std::cout << "Hello from C++" << std::endl;
+  octra::hello();
+  return 0;
+}
+#+end_src
+
+#+RESULTS: octra_ex_cpp
+: Hello from C++
+: Hello octra
+
+** C#
+
+Requires =just build-csharp= once first.
+
+#+name: octra_ex_csharp
+#+begin_src csharp :results output
+using System;
+
+class Program {
+  static void Main() {
+    octra.hello();
+    var p = new DPair(1.25, 2.5);
+    Console.WriteLine($"DPair sum = {octra.sum_dpair(p)}");
+  }
+}
+#+end_src
+
+#+RESULTS: octra_ex_csharp
+: Hello octra
+: DPair sum = 3.75
+
+** Python
+
+#+name: octra_ex_python
+#+begin_src python :results output
+from pyoctra import octra
+
+octra.hello()
+
+dp = octra.DPair(1, 2)
+
+
+class TimesThree(octra.Callback):
+    def call(self, x):
+        return x * 3.0
+
+
+cb = TimesThree()
+print("call_with_callback(3.0) =", octra.call_with_callback(3.0, cb))
+v = octra.make_dvector(1.0, 2.0, 3.0)
+v2 = octra.map_dvector_with_callback(v, cb)
+print("sum_dvector(map_dvector_with_callback(1,2,3)) =", octra.sum_dvector(v2))
+#+end_src
+
+#+RESULTS: octra_ex_python
+: Hello octra
+: call_with_callback(3.0) = 9.0
+: sum_dvector(map_dvector_with_callback(1,2,3)) = 18.0
+
+** JavaScript (Node)
+
+Requires =just build-javascript= once first.
+
+#+name: octra_ex_javascript
+#+begin_src javascript :results output
+const octra = require("index.js");
+
+octra.hello();
+
+const cb = new octra.Callback();
+console.log("call_with_callback(3.0) =", octra.call_with_callback(3.0, cb));
+const v2 = octra.map_dvector_with_callback(octra.make_dvector(1.0, 2.0, 3.0), cb);
+console.log("sum_dvector(map_dvector_with_callback) =", octra.sum_dvector(v2));
+
+console.log(
+  "call_with_function(3.0) =",
+  octra.call_with_function(3.0, (x) => x * 2.0),
+);
+#+end_src
+
+#+RESULTS: octra_ex_javascript
+: Hello octra
+: call_with_callback(3.0) = 3
+: sum_dvector(map_dvector_with_callback) = 6
+: call_with_function(3.0) = 6
+
+** R
+
+#+name: octra_ex_r
+#+begin_src R :results output
+library(octrar)
+
+octrar::hello()
+
+p <- octrar::DPair(1.1, 2.2)
+p$first
+p$second
+#+end_src
+
+#+RESULTS: octra_ex_r
+: Hello octra
+: NULL
+: [1] 1.1
+: [1] 2.2
+
+** Ruby
+
+#+name: octra_ex_ruby
+#+begin_src ruby :results output
+require "octruby"
+
+Octra.hello
+
+dp = Octra::DPair.new(1.0, 2.0)
+puts "DPair created: #{dp.inspect}"
+
+class TimesTwo < Octra::Callback
+  def call(x)
+    x * 2.0
+  end
+end
+
+cb = TimesTwo.new
+puts "call_with_callback(3.0) = #{Octra.call_with_callback(3.0, cb)}"
+v = Octra.make_dvector(1.0, 2.0, 3.0)
+v2 = Octra.map_dvector_with_callback(v, cb)
+puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Octra.sum_dvector(v2)}"
+#+end_src
+
+#+RESULTS: octra_ex_ruby
+: Hello octra
+: DPair created: std::pair<double,double > (1.0,2.0)
+: call_with_callback(3.0) = 6.0
+: sum_dvector(map_dvector_with_callback(1,2,3)) = 12.0
+
+** Perl
+
+Requires =just build-perl= once first.
+
+#+name: octra_ex_perl
+#+begin_src perl :results output
+use strict;
+use warnings;
+
+use Octra;
+
+Octra::hello();
+
+my $dp = Octra::DPair->new(1.0, 2.0);
+print "DPair: First=" . $dp->swig_first_get() . ", Second=" . $dp->swig_second_get() . "\n";
+
+{
+  package TimesTwo;
+  our @ISA = ('Octra::Callback');
+
+  sub call {
+    my ($self, $x) = @_;
+    return $x * 2.0;
+  }
+}
+
+my $cb = TimesTwo->new();
+print "call_with_callback(3.0) = ", Octra::call_with_callback(3.0, $cb), "\n";
+#+end_src
+
+#+RESULTS: octra_ex_perl
+: Hello octra
+: DPair: First=1, Second=2
+: call_with_callback(3.0) = 6
+
+** PHP
+
+Requires =just build-php= once first.
+
+#+name: octra_ex_php
+#+begin_src php :results output
+<?php
+
+$v = new DVector(10);
+for ($i = 0; $i < 10; $i += 1) {
+    $v->set($i, $i * 1.5);
+}
+for ($i = 0; $i < 10; $i += 1) {
+    print($v->get($i) . "\n");
+}
+
+hello();
+?>
+#+end_src
+
+#+RESULTS: octra_ex_php
+#+begin_example
+0
+1.5
+3
+4.5
+6
+7.5
+9
+10.5
+12
+13.5
+Hello octra
+#+end_example
+** Lua
+
+#+name: octra_ex_lua
+#+begin_src lua :results output
+local octra = require("octra")
+octra.hello()
+
+local v = octra.make_dvector(1.0, 2.0, 3.0)
+print("sum_dvector:", octra.sum_dvector(v))
+
+local cb = octra.Callback()
+print("call_with_callback(3.0):", octra.call_with_callback(3.0, cb))
+#+end_src
+
+#+RESULTS: octra_ex_lua
+: Hello octra
+: sum_dvector:	6.0
+: call_with_callback(3.0):	3.0
+
+** Tcl
+
+#+name: octra_ex_tcl
+#+begin_src tcl :results output
+package require Octra 0.0.1
+
+octra::hello
+
+set v [octra::new_DVector]
+octra::DVector_push_back $v 1.25
+octra::DVector_push_back $v 2.5
+puts "DVector size: [octra::DVector_size $v]"
+octra::delete_DVector $v
+
+puts "Octra Tcl example ran successfully."
+#+end_src
+
+#+RESULTS: octra_ex_tcl
+: Hello octra
+: DVector size: 2
+: Octra Tcl example ran successfully.
+
+** Octave
+
+#+name: octra_ex_octave
+#+begin_src octave :results output
+1;
+
+octra;
+
+hello ();
+
+v = DVector ();
+v.append (1.0);
+v.append (2.0);
+v.append (3.5);
+printf ("vector size: %d\n", v.size ());
+
+p = DPair (10.0, 25.5);
+printf ("pair sum: %f\n", p.first + p.second);
+#+end_src
+
+#+RESULTS: octra_ex_octave
+: Hello octra
+: vector size: 3
+: pair sum: 35.500000
+
+** Guile
+
+#+name: octra_ex_guile
+#+begin_src scheme :results output
+(use-modules (octra))
+
+(display "Hello from Guile + Octra\n")
+(hello)
+
+(let ((v (make_dvector 10.0 20.0 30.0)))
+  (format #t "sum_dvector = ~a\n" (sum_dvector v)))
+#+end_src
+
+#+RESULTS: octra_ex_guile
+: Hello octra
+: Hello from Guile + Octra
+: sum_dvector = 60.0
+
+** OCaml
+
+Requires =just install-ocaml= once first.
+
+#+name: octra_ex_ocaml
+#+begin_src ocaml :results output
+let () =
+  let open Swig in
+  ignore (Octra._hello C_void);
+  print_endline "octra: _hello() ok";
+
+  let p = Octra.new_DPair (C_list [ C_double 1.25; C_double 2.5 ]) in
+  let p_sum = get_float (Octra._sum_dpair p) in
+  Printf.printf "DPair sum=%g\n" p_sum
+#+end_src
+
+#+RESULTS: octra_ex_ocaml
+: Hello octra
+: octra: _hello() ok
+: DPair sum=3.75
+
+** Go
+
+#+name: octra_ex_go
+#+begin_src go :results output
+package main
+
+import (
+	"fmt"
+	"octra"
+)
+
+func main() {
+	octra.Hello()
+
+	dp := octra.NewDPair(1.0, 2.0)
+	fmt.Printf("DPair: First=%v, Second=%v\n", dp.GetFirst(), dp.GetSecond())
+	octra.DeleteDPair(dp)
+}
+#+end_src
+
+#+RESULTS: octra_ex_go
+: Hello octra
+: DPair: First=1, Second=2
+
+** D
+
+#+name: octra_ex_d
+#+begin_src d :results output
+import std.stdio : writeln;
+import octra;
+
+class TimesTwo : Callback {
+  override double call(double x) {
+    return x * 2.0;
+  }
+}
+
+void main() {
+  hello();
+
+  auto vec = make_dvector(1.0, 2.0, 3.0);
+  writeln("sum_dvector(1,2,3) = ", sum_dvector(vec));
+
+  auto cb = new TimesTwo();
+  writeln("call_with_callback(3.0) = ", call_with_callback(3.0, cb));
+}
+#+end_src
+
+#+RESULTS: octra_ex_d
+: Hello octra
+: sum_dvector(1,2,3) = 6
+: call_with_callback(3.0) = 6
+
+** Rust
+
+#+name: octra_ex_rust
+#+begin_src rust :results output
+fn main() {
+    rustoctra::hello();
+
+    let v = rustoctra::make_dvector(1.0, 2.0, 3.0);
+    println!("make_dvector -> {:?}", v);
+    println!("sum_dvector -> {}", rustoctra::sum_dvector(&v));
+
+    let p = rustoctra::make_dpair(4.0, 5.0);
+    println!("sum_dpair -> {}", rustoctra::sum_dpair(p));
+}
+#+end_src
+
+#+RESULTS: octra_ex_rust
+: Hello octra
+: make_dvector -> [1.0, 2.0, 3.0]
+: sum_dvector -> 6
+: sum_dpair -> 9
+
+** Java
+
+Requires =just build-java= once first.
+
+#+name: octra_ex_java
+#+begin_src java :results output
+import js.octra.joctra.DPair;
+import js.octra.joctra.DVector;
+
+public class OctraPlaygroundEx {
+  static {
+    System.loadLibrary("octra_jni");
+  }
+
+  public static void main(String[] args) {
+    var v = new DVector(10, 0.0);
+    for (int i = 0; i < v.size(); i++) {
+      v.set(i, i * 1.1);
+    }
+    System.out.println("v[3] = " + v.get(3));
+
+    var p = new DPair(3.14, 2.71);
+    System.out.println("DPair: " + p.getFirst() + ", " + p.getSecond());
+  }
+}
+#+end_src
+
+#+RESULTS: octra_ex_java
+: v[3] = 3.3000000000000003
+: DPair: 3.14, 2.71
+
+* See also
+
+=README.md= documents each language binding and its `just build-*` command.
+=docs/org/pages/examples.org= is the batch-exported (Markdown docs) sibling
+of this file -- same idea, different execution model (see `docs/init.el`).
+
+# Local Variables:
+# org-confirm-babel-evaluate: nil
+# End:

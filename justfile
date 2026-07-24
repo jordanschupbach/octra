@@ -566,9 +566,9 @@ docs-md-file FILE:
       fi'
 
 # Export every Org page under docs/org/pages/ to Markdown under docs/pages/.
-# Perl/PHP/OCaml/Go have no Nix derivation (see docs/init.el), so their
-# examples need these local builds in place before Babel can run them.
-docs-md: build-cpp build-perl build-php install-ocaml
+# C#, Perl, PHP, OCaml, and Go have no Nix derivation (see docs/init.el), so
+# their examples need these local builds in place before Babel can run them.
+docs-md: build-cpp build-csharp build-perl build-php install-ocaml
     @echo "Exporting Org pages -> Markdown"
     @bash -lc 'set -euo pipefail; shopt -s nullglob; \
       for f in docs/org/pages/*.org; do \
@@ -590,6 +590,28 @@ docs-all: docs docs-bindings
     @echo "Core + binding docs are up to date."
 
 # }}} docs commands
+
+# {{{ playground commands
+
+# Evaluate every Org Babel code block in playground/examples.org (one block
+# per language binding, including C++). playground/init.el bootstraps Elpaca
+# (Org + envrc) and envrc picks up the Nix devShell via .envrc; the language
+# toolchains/libraries themselves come from `devShells.default` in flake.nix.
+# No shell script does the compiling -- each block's own language toolchain
+# (gcc, php, lua, dub, cargo, javac, ...) is invoked directly from Emacs Lisp.
+org-playground:
+    @echo "Running Octra playground (Org Babel, all language bindings)"
+    {{ NIX_DEVELOP }} --command bash -lc "emacs --batch -Q -l playground/init.el -l playground/run.el -- playground/examples.org"
+
+# Export playground/examples.org (with its embedded #+RESULTS:, from
+# `just org-playground`) to HTML and PDF. PDF export uses tectonic (a
+# self-contained LaTeX engine) fetched ad hoc from nixpkgs, since it isn't
+# part of devShells.default.
+org-playground-export:
+    @echo "Exporting Octra playground to HTML and PDF"
+    {{ NIX_DEVELOP }} --command bash -lc 'tecdir="$(dirname "$(nix build --no-link --print-out-paths nixpkgs#tectonic)/bin/tectonic")" && emacs --batch -Q -l playground/init.el -l playground/export.el -- playground/examples.org "$tecdir"'
+
+# }}} playground commands
 
 # {{{ example commands
 

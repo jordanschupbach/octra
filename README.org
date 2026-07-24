@@ -1,98 +1,21 @@
 * OCTRA
 
 
-#+BEGIN_SRC cpp :flags "$(pkg-config --cflags --libs octra)"
-#include <iostream>
-#include <octra/octra.hpp>
-
-int main() {
-  std::cout << "Hello, World!" << std::endl;
-  octra::hello();
-  return 0;
-}
-
-#+END_SRC
-
-#+RESULTS:
-| Hello, | World! |
-| Hello  | octra  |
-
-* Test drive
-** NixOS
-#+BEGIN_SRC bash
-nix develop
-#+END_SRC
-
-#+BEGIN_SRC bash
-just build
-#+END_SRC
-
-#+BEGIN_SRC bash
-just test
-#+END_SRC
-
-#+BEGIN_SRC bash
-just examples
-#+END_SRC
-
-#+BEGIN_SRC bash
-just run TARGET=example_name
-#+END_SRC
-
-* Renaming this template
-#+BEGIN_SRC bash
-./rename_octra <new_project_name>
-#+END_SRC
-
-* Bindings
-** Test drive
-*** Python
-#+BEGIN_SRC bash
-just python
-#+END_SRC
-
-*** R
-#+BEGIN_SRC bash
-just build-r
-just install-r
-just r
-#+END_SRC
-
-*** Javascript
-#+BEGIN_SRC bash
-just js
-just js-repl
-#+END_SRC
-
-*** Lua
-#+BEGIN_SRC bash
-just run-lua
-just repl-lua
-just test-lua
-#+END_SRC
-
-*** Rust
-#+BEGIN_SRC bash
-just run-rust
-just repl-rust
-just test-rust
-#+END_SRC
-
-* Binding examples
-These blocks replicate the per-language examples under =examples/=.
-
 ** C/C++ (=examples/cpp/source/octra_ex.cpp=)
 
 #+BEGIN_SRC cpp :results output :exports both :flags "$(pkg-config --cflags --libs octra)"
 #include <octra/octra.hpp>
+#include <iostream>
 
 int main(void) {
+  std::cout << "Hello, worldzzz" << std::endl;
   octra::hello();
   return 0;
 }
 #+END_SRC
 
 #+RESULTS:
+: Hello, worldzzz
 : Hello octra
 
 ** C# (=examples/csharp/stl_ex.cs=)
@@ -135,6 +58,8 @@ class stl_ex {
   }
 }
 #+END_SRC
+
+#+RESULTS:
 
 ** D (=examples/d/source/app.d=)
 #+BEGIN_SRC d
@@ -217,12 +142,13 @@ func main() {
 #+begin_example
 ;;; note: auto-compilation is enabled, set GUILE_AUTO_COMPILE=0
 ;;;       or pass the --no-auto-compile argument to disable.
-;;; compiling /nix/store/jb1dnk8qh7fvkip1z2ch9zrqm7k6r7b8-octraguile-0.0.1/share/guile/site/3.0/octra.scm
-octra.scm:48:21: warning: possibly unbound variable `make-dvector'
-octra.scm:49:20: warning: possibly unbound variable `sum-dvector'
-octra.scm:50:19: warning: possibly unbound variable `make-dpair'
-octra.scm:51:18: warning: possibly unbound variable `sum-dpair'
-;;; compiled /home/jordan/.cache/guile/ccache/3.0-LE-8-4.7/nix/store/jb1dnk8qh7fvkip1z2ch9zrqm7k6r7b8-octraguile-0.0.1/share/guile/site/3.0/octra.scm.go
+;;; compiling /nix/store/qszwhmfmzklyaadxc8fc48wr13wklf3q-octraguile-0.0.1/share/guile/site/3.0/octra.scm
+octra.scm:49:21: warning: possibly unbound variable `make-dvector'
+octra.scm:50:20: warning: possibly unbound variable `sum-dvector'
+octra.scm:51:19: warning: possibly unbound variable `make-dpair'
+octra.scm:52:18: warning: possibly unbound variable `sum-dpair'
+octra.scm:53:32: warning: possibly unbound variable `splitmix64-runif-seeded'
+;;; compiled /home/jordan/.cache/guile/ccache/3.0-LE-8-4.7/nix/store/qszwhmfmzklyaadxc8fc48wr13wklf3q-octraguile-0.0.1/share/guile/site/3.0/octra.scm.go
 Hello from Guile + Octra
 sum_dvector = 60.0
 sum_dpair = 9.0
@@ -306,6 +232,7 @@ local cb = octra.Callback()
 print("call_with_callback(3.0):", octra.call_with_callback(3.0, cb))
 local v2 = octra.map_dvector_with_callback(octra.make_dvector(1.0, 2.0, 3.0), cb)
 print("sum_dvector(map_dvector_with_callback(1,2,3)):", octra.sum_dvector(v2))
+print("hello worldzz")
 #+END_SRC
 
 #+RESULTS:
@@ -314,6 +241,7 @@ print("sum_dvector(map_dvector_with_callback(1,2,3)):", octra.sum_dvector(v2))
 : sum_dpair:	4.0
 : call_with_callback(3.0):	3.0
 : sum_dvector(map_dvector_with_callback(1,2,3)):	6.0
+: hello worldzz
 
 ** OCaml (=examples/ocaml/octra_ex.ml=)
 #+BEGIN_SRC ocaml :results output :exports both
@@ -356,6 +284,7 @@ printf ("vector[0]=%f vector[1]=%f\n", v.__paren__ (0), v.__paren__ (1));
 
 p = DPair (10.0, 25.5);
 printf ("pair sum: %f\n", p.first + p.second);
+printf ("Hello, worldzzz");
 #+END_SRC
 
 #+RESULTS:
@@ -363,6 +292,7 @@ printf ("pair sum: %f\n", p.first + p.second);
 : vector size: 3
 : vector[0]=1.000000 vector[1]=2.000000
 : pair sum: 35.500000
+: Hello, worldzzz
 
 ** Perl (=examples/perl/octra_ex.pl=)
 #+BEGIN_SRC perl :results output :exports both
@@ -391,6 +321,7 @@ print "call_with_callback(3.0) = ", Octra::call_with_callback(3.0, $cb), "\n";
 my $v = Octra::make_dvector(1.0, 2.0, 3.0);
 my $v2 = Octra::map_dvector_with_callback($v, $cb);
 print "sum_dvector(map_dvector_with_callback(1,2,3)) = ", Octra::sum_dvector($v2), "\n";
+print "Hello, worldzzz";
 #+END_SRC
 
 #+RESULTS:
@@ -419,6 +350,7 @@ for($i = 0; $i < 10; $i += 1) {
 }
 
 hello()
+
 
 ?>
 #+END_SRC
@@ -463,12 +395,14 @@ print("call_with_callback(3.0) =", octra.call_with_callback(3.0, cb))
 v = octra.make_dvector(1.0, 2.0, 3.0)
 v2 = octra.map_dvector_with_callback(v, cb)
 print("sum_dvector(map_dvector_with_callback(1,2,3)) =", octra.sum_dvector(v2))
+print("hello, worldzz")
 #+END_SRC
 
 #+RESULTS:
 : Hello octra
 : call_with_callback(3.0) = 9.0
 : sum_dvector(map_dvector_with_callback(1,2,3)) = 18.0
+: hello, worldzz
 
 ** R (=examples/r/octra_ex.r=)
 #+BEGIN_SRC R :results output :exports both
@@ -491,6 +425,7 @@ p$second
 p <- octrar::IPair(1.1, 2.2) # converts to integer
 p$first
 p$second
+print("Hello, worldzzz")
 #+END_SRC
 
 #+RESULTS:
@@ -500,6 +435,7 @@ p$second
 : [1] 2.2
 : [1] 1
 : [1] 2
+: [1] "Hello, worldzzz"
 
 ** Ruby (=examples/ruby/octra_ex.rb=)
 #+BEGIN_SRC ruby :results output :exports both
@@ -524,6 +460,7 @@ puts "call_with_callback(3.0) = #{Octra.call_with_callback(3.0, cb)}"
 v = Octra.make_dvector(1.0, 2.0, 3.0)
 v2 = Octra.map_dvector_with_callback(v, cb)
 puts "sum_dvector(map_dvector_with_callback(1,2,3)) = #{Octra.sum_dvector(v2)}"
+puts "Hello, worldzzz"
 #+END_SRC
 
 #+RESULTS:
@@ -546,7 +483,10 @@ puts "DPair: ([octra::DPair_first_get $p], [octra::DPair_second_get $p])"
 octra::delete_DPair $p
 
 puts "Octra Tcl example ran successfully."
+puts "Hello, worldzz"
+
 #+END_SRC
 
 #+RESULTS:
 : Octra Tcl example ran successfully.
+: Hello, worldzz

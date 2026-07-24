@@ -46,3 +46,11 @@ src/octruby/ext/octruby/mkmf.log
 
 examples/ocaml/octra_ex.cmi
 examples/ocaml/octra_ex.cmx
+
+# Playground (Org Babel) scratch state
+playground/.elpaca-emacs.d
+src/gooctra/octra-playground-*.go
+src/rustoctra/examples/octra-playground-*.rs
+playground/examples.html
+playground/examples.pdf
+playground/examples.tex
